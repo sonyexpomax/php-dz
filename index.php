@@ -6,4 +6,6 @@
  * Time: 19:41
  */
 echo 'ggd';
+$ccc=ffff;
+$fff=ffff;
 ?>
