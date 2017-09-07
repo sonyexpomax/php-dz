@@ -110,12 +110,13 @@ echo "</td>
   </table>";
 
 //---------------------------  Задание 7 -------------
+//переделал обращение к каждому  симоволу строки
 echo "<b>Задание 7</b><br />";
 $s=0;
-$s=0;
-for ($i=100000; $i<119999; $i++) {  //сузил немного диапазон, уж очень долго перебирает!!
-    $sum_first_3=substr($i, 0, 1)+substr($i, 1, 1)+substr($i, 2, 1);
-    $sum_last_3=substr($i, 3, 1)+substr($i, 4, 1)+substr($i, 5, 1);
+for ($i=100000; $i<103999; $i++) {      //сузил немного диапазон, уж очень долго перебирает!!
+    $j = (string) $i;                   //перевел в строку все заданное число
+    $sum_first_3=$j[0]+$j[1]+$j[2];     //переделал
+    $sum_last_3=$j[3]+$j[4]+$j[5];
     if($sum_first_3== $sum_last_3) {
         echo "$i<br />";
         $s++;
@@ -167,152 +168,94 @@ print_r($n);
 echo "</pre>";
 
 //---------------------------  Задание 10 -------------
+//переделал сортировку (разобрался как работает)
 unset($n);
 echo "<b>Задание 10</b><br />";
 $array1 = array(1,5,6,8,13,14,15,80);
 $array2 = array(0,2,5,12,65,68,70,71);
 $r_both=array_merge($array1, $array2);
-//$result=uasort($r_both,strnatcmp);
+asort($r_both);
 echo "<pre>";
 print_r($r_both);
 echo "</pre>";
 
 //---------------------------  Задание 11 -------------
+//переделал unset одной строкой
+// массивы решил не пе
 unset($n);
-$n=2311561;
+$n=6324561;
 echo "<b>Задание 11</b><br />";
 echo "n=$n<br>";
 $count=strlen($n) ;
 $f=$count/3;
 $bythree=ceil($f);
-//echo "count =  $count <br>";
-//echo "bythree =  $bythree <br>";
 $j=1;
+//      массивы цифр по разрядам
+$edinici = [
+    "1" => "один",
+    "2" => "два",
+    "3" => "три",
+    "4" => "четыре",
+    "5" => "пять",
+    "6" => "шесть",
+    "7" => "семь",
+    "8" => "восемь",
+    "9" => "девять",
+];
+$desyatki = [
+    "2" => "двадцать",
+    "3" => "тридцать",
+    "4" => "сорок",
+    "5" => "пятьдесят",
+    "6" => "шестьдесят",
+    "7" => "семьдесят",
+    "8" => "восемдесят",
+    "9" => "девяносто",
+];
+$sotni = [
+    "1" => "сто",
+    "2" => "двести",
+    "3" => "триста",
+    "4" => "четыреста",
+    "5" => "пятьсот",
+    "6" => "шестьсот",
+    "7" => "семьсот",
+    "8" => "восемьсот",
+    "9" => "девятьсот",
+];
+$desyatki_1 = [
+    "1" => "одиннацать",
+    "2" => "двенадцать",
+    "3" => "тринадцать",
+    "4" => "четырнадцать",
+    "5" => "пятнадцать",
+    "6" => "шестнадцать",
+    "7" => "семнадцать",
+    "8" => "восемнадцать",
+    "9" => "девятнадцать",
+];
+
+
 for ($i=1;$i<=$bythree;$i++){
-    unset($s1);
-    unset($s2);
-    unset($s3);
-    unset($simvol_one);
-    unset($simvol_two);
-    unset($simvol_three);
-    //echo $j."<br>";
+    unset($s1,$s2,$s3,$simvol_one,$simvol_two,$simvol_three);
     $simvol_one =   substr($n, $count-$j, 1);
     if(($count-$j+1)>=3){
         $simvol_three = substr($n, $count-$j-2, 1);
         if ($simvol_three>0) {
-            switch ($simvol_three) {
-                case '1':
-                    $s3 = "сто";
-                    break;
-                case '2':
-                    $s3 = "двести";
-                    break;
-                case '3':
-                    $s3 = "триста";
-                    break;
-                case '4':
-                    $s3 = "четыреста";
-                    break;
-                case '5':
-                    $s3 = "пятьсот";
-                    break;
-                case '6':
-                    $s3 = "шестьсот";
-                    break;
-                case '7':
-                    $s3 = "семьсот";
-                    break;
-                case '8':
-                    $s3 = "восемьсот";
-                    break;
-                case '9':
-                    $s3 = "девятьсот";
-                    break;
-            }
+            $s3=$sotni[$simvol_three];
         }
     }
-
     if(($count-$j+1)>=2){
         $simvol_two = substr($n, $count-$j-1, 1);
-   //     echo "simvol_two = $simvol_two<br>";
          if ($simvol_two==1){
-             switch ($simvol_one) {
-                 case '0':    $s2 = "десять";
-                     break;
-                 case '1':    $s2 = "одиннацать";
-                     break;
-                 case '2':    $s2 = "двенадцать";
-                     break;
-                 case '3':    $s2 = "тринадцать";
-                     break;
-                 case '4':    $s2 = "четырнадцать";
-                     break;
-                 case '5':    $s2 = "пятнадцать";
-                     break;
-                 case '6':    $s2 = "шестнадцать";
-                     break;
-                 case '7':    $s2 = "семнадцать";
-                     break;
-                 case '8':    $s2 = "восемнадцать";
-                     break;
-                 case '9':    $s2 = "девятнадцать";
-                     break;
-             }
+              $s2=$desyatki_1[$simvol_two];
          }
-
-
-        if ($simvol_two!=1) {
-   //         echo "simvol_two ==== $simvol_two<br>";
-            switch ($simvol_two) {
-                case '2':
-                    $s2 = "двадцать";
-                    break;
-                case '3':
-                    $s2 = "тридцать";
-                    break;
-                case '4':
-                    $s2 = "сорок";
-                    break;
-                case '5':
-                    $s2 = "пятьдесят";
-                    break;
-                case '6':
-                    $s2 = "шестьдесят";
-                    break;
-                case '7':
-                    $s2 = "семьдесят";
-                    break;
-                case '8':
-                    $s2 = "восемдесят";
-                    break;
-                case '9':
-                    $s2 = "девяносто";
-                    break;
-            }
+       if ($simvol_two!=1) {
+             $s2=$desyatki[$simvol_two];
         }
     }
     if ($simvol_one<>0 and $simvol_two<>1){
-        switch ($simvol_one) {
-            case '1':    $s1 = "один";
-                break;
-            case '2':    $s1 = "два ";
-                break;
-            case '3':    $s1 = "три ";
-                break;
-            case '4':    $s1 = "четыре";
-                break;
-            case '5':    $s1 = "пять";
-                break;
-            case '6':    $s1 = "шесть";
-                break;
-            case '7':    $s1 = "семь";
-                break;
-            case '8':    $s1 = "восемь";
-                break;
-            case '9':    $s1 = "девять";
-                break;
-        }
-
+        $s1=$edinici[$simvol_one];
     }
     $s=$s3." ".$s2." ".$s1;
     if ($j==4) {
@@ -374,15 +317,21 @@ for ($i=1;$i<=$bythree;$i++){
         $s = $s . " " . $sm;
     }
 $sb=$s." ".$sb;
-   // echo "$s<br>";
-   // $i=$i+2;
     $j=$j+3;
 }
 
 echo "$sb<br>";
 //---------------------------  Задание 12 -------------
+//переделал. не внимательно читал задание. теперь ок.
 echo "<b>Задание 12</b><br />";
-$array11=range(a,z);
+$array11=range('a','z');
+$t=1;
 foreach ($array11 as $i){
-    echo "$i<br>";
+    if ($t%2==0){
+        echo "$i<br>";
+    }
+    else{
+        echo " $i";
+    }
+    $t++;
 }
