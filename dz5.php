@@ -94,13 +94,15 @@ var_dump($numb2);
 
 //---------------------------  Задание 10  ------------
 echo "<br /><b>Задание 10</b><br />";
+//добавлены знаки $ . все отрабатывает!
+$str="RWEWEWE g UOImkjjklUYYUYUTY reer EREYyrYEYERERYREY";
 $len=strlen($str);
 echo "<i>Входная строка:</i> <font color='green'>$str</font><br />";
 for ($i=0,$low=0,$high=0;$i<=$len;$i++){
-    if ((str[$i] >= 'a') and (str[$i] <= 'z')){
+    if (($str[$i] >= 'a') and ($str[$i] <= 'z')){
         $low++;
     }
-    if ((str[$i] >= 'A') and (str[$i] <= 'Z')) {
+    if (($str[$i] >= 'A') and ($str[$i] <= 'Z')) {
         $high++;
     }
 }
@@ -117,7 +119,7 @@ echo "<i>Выходная строка:</i> <font color=#d2691e>$str4</font><br 
 
 //---------------------------  Задание 11  ------------
 echo "<br /><b>Задание 11</b><br />";
-$slovo="КИНОНИК";
+$slovo="РОТАТОР";
 $len=strlen($slovo);
 $len_half=floor($len/2);
 echo "<i>Слово:</i> <font color='green'>$slovo</font><br />";
@@ -133,17 +135,19 @@ else{
     echo "Это слово <font color='red'> НЕ </font> является палиндромом";
 }
 
-
-
 //---------------------------  Задание 12  ------------
+// переделано. теперь каждое слово в тексте переписывает наоборот
 echo "<br /><br /><b>Задание 12</b><br />";
-$str3="
-.ssenippah namuh fo redliub-retsam eht ,hturt eht fo rerolpxe taerg eht fo sgnihcaet 
-lautca eht dnuopxe dna ,metsys eht fo tnuocca etelpmoc a uoy evig lliw I dna nrob saw niap 
-gnisiarp dna erusaelp gnicnuoned fo aedi nekatsim siht lla woh uoy ot nialpxe tsum I tuB";
+$str3="nodnoL si eht latipac fo taerG niatirB sti lacitilop cimonoce dna larutluc ertnec s'tI eno fo eht tsegral seitic ni eht dlrow stI noitalupop si erom naht noillim elpoep nodnoL si detautis no eht revir semahT ";
 echo "<i>Входная строка:</i> <font color='green'>$str3</font><br />";
-echo "<i>Выходная строка:</i> <font color='blue'>".strrev($str3)."</font><br />";
-
+$arr1   = str_word_count($str3, 1);
+echo "<i>Выходная строка:</i> <font color='blue'>";
+foreach ($arr1 as  $old_str){
+    $new_str[]=strrev($old_str);
+    echo strrev($old_str)." ";
+}
+//var_dump($new_str);
+echo "</font><br />";
 
 //---------------------------  Задание 13  ------------
 echo "<br /><br /><b>Задание 13</b><br />";
