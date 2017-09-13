@@ -2,18 +2,18 @@ body {
     font-family: Geneva, Arial, Helvetica, sans-serif;
     background-color: #008800;
     background-image:url(../img/pattern.png);
+    width: 800px;
 }
 
 /*--------------------  header  -----------------*/
 header{
     position: relative;
-    border: 2px solid white;
+    border: 2px solid #fff;
     border-radius: 10px;
     background-color: #013300;
-    margin: 20px auto;
-    width: 800px;
+    margin-bottom: 20px;
     height: 80px;
-    color: white;
+    color: #fff;
     text-align: center;
     padding: 0;
     top: 0;
@@ -29,23 +29,14 @@ header p{
     position: absolute;
     bottom: 0;
 }
-/*--------------------  main  -----------------*/
-main{
-    background-color: white;
-    border-radius: 10px 10px 0 0;
-    margin-bottom: 10px;
-    padding: 0px;
-    width: 800px;
-    margin: 0 auto;
-}
+/*--------------------  blockquote  -----------------*/
 blockquote{
     font-size: 14px;
     text-align: right;
 }
-blockquote span{
-    color: blue;
-    font-size: 14px;
-    text-align: right;
+em{
+    color:#0000ff;
+    font-style: normal;
 }
 blockquote::before{
     content: "\"";
@@ -53,12 +44,16 @@ blockquote::before{
 blockquote::after{
     content: "\"";
 }
+/*--------------------  main  -----------------*/
+main{
+    background-color: #fff;
+    border-radius: 10px 10px 0 0;
+    padding: 0px;
+}
 .img    {
     position: relative;
     width: 200px;
     height: 230px;
-    float: left;
-    margin-right: 15px;
 }
 .img img {
     border-radius: 200px;
@@ -66,43 +61,38 @@ blockquote::after{
     background-color: #88ff89;
     border: 5px solid #008804;
 }
-.img span{
-    width: 200px;
+.img td{
     text-align: center;
-    color: blue;
-    position: absolute;
-    font-style: normal;
-}
-.clear{
-    clear: both;
+    color: #0000ff;
+    font-weight: 600;
 }
 main h1,main h2,main h3{
-    color: black;
+    color: #000;
 }
-main h1,main h2{
+main h1,main h2, main h3{
     text-align: center;
-}
-main h1{
-    font-size: 32px;
     font-weight: 800;
 }
 main h2{
-    font-size: 24px;
-    font-weight: 600;
+    font-size: 32px;
 }
 main h3{
+    font-size: 24px;
+}
+main h4{
     font-stretch: ultra-expanded;
     letter-spacing: 2px;
+    font-size: 18px;
+}
+.norm1, .norm2{
+    font-size: 16px;
+    letter-spacing: 3px;
 }
 .norm1{
-    font-size: 16px;
     text-align: left;
     line-height: 30px;
-    letter-spacing: 3px;
 }
 .norm2{
-    font-size: 16px;
-    letter-spacing: 3px;
     line-height: 20px;
 }
 li{
@@ -112,26 +102,24 @@ li{
     text-align: justify;
     background-color: #89fe89;
 }
-main p span{
-    color: red;
+main span{
+    color: #ff0000;
     font-style: italic;
     font-weight: 600;
 }
 /*--------------------  footer  -----------------*/
-#f1{
+footer{
     position: relative;
-    height: 30px;
+    height: 35px;
     background-color: #013300;
     border-radius:0 0 10px 10px;
-    vertical-align: bottom;
     color: white;
     font-size: 16px;
-    width: 800px;
-    margin: 0 auto;
     top: 0px;
-    border-top: red dotted 5px;
-}
-#f2{
+    border-top: #ff0000 dotted 5px;
+    bottom: 0;
+ }
+#footer_text{
     position: absolute;
     width: 100%;
     left: 0; bottom: 0;
