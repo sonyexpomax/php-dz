@@ -119,12 +119,13 @@ echo "<i>Выходная строка:</i> <font color=#d2691e>$str4</font><br 
 
 //---------------------------  Задание 11  ------------
 echo "<br /><b>Задание 11</b><br />";
-$slovo="РОТАТОР";
+$slovo="ROTTOR";
 $len=strlen($slovo);
-$len_half=floor($len/2);
+$len_half=ceil($len/2);
 echo "<i>Слово:</i> <font color='green'>$slovo</font><br />";
-for ($i=0,$m=0;$i<=$len_half;$i++) {
-    if ($slovo[$i] == $slovo[$len - $i]) {
+for ($i=0,$m=0;$i<=$len_half-1;$i++) {
+//    echo $i."). ".$slovo[$i]." --- ".$slovo[$len - $i-1]."<br>";
+    if ($slovo[$i] == $slovo[$len - $i-1]) {
         $m++;
     }
 }
@@ -204,4 +205,5 @@ $sernames_m=$sernames_m[0];
 foreach ($sernames_m as $k => $v) {
     echo "У $k оказалось ".($v-1)." однофамильцев <br />";
 }
+
 ?>
