@@ -1,5 +1,5 @@
 body {
-    font-family: Geneva, Arial, Helvetica, sans-serif;
+    font-family:Verdana, Geneva, Arial, Helvetica, sans-serif;
     background-color: #008800;
     background-image:url(../img/pattern.png);
     width: 800px;
@@ -52,8 +52,10 @@ main{
 }
 .img    {
     position: relative;
-    width: 200px;
-    height: 230px;
+    width: 220px;
+    height: 220px;
+    display: inline-block;
+    margin-right: 0px;
 }
 .img img {
     border-radius: 200px;
@@ -61,10 +63,13 @@ main{
     background-color: #88ff89;
     border: 5px solid #008804;
 }
-.img td{
+.img p{
+    margin: 0;
+    width: 100%;
     text-align: center;
     color: #0000ff;
     font-weight: 600;
+    height: 10px;
 }
 main h1,main h2,main h3{
     color: #000;
@@ -89,7 +94,6 @@ main h4{
     letter-spacing: 3px;
 }
 .norm1{
-    text-align: left;
     line-height: 30px;
 }
 .norm2{
@@ -113,7 +117,7 @@ footer{
     height: 35px;
     background-color: #013300;
     border-radius:0 0 10px 10px;
-    color: white;
+    color:#ffffff;
     font-size: 16px;
     top: 0px;
     border-top: #ff0000 dotted 5px;
