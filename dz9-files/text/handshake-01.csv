@@ -1,0 +1,6 @@
+
+BSSID, First time seen, Last time seen, channel, Speed, Privacy, Cipher, Authentication, Power, # beacons, # IV, LAN IP, ID-length, ESSID, Key
+00:18:E7:FA:DF:97, 2017-08-28 18:19:37, 2017-08-28 18:20:01,  5,  54, WPA2WPA , CCMP,PSK, -63,        5,        0,   0.  0.  0.  0,   7, tatywka, 
+
+Station MAC, First time seen, Last time seen, Power, # packets, BSSID, Probed ESSIDs
+
