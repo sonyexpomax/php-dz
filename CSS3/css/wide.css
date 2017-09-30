@@ -1,0 +1,47 @@
+@media screen and (min-width:480px) and (max-width:800px) {
+    body{
+        margin: 0;
+    }
+    main{
+        margin: 0;
+    }
+    nav{
+        width: 100%;
+        border-left: none;
+        border-right: none;
+        margin-bottom: 20px;
+    }
+    header h1{
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .content{
+        clear: both;
+        width: 99%;
+    }
+    .gallery{
+        width: 47%;
+    }
+    aside{
+        clear: both;
+        width: 100%;
+        margin: 10px 0 10px 0;
+    }
+    .sidebar{
+        width: 48%;
+        float: left;
+    }
+    .sidebar:nth-child(2){
+        margin-left: 10px;
+    }
+    .sidebar:nth-child(3){
+        width: 99%;
+    }
+    .another_dogs .another_dogs_img {
+        animation: none;
+    }
+}
+.sidebar_img {
+    width: 50%;
+    margin: 10px auto;
+}
