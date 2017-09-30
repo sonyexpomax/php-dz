@@ -5,6 +5,223 @@
     <title>Title</title>
 </head>
 <body>
+<!----------------------- Задание 1 ------------------------->
+<h2>Задание 1</h2>
+<input type="checkbox" /><span>Я не отмечен</span>
+<style type="text/css">
+    body {
+        font-family: Verdana;
+        font-size: 16px;
+    }
+    input[type="checkbox"]:checked+span {
+        color: #ffffff;
+    }
+     input[type="checkbox"]:checked + span:before {
+        content: 'Я отмечен';
+        color: #000000;
+        position: absolute;
+    }
+</style>
+
+<!----------------------- Задание 2 ------------------------->
+<h2>Задание 2</h2>
+<div class="task-2">
+    <div>4</div>
+    <div>1</div>
+    <div>3</div>
+    <div>2</div>
+    <div>6</div>
+    <div>5</div>
+</div>
+<style type="text/css">
+    .task-2 {
+        width: 250px;
+    }
+    .task-2 div {
+        line-height: 50px;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        background: #DFD;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        margin: 6px;
+    }
+    .task-2 div:nth-child(1) {
+        float: right;
+    }
+    .task-2 div:nth-child(2) {
+        float: left;
+    }
+    .task-2 div:nth-child(3) {
+        float: right;
+    }
+    .task-2 div:nth-child(4) {
+        float: left;
+    }
+    .task-2 div:nth-child(5) {
+        float: right;
+        margin-right: 132px;
+    }
+    .task-2 div:nth-child(6) {
+        float: left;
+    }
+</style>
+
+
+
+<!----------------------- Задание 3 ------------------------->
+<h2>Задание 3</h2>
+<div class="task-3">
+    <div>4</div>
+    <div>1</div>
+    <div>3</div>
+    <div>2</div>
+    <div>6</div>
+    <div>5</div>
+</div>
+<style type="text/css">
+    .task-3 {
+        width: 250px;
+
+    }
+    .task-3 div {
+        line-height: 50px;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        background: #008800;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        color: #ffffff;
+        display: inline-block;
+
+    }
+    .task-3 div:nth-child(1) {
+        margin-left: 195px;
+        position: relative;
+
+    }
+    .task-3 div:nth-child(2) {
+        margin-left: -250px;
+
+        position: relative;
+    }
+    .task-3 div:nth-child(3) {
+        margin-left: 75px;
+        position: relative;
+
+    }
+    .task-3 div:nth-child(4) {
+        margin-left: -120px;
+        position: relative;
+    }
+    .task-3 div:nth-child(5) {
+    margin-top: 10px;
+        margin-left: 75px;
+        position: relative;
+        margin-right: 10px;
+    }
+    .task-3 div:nth-child(6) {
+        margin-top: 10px;
+        margin-left: -130px;
+        position: relative;
+    }
+</style>
+
+<!----------------------- Задание 4 ------------------------->
+<h2>Задание 4</h2>
+<div class="task-4">
+    <div>4</div>
+    <div>1</div>
+    <div>3</div>
+    <div>2</div>
+    <div>6</div>
+    <div>5</div>
+</div>
+<style type="text/css">
+    .task-4 {
+        width: 250px;
+        position: absolute;
+    }
+    .task-4 div {
+        line-height: 50px;
+        text-align: center;
+        width: 50px;
+        height: 50px;
+        background: blueviolet;
+        border: 1px solid #000;
+        box-sizing: border-box;
+        color: #ffffff;
+        position: absolute;
+    }
+    .task-4 div:nth-child(1) {
+        left: 192px;
+    }
+    .task-4 div:nth-child(2) {
+        left: 6px;
+    }
+    .task-4 div:nth-child(3) {
+        left: 130px;
+    }
+    .task-4 div:nth-child(4) {
+        left: 68px;
+    }
+    .task-4 div:nth-child(5) {
+        left: 68px;
+        top: 62px;
+    }
+    .task-4 div:nth-child(6) {
+        left: 6px;
+        top: 62px;
+    }
+
+</style>
+
+<!----------------------- Задание 5 ------------------------->
+<h2 style="top: 150px;position: relative">Задание 5</h2>
+
+
+
+<div class="box"></div>
+
+
+<style type="text/css">
+    .task-5 {
+        position: relative;
+        top:150px;
+        width: 300px;
+        height: 200px;
+        background: #F00;
+       /* overflow: hidden;*/
+
+        background: linear-gradient( #000, #F00);
+        transition: background 1000ms;
+    }
+    .task-5:hover {
+        background: #F00;
+        /*transition: all 1000ms;*/
+        /*transition: background 1000ms;*/
+
+    }
+    .box {
+        position: relative;
+        top:150px;
+        width: 150px;
+        height: 150px;
+        background: blue;
+        background: linear-gradient(135deg, #000 0%, #F00 100%);
+        -webkit-transition: background-color 1s linear;
+        -o-transition: background-color 1s linear;
+        -moz-transition: background-color 1s linear;
+        transition: background-color 1s linear;
+    }
+
+    .box:hover {
+        background: red;
+        cursor: pointer;
+    }
+</style>
 
 </body>
 </html>
