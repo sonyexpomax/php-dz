@@ -3,14 +3,6 @@
     <meta charset="utf-8">
     <title>Download file</title>
 </head>
-<body>
-            <h2>Загрузите файл</h2>
-            <form method="post" action="dz10-headers.php">
-                <input type='file' name="file" required class="form-control" />
-                <input type="submit" class="btn btn-primary" value="Скачать" />
-            </form>
-</body>
-
 <?php
 //---------------------------------------HEADER------------------------
 if (isset($_POST['file'])){
@@ -24,7 +16,7 @@ setcookie("visits_count", 1);
 //var_dump($_COOKIE);
 if (!isset($_COOKIE['visits_count'])) {
     setcookie("visits_count", '2');
-    echo "Ваше посещение № "."1";
+    echo "Ваше посещение № 1";
 }
 else{
     $current_cookie = (int) $_COOKIE['visits_count'];
@@ -38,5 +30,16 @@ else{
     echo "Ваше посещение № ".$_COOKIE['visits_count'];
 }
 
+echo "
+<body>
+            <h2>Загрузите файл</h2>
+            <form method=\"post\" action=\"dz10-headers.php\">
+                <input type='file' name=\"file\" required class=\"form-control\" />
+                <input type=\"submit\" class=\"btn btn-primary\" value=\"Скачать\" />
+            </form>
+</body>
+";
 
 ?>
+
+</html>
