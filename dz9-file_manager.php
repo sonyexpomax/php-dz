@@ -1,3 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <style>
+        .frm_ren{
+            width:900px;
+            margin: 10px auto;
+            border: solid 1px lightgray;
+
+        }
+        .frm_ren h2{
+            width: 100%;
+            text-align: center;
+        }
+        .frm_ren input{
+            width: 290px;
+            margin-left:5px ;
+        }
+        .frm_ren span{
+            color: red;
+        }
+        .frm_ren textarea(
+        col:42;
+        )
+    </style>
+    <title>File Manager</title>
+</head>
+<body>
+
 <?php
 /**
  * Created by PhpStorm.
@@ -25,47 +56,21 @@ if (!$path) {
     // Если мы в корне - удаляем элемент родительской директории
     $removeParts[] = '..';
 }
-$files = array_diff($files, $removeParts);
-// Формируем данные для вывода
-$result = [];
-foreach ($files as $file) {
-    $name = $file;
-    $name1 = $name;
-    $absFile = $base.DS.$path.DS.$file;
-    // Для директорий делаем имя со ссылкой
-    if (is_dir($absFile)) {
-        if ($file == '..') {
-            // Ссылку "вверх" делаем на один элемент вложенности меньше
-            $url = dirname($path);
-        } else {
-            $url = $path.DS.$name;
-        }
 
-        $name = "<a href=\"?dir={$url}\">{$name}</a>";
-    }
-    // Добавляем текущий элемент в массив результата
-    $result[] = [
-        'name1' => $name1,
-        'name' => $name,
-        'size' => round(filesize($absFile)/1024, 2) . ' кб',
-        'created_at' => date('H:i:s d.m.Y', filectime($absFile)),
-        'last_modif' => date('H:i:s d.m.Y', filemtime($absFile)),
-    ];
-}
 //var_dump($_GET);
 //-----------------------------------------------------удаление--------------------------
 if(isset($_GET['delete'])){
     $del_file=$base.DS.$path.DS.$_GET['delete'];
     rmdir_or_files($del_file);
     $refresh_path = stristr($_SERVER['REQUEST_URI'], '&delete', true);
-    echo $refresh_path;
+    //echo $refresh_path;
     header( 'Location:'.$refresh_path);
 }
 //..--------------------------------------------------переименование----------------------
 if(isset($_GET['ren'])){
     $ren_f = $_GET['ren'];
     $ren_file=$base.DS.$path.DS.$_GET['ren'];
-    echo $ren_file;
+    //echo $ren_file;
     echo "
         <div class='frm_ren'>
             <h2>Переименовывание файла / папки <span>$ren_f</span></h2>
@@ -90,12 +95,14 @@ if(isset($_POST['new_name'])){
 //..--------------------------------------------------редактирование----------------------
 //var_dump($_GET);
 if(isset($_GET['edit'])){
+
     $edit_file=$base.DS.$path.DS.$_GET['edit'];
+    echo $edit_file;
     $edit_f = $_GET['edit'];
         if(!file_exists($edit_file)){
             exit("Error: File does not exist.");
         }
-echo "
+    echo "
         <div class='frm_ren'>
             <h2>Редактирование файла <span>$edit_f</span></h2>
             <form action='#' method=\"post\">
@@ -119,7 +126,8 @@ if(isset($_POST['text_edit'])) {
     fwrite($open, $text);
     fclose($open);
     $refresh_path = stristr($_SERVER['REQUEST_URI'], '&edit', true);
-    header( 'Location:'.$refresh_path);
+    echo "<br>".$refresh_path;
+   // header( 'Location:'.$refresh_path);
 }
 
 //touch($base.DS.$path.DS."tte4734444");
@@ -147,39 +155,38 @@ function rmdir_or_files($dir) {
         unlink($dir);
     }
 }
+
+//--------------------------------------------- Формируем данные для вывода
+$files = array_diff($files, $removeParts);
+
+$result = [];
+foreach ($files as $file) {
+    $name = $file;
+    $name1 = $name;
+    $absFile = $base.DS.$path.DS.$file;
+    // Для директорий делаем имя со ссылкой
+    if (is_dir($absFile)) {
+        if ($file == '..') {
+            // Ссылку "вверх" делаем на один элемент вложенности меньше
+            $url = dirname($path);
+        } else {
+            $url = $path.DS.$name;
+        }
+
+        $name = "<a href=\"?dir={$url}\">{$name}</a>";
+    }
+    // Добавляем текущий элемент в массив результата
+    $result[] = [
+        'name1' => $name1,
+        'name' => $name,
+        'size' => round(filesize($absFile)/1024, 2) . ' кб',
+        'created_at' => date('H:i:s d.m.Y', filectime($absFile)),
+        'last_modif' => date('H:i:s d.m.Y', filemtime($absFile)),
+    ];
+}
+
 ?>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <style>
-        .frm_ren{
-            width:900px;
-            margin: 10px auto;
-            border: solid 1px lightgray;
-
-        }
-        .frm_ren h2{
-            width: 100%;
-            text-align: center;
-        }
-        .frm_ren input{
-            width: 290px;
-            margin-left:5px ;
-        }
-        .frm_ren span{
-            color: red;
-        }
-        .frm_ren textarea(
-        col:42;
-        row
-        )
-    </style>
-    <title>File Manager</title>
-</head>
-<body>
 <div class="container">
     <div class="row">
         <div class="col-md-12">
@@ -195,10 +202,18 @@ function rmdir_or_files($dir) {
                 </thead>
                 <tbody>
                 <?php
+                    $root_dir = stristr($_SERVER['REQUEST_URI'], '?', true);
+                    //echo "==".$root_dir."==";
                     foreach ($result as $file){
-                        $dell_path=$_SERVER['REQUEST_URI']."&delete=".$file['name1'];
-                        $rename_path=$_SERVER['REQUEST_URI']."&ren=".$file['name1'];
-                        $edit_path=$_SERVER['REQUEST_URI']."&edit=".$file['name1'];
+                        if ($root_dir!=""){
+                            $spec_simvol='&';
+                        }
+                        else{
+                            $spec_simvol='?';
+                        }
+                        $dell_path=$_SERVER['REQUEST_URI'].$spec_simvol."delete=".$file['name1'];
+                        $rename_path=$_SERVER['REQUEST_URI'].$spec_simvol."ren=".$file['name1'];
+                        $edit_path=$_SERVER['REQUEST_URI'].$spec_simvol."edit=".$file['name1'];
                         echo "<tr>";
                         if ($file['name1'] === '..'){
                             echo "<td></td>";

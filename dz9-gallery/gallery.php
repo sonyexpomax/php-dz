@@ -1,4 +1,28 @@
-<?php
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <title>Gallery</title>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Загрузите свои картинки</h1>
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" name="image" required class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    Отправить
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <?php
 /**
  * Created by PhpStorm.
  * User: gendos
@@ -39,28 +63,6 @@ $images = array_diff(scandir($galleryDir), ['.', '..']);
 ?>
 
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
-    <title>Gallery</title>
-</head>
-<body>
-<div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            <h1>Загрузите свои картинки</h1>
-            <form method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <input type="file" name="image" required class="form-control">
-                </div>
-                <button type="submit" class="btn btn-primary">
-                    Отправить
-                </button>
-            </form>
-        </div>
-    </div>
     <hr>
     <div class="row">
         <div class="col-md-12">
