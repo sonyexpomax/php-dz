@@ -127,7 +127,7 @@ if(isset($_POST['text_edit'])) {
     fclose($open);
     $refresh_path = stristr($_SERVER['REQUEST_URI'], '&edit', true);
     echo "<br>".$refresh_path;
-   // header( 'Location:'.$refresh_path);
+    header( 'Location:'.$refresh_path);
 }
 
 //touch($base.DS.$path.DS."tte4734444");
