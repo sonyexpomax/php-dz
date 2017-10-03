@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    //--------------------Задание 1-------------------------------
+    console.log("Задание 1");
+    var day = +6; // пн - 0, вт - 1, ... вс - 6
+    var hour = +19;
+    var minute = +23;
+    var state = '';
+    var time;
+    time = hour * 60 + minute;
+    if (day < 6){
+        if ((time >= (8*60) && time < (13*60+30)) || (time >= (14*60+30) && time < (19*60)) ){
+            state = "открыто"
+        }
+        else{
+            state = "закрыто";
+        }
+    }
+    else{
+        state = 'закрыто';
+    }
+    console.log('В ' + hour + ':' + minute + ' ' + (day+1) + '-го дня недели статус магазина: ' + state);
+
+    //--------------------Задание 2-------------------------------
+    console.log("Задание 2");
+    var i = +0;
+    var sum = +0;
+    while (i <=20) {
+        i % 3 == 0 ? sum += i  &  i++ :  i++; ;
+    }
+    console.log(sum);
+
+    //--------------------Задание 3-------------------------------
+    console.log("Задание 3");
+    var j;
+    var sum2 = 0
+    for(j = 0;j <= 30; j++){
+        if (j % 3 ==0){
+           sum2 += j;
+            continue;
+        }
+    }
+    console.log(sum2);
+
+    //--------------------Задание 4-------------------------------
+    console.log("Задание 4");
+    j = 1
+    do {
+        if (j % 4 == 0){
+            console.log(j);
+        }
+        j ++;
+        if (j > 40){
+            break;
+        }
+    } while (true)
+
+    //--------------------Задание 5-------------------------------
+    console.log("Задание 5");
+    var a = 10, b = 5;
+    var mediate = function (a,b){
+        return (a + b)/2;
+    }
+    ;
+    console.log("среднее арифметическое " + a + " и " + b + " равно " + mediate(a, b));
+
+    //--------------------Задание 6-------------------------------
+    console.log("Задание 6");
+    var n = +10.5;
+    function sumRecursive(n) {
+        if (n <= 1) {
+            return 1;
+        }
+        else {
+            return n + sumRecursive(n - 1);
+        }
+    }
+    console.log('Сумма чисел от 1 до ' + n + ' равна: ' + sumRecursive(n));
+
+    //--------------------Задание 7-------------------------------
+    console.log("Задание 7");
+    var startHour = 6, endHour = 24;
+    var price;
+    var power = +2.5;
+    sum = 0;
+    function countEnergyCost(startHour,endHour) {
+        for (i = startHour; i <= endHour; i++) {
+            //console.log("i= "+i);
+            if (i >= 7 && i < 23) {
+                price = +1.68;
+            }
+            else{
+                price = +0.84;
+            }
+            sum += (price * power);
+
+            }
+        return sum.toFixed(2);
+        }
+        console.log('В период с ' + startHour + ' до ' + endHour +
+            ' часов потреблено энергии на  ' + countEnergyCost(startHour, endHour) + ' грн. ');
+
+
+</script>
+</body>
+</html>
