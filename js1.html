@@ -102,10 +102,34 @@
             sum += (price * power);
 
             }
-        return sum.toFixed(2);
+        return sum;
         }
         console.log('В период с ' + startHour + ' до ' + endHour +
-            ' часов потреблено энергии на  ' + countEnergyCost(startHour, endHour) + ' грн. ');
+            ' часов потреблено энергии на  ' + countEnergyCost(startHour, endHour).toFixed(2) + ' грн. ');
+
+
+    //--------------------Задание 7.1-------------------------------
+    console.log("Задание 7-1");
+    var startHour2 = 6, endHour2 = 24;
+    var price2;
+    var power2 = +2.5;
+    function countEnergyCost2(sH,eH) {
+        if (sH > eH) {
+            return 0;
+        }
+        else {
+            if (sH >= 7 && sH < 23) {
+                return ((1.68 * 2.5) + countEnergyCost2((sH + 1), eH));
+            }
+            else{
+                return ((0.84 * 2.5) + countEnergyCost2((sH + 1), eH));
+            }
+        }
+    }
+
+    console.log('В период с ' + startHour2 + ' до ' + endHour2 +
+            ' часов потреблено энергии на  ' + countEnergyCost2(startHour2, endHour2).toFixed(2) + ' грн. ');
+
 
 
 </script>
