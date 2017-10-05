@@ -1,6 +1,5 @@
-@import "wide.css";
 @import "narrow.css";
-/*@media screen and (min-width:800px) {*/
+@import "wide.css";
     body {
         background-image: url("../img/diagmonds-light.png");
         background-color: #689F38;
@@ -381,13 +380,143 @@
 
     }
 
-/*
-@import url("../css/wide.css") only screen and (max-width: 800px);
-@import url("wide.css") only screen and (max-width: 800px);
-@import url('wide.css') only screen;
-@import url("narrow.css") only screen and (max-width: 480px);
+@media screen and (min-width:480px) and (max-width:800px) {
+    body{
+        margin: 0;
+    }
+    main{
+        margin: 0;
+    }
+    nav{
+        width: 100%;
+        border-left: none;
+        border-right: none;
+        margin-bottom: 20px;
+    }
+    header h1{
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .content{
+        clear: both;
+        width: 99%;
+    }
+    .gallery{
+        width: 47%;
+    }
+    aside{
+        clear: both;
+        width: 100%;
+        margin: 10px 0 10px 0;
+    }
+    .sidebar{
+        width: 48%;
+        float: left;
+    }
+    .sidebar:nth-child(2){
+        margin-left: 10px;
+    }
+    .sidebar:nth-child(3){
+        width: 99%;
+    }
+    .another_dogs .another_dogs_img {
+        animation: none;
+    }
+    .sidebar_img {
+        width: 50%;
+        margin: 10px auto;
+    }
 
-@media screen and (max-width: 800px) {@import "wide.css";}
-@import "wide.css" screen and (max-width: 800px);
-*/
-
+}
+@media screen and (min-width:400px) and (max-width:480px) {
+    body{
+        margin: 0;
+    }
+    main{
+        margin: 0;
+    }
+    nav{
+        width: 100%;
+        border-left: none;
+        border-right: none;
+        margin-bottom: 20px;
+    }
+    header h1{
+        padding-top: 0;
+        padding-bottom: 0;
+    }
+    .content{
+        padding-left: 5px;
+        clear: both;
+        width: 98%;
+        margin-top: 20px;
+    }
+    .gallery{
+        clear: both;
+        width: 100%;
+    }
+    .characteristics{
+        clear: both;
+        width: 98%;
+        padding: 0;
+        margin: 5px auto;
+    }
+    aside{
+        clear: both;
+        width: 100%;
+        margin: 10px 0 10px 0;
+    }
+    .sidebar{
+        width: 100%;
+    }
+    .another_dogs .another_dogs_img {
+        animation: none;
+    }
+    .another_dogs_img{
+        clear: both;
+        width: 50%;
+        margin-left: 23%;
+        margin-bottom: 0px;
+    }
+    .icons{
+        margin-left:25% ;
+    }
+    .sidebar_img {
+        width: 40%;
+        margin: 10px auto;
+    }
+    .another_dogs_text{
+        width: 94.5%;
+        margin: 3%;
+    }
+    .small_img1:hover, .small_img2:hover, .small_img3:hover{
+        filter:grayscale(100%);
+        cursor:default;
+    }
+    .big_img img:hover {
+        transform: none;
+    }
+    nav {
+        position: absolute;
+    }
+    .menu-icon {
+        display:inline-block;
+    }
+    nav ul, nav:active ul {
+        display: none;
+        position: absolute;
+        padding: 0px;
+        background: #fff;
+        width: 100%;
+    }
+    nav li {
+        clear: both;
+        text-align: center;
+        width: 100%;
+        padding:  0;
+        margin: 0;
+    }
+    nav:hover ul {
+        display: block;
+    }
+}
