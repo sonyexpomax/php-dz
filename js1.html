@@ -9,18 +9,21 @@
 
     //--------------------Задание 1-------------------------------
     console.log("Задание 1");
-    var day = +6; // пн - 0, вт - 1, ... вс - 6
-    var hour = +19;
-    var minute = +23;
+    var day = 6; // пн - 0, вт - 1, ... вс - 6
+    var hour = 13;
+    var minute = 23;
     var state = '';
     var time;
     time = hour * 60 + minute;
     if (day < 6){
-        if ((time >= (8*60) && time < (13*60+30)) || (time >= (14*60+30) && time < (19*60)) ){
+        if (time >= (8*60)  && time < (19*60) ) {
             state = "открыто"
         }
         else{
             state = "закрыто";
+        }
+        if (time >= (13*60+30)  && time < (14*60+30) ) {
+            state = "перерыв";
         }
     }
     else{
@@ -30,21 +33,27 @@
 
     //--------------------Задание 2-------------------------------
     console.log("Задание 2");
-    var i = +0;
-    var sum = +0;
+    var i = 0;
+    var sum = 0;
     while (i <=20) {
-        i % 3 == 0 ? sum += i  &  i++ :  i++; ;
+        i % 3 == 0 ? sum += i: '' ;
+        i++;
     }
+    //не знаю, есть ли тернальный оператор без else!!
     console.log(sum);
 
     //--------------------Задание 3-------------------------------
     console.log("Задание 3");
     var j;
-    var sum2 = 0
+    var sum2 = 0;
     for(j = 0;j <= 30; j++){
-        if (j % 3 ==0){
-           sum2 += j;
-            continue;
+        if (j % 2 != 0) {
+            if (j % 3 == 0) {
+                sum2 += j;
+            }
+            else {
+                continue;
+            }
         }
     }
     console.log(sum2);
@@ -57,7 +66,7 @@
             console.log(j);
         }
         j ++;
-        if (j > 40){
+        if (j > 30){
             break;
         }
     } while (true)
@@ -65,15 +74,12 @@
     //--------------------Задание 5-------------------------------
     console.log("Задание 5");
     var a = 10, b = 5;
-    var mediate = function (a,b){
-        return (a + b)/2;
-    }
-    ;
+    var mediate = new Function ('a,b', 'return (a + b)/2;');
     console.log("среднее арифметическое " + a + " и " + b + " равно " + mediate(a, b));
 
     //--------------------Задание 6-------------------------------
     console.log("Задание 6");
-    var n = +10.5;
+    var n = 10.5;
     function sumRecursive(n) {
         if (n <= 1) {
             return 1;
@@ -86,23 +92,24 @@
 
     //--------------------Задание 7-------------------------------
     console.log("Задание 7");
-    var startHour = 6, endHour = 24;
-    var price;
-    var power = +2.5;
-    sum = 0;
+    var startHour = 6, endHour = 7;
     function countEnergyCost(startHour,endHour) {
-        for (i = startHour; i <= endHour; i++) {
+        var price;
+        var power = 2.5;
+        var sum7;
+        sum7 = 0;
+        for (ii = startHour; ii <= endHour-1; ii++) {
             //console.log("i= "+i);
-            if (i >= 7 && i < 23) {
+            if (ii >= 7 && ii < 23) {
                 price = +1.68;
             }
             else{
                 price = +0.84;
             }
-            sum += (price * power);
+            sum7 += (price * power);
 
             }
-        return sum;
+        return sum7;
         }
         console.log('В период с ' + startHour + ' до ' + endHour +
             ' часов потреблено энергии на  ' + countEnergyCost(startHour, endHour).toFixed(2) + ' грн. ');
@@ -110,11 +117,11 @@
 
     //--------------------Задание 7.1-------------------------------
     console.log("Задание 7-1");
-    var startHour2 = 6, endHour2 = 24;
+    var startHour2 = 6, endHour2 = 7;
     var price2;
     var power2 = +2.5;
     function countEnergyCost2(sH,eH) {
-        if (sH > eH) {
+        if (sH > (eH-1)) {
             return 0;
         }
         else {
