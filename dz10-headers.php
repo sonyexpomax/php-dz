@@ -1,14 +1,11 @@
-<html>
-<head>
-    <meta charset="utf-8">
-    <title>Download file</title>
-</head>
 <?php
 //---------------------------------------HEADER------------------------
 if (isset($_POST['file'])){
-  //  var_dump($_POST);
-    header("Content-type: application/octet-stream");
-    header("Content-disposition: attachment; filename=\"{$_POST['file']}\"");
+    $filename = (string) $_POST['file'];
+    //  var_dump($_POST);
+   header("Content-type: application/octet-stream");
+   header("Content-disposition: attachment; filename=\"{$filename}\"");
+    readfile($filename);
 }
 
 //---------------------------------------COOKIE------------------------
@@ -31,6 +28,11 @@ else{
 }
 
 echo "
+<html>
+<head>
+    <meta charset=\"utf-8\">
+    <title>Download file</title>
+</head>
 <body>
             <h2>Загрузите файл</h2>
             <form method=\"post\" action=\"dz10-headers.php\">
