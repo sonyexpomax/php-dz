@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    //--------------------Задание 1-------------------------------
+   console.log("Задание 1");
+    var a = prompt('Первый операнд (число)');
+    var action = prompt('Арифметическое действие');
+    var b = prompt('Второй операнд (число)');
+    var result;
+    if((!isNaN(a) && a != "") && (!isNaN(b) && b != "")){
+        if (action == '+' || action == '-' || action == '*' || action == '/') {
+            a = +a;
+            b = +b;
+            switch (action) {
+                case '*':
+                    result = a * b
+                    break;
+                case '/':
+                    result = a / b
+                    break;
+                case '+':
+                    result = a + b
+                    break;
+                case '-':
+                    result = a - b
+                    break;
+            }
+            if (result) {
+                alert("Ответ: " + a + " " + action + " " + b + " = " + result);
+            }
+        }
+        else
+        {
+            alert("Арифметическое действие введено некорректно!!")
+        }
+    }
+    else {
+        alert("Числа введены не корректно!!!")
+    }
+</script>
+</body>
+</html>

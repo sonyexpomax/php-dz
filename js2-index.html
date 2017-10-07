@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+
+    //--------------------Задание 2-------------------------------
+    console.log("Задание 2");
+    var unreversed = [1, 2, 4, 8, 16, 32];
+    console.log("Исходный массив: \n" + unreversed);
+    function reverse(unreversed) {
+        var length=unreversed.length
+        var temp = [];
+        unreversed.forEach(function (val, i) {
+            temp[length - 1 - i] = val;
+        });
+        return temp;
+    }
+    console.log("Обратный массив: \n" + reverse(unreversed));
+
+
+    //------------------------  Задание 3 -----------------------
+    console.log("Задание 3");
+    var salaries = [3100, 890, 1120, 740, 2100, 550, 540, 3200, 1570, 250];
+    function sortSalaries(salaryList) {
+       console.log("Исходный массив: \n" + salaryList);
+        var length=salaryList.length;
+        for (var j=0; j < length; j++){
+            for (var i=0; i < (length-j-1); i++){
+             var   salaryListCopy = salaryList.slice(i,(i+2));
+                if (salaryListCopy[0] > salaryListCopy[1]) {
+                    salaryList.splice(i, 2, salaryListCopy[1], salaryListCopy[0]);
+                }
+                else {
+                    salaryList.splice(i, 2, salaryListCopy[0], salaryListCopy[1]);
+                }
+            }
+        }
+        return salaryList;
+    }
+    console.log("Отсортированный массив: \n" + sortSalaries(salaries));
+
+    //------------------------  Задание 4 -----------------------
+    console.log("Задание 4");
+    //var salaries = [3100, 890, 1120, 740, 2100, 550, 540, 3200, 1570, 250];
+    console.log("Исходный массив зарплат: \n" + salaries);
+    var maxx = salaries.reduce(function(max_elem, current) {
+        if (current > max_elem && current < 1000) {
+            max_elem = current;
+        }
+        return max_elem;
+    },0);
+    if (maxx != 0){
+        console.log("Максимальная зарплата меньше 1000 равна " + maxx);
+    }
+    else{
+        console.log("Зарплат меньше 1000 нет!");
+    }
+
+    //------------------------  Задание 5 -----------------------
+    console.log("Задание 5");
+    var mayBeSquares = [1, 2, 3, 4, 8, 9, 15, 16, 34, 36, 38, 24, 25, 26];
+    var extractSquares = mayBeSquares.filter(function(val) {
+        if(Math.sqrt(val) % 1 == 0){
+            return val;
+        }
+    });
+    console.log(extractSquares);
+
+
+    //------------------------  Задание 6 -----------------------
+    console.log("Задание 6");
+    var teamMates = ['Mike', 'Peter', 'Alex', 'Sonya', 'Mike', 'Mary', 'Like', 'Alex', 'Abraham', 'Mary'];
+    function unique(elements) {
+        var result = elements.reduce(function(a,b){
+            if (a.indexOf(b) < 0 ) a.push(b);
+            return a;
+        },[]);
+        return result;
+    }
+    console.log(unique(teamMates));
+
+    //------------------------  Задание 7 -----------------------
+    console.log("Задание 7");
+    var transactions = [
+        [101, 102, 103], 		// in
+        [], 					// out
+        [104, 105, 106], 		// in
+        [103], 				    // out
+        [107, 108],			    // in
+        [105, 106],			    // out
+        [109, 110, 111, 112],   // in
+        [108, 110],			    // out
+        [103],				    // in
+        [111]					// out
+    ];
+    //----------------------------------------balance----------------
+    function balance(actions) {
+        var itemsIn = 0;
+        var itemsOut = 0;
+        var itemsAvailable = [];
+
+        var itemsInArr = actions.filter(function(val, index) {
+            if(index % 2 == 0){ return val; }
+        });
+
+        var itemsOutArr = actions.filter(function(val, index) {
+            if(index % 2 != 0){ return val; }
+        });
+        function ForReduce(res, current) {
+            return res.concat(current);
+        }
+
+        itemsInArr2 = itemsInArr.reduce(ForReduce, []);// получае массив in
+        itemsOutArr2 = itemsOutArr.reduce(ForReduce, []);//получаем массив out
+        itemsIn = itemsInArr2.length;
+        itemsOut = itemsOutArr2.length;
+        itemsAvailable=itemsIn-itemsOut;
+
+        //----------------------------------------balanceArr----------------
+
+        function balanceArr(itemsIn, itemsOut) {
+            var arr = [];
+            for (i=0; i < itemsIn.length; i++){
+                var f = itemsIn[i];
+                var t = 0;
+                for (j=0; j<itemsOut.length; j++){
+                    itemsOut[j] === f ? t++ : "";
+                }
+                t === 1 ? arr.push(f): "";
+            }
+            return arr;
+        }
+        console.log('Пришло: ' + itemsIn + '\n' +
+                'Отправлено: ' + itemsOut + '\n' +
+                'Товары на складе: ' + itemsAvailable + "\n" +
+                "Массив кодов имеющихся на складе товаров:");
+        console.log(balanceArr(itemsInArr2,itemsOutArr2));
+    }
+
+
+    balance(transactions);
+</script>
+
+
+</body>
+</html>
