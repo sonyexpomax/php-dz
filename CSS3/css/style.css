@@ -22,17 +22,14 @@
         border: none;
         margin-top: 0;
     }
-
     .content hr {
         margin-bottom: 20px;
     }
-
     header {
         background-color: #33691E;
         border-bottom: solid 3px #ffffff;
         margin: 0px;
     }
-
     header h1 {
         padding: 10px;
         font-size: 26px;
@@ -40,7 +37,6 @@
         color: #ffffff;
         margin: 0px;
     }
-
     /*---------------- NAV -------------------------*/
     nav {
         margin: 0 auto;
@@ -53,14 +49,12 @@
         margin-bottom: 30px;
         border-radius: 0 0 5px 5px;
     }
-
     nav ul {
         list-style-type: none;
         margin: 0;
         padding: 0;
         overflow: hidden;
     }
-
     nav li {
         float: left;
         display: inline;
@@ -68,11 +62,9 @@
         background-color: #33691E;
         transition: background-color 500ms linear;
     }
-
     nav li:hover {
         background-color: #689F38;
     }
-
     nav li a {
         display: block;
         text-align: center;
@@ -80,9 +72,7 @@
         text-decoration: none;
         color: #ffffff;
         font-size: 18px;
-
     }
-
     .menu-icon {
         display: none;
         float: right;
@@ -109,7 +99,7 @@
     .content h2:first-letter {
         color: #689F38;
     }
-
+/*------------------------------------characteristics------------------------------*/
     .characteristics {
         width: 49%;
         padding: 5px;
@@ -138,58 +128,39 @@
     .characteristics li:nth-child(odd) {
         background-color: #d3d3d3;
     }
-
+/*-------------------------------Main img--------------------------------------*/
     .gallery {
         float: left;
         width: 48%;
         padding: 0 5px 0 0;
-
     }
-
     .big_img img {
         width: 100%;
-        z-index: 1000;
-
     }
-
     .big_img img:hover {
         transform: scale(1.15, 1.15);
         transform-origin: 0 50%;
         transition: all 0.5s ease-out;
-
         z-index: 1000;
-
+        position: relative;
     }
-
-    .small_img1 {
-        background: url("../img/mops_1.jpg") center center no-repeat;
-    }
-
-    .small_img2 {
-        background: url("../img/mops_2.jpg") center center no-repeat;
-    }
-
-    .small_img3 {
-        background: url("../img/mops_3.jpg") center center no-repeat;
-    }
-
-    .small_img1, .small_img2, .small_img3 {
+    .small_img {
         float: left;
-        width: 32%;
+        width: 31.5%;
         height: 80px;
         display: inline-block;
         background-size: cover;
         overflow: hidden;
-        margin-right: 3px;
+        margin-right: 0.7%;
         filter: grayscale(100%);
-        z-index: 1;
+        z-index: -1;
     }
 
-    .small_img1:hover, .small_img2:hover, .small_img3:hover {
+    .small_img:hover {
         filter: none;
         cursor: pointer;
     }
-
+/*------------------------------button----------------------------*/
     button {
         border: none;
         width: 50%;
@@ -209,7 +180,7 @@
         cursor: pointer;
         box-shadow: 0px 0px 5px #666666;
     }
-
+/*----------------------------------------------------------*/
     .clear {
         clear: both;
     }
@@ -218,7 +189,7 @@
         width: 100%;
         text-align: center;
     }
-
+/*--------------------another_dogs_img--------------------------------------*/
     .another_dogs_img {
         width: 28%;
         float: left;
@@ -238,27 +209,11 @@
             opacity: 0.8;
         }
     }
-    .another_dogs_img img {
-        width: 100%;
-
-    }
-
-    .another_dogs .another_dogs_img {
-        animation: myanimation2 5s infinite;
-
-    }
-
-    .another_dogs .another_dogs_img:nth-child(2) {
-        animation-delay: .5s;
-    }
-
-    .another_dogs .another_dogs_img:nth-child(3) {
-        animation-delay: 2.5s;
-    }
-
-    .another_dogs .another_dogs_img:nth-child(4) {
-        animation-delay: 4.0s;
-    }
+    .another_dogs_img img {        width: 100%;    }
+    .another_dogs .another_dogs_img              { animation: myanimation2 5s infinite; }
+    .another_dogs .another_dogs_img:nth-child(2) { animation-delay: .5s; }
+    .another_dogs .another_dogs_img:nth-child(3) { animation-delay: 2.5s; }
+    .another_dogs .another_dogs_img:nth-child(4) { animation-delay: 4.0s; }
 
     .another_dogs_text {
         position: absolute;
@@ -277,7 +232,7 @@
         font-weight: 600;
         margin: 1%;
     }
-
+/*--------------------aside--------------------------------------*/
     aside {
         float: left;
         width: 31%;
@@ -310,29 +265,19 @@
         margin: 0 auto;
         margin-top: 20px;
     }
-
     .sidebar_img img {
         width: 100%;
-
     }
-
     .sidebar p {
         width: 100%;
         text-align: center;
         font-weight: 600;
-
     }
-
     .sidebar h2:first-letter {
         color: #689F38;
     }
-
-    .icons {
-
-        margin-left: 33%;
-
-    }
-
+/*---------------------icons----------------------------------------------*/
+    .icons { margin-left: 33%;}
     .icons p {
         font-weight: 800;
         float: left;
@@ -340,28 +285,15 @@
         bottom: 0px;
         margin: 10px 5px 0 0;
     }
-
     .icons_img {
         float: left;
         bottom: 0px;
     }
-
-    .fa-facebook-official {
-        color: #4267b2;
-    }
-
-    .fa-google-plus-official {
-        color: #dd4b39;
-    }
-
-    .fa-pinterest {
-        color: #bd081c;
-    }
-
-    .fa-twitter {
-        color: #46a8d2;
-    }
-
+    .fa-facebook-official       { color: #4267b2; }
+    .fa-google-plus-official    { color: #dd4b39; }
+    .fa-pinterest               { color: #bd081c; }
+    .fa-twitter                 { color: #46a8d2; }
+/*---------------------footer----------------------------------------------*/
     footer {
         color: #ffffff;
         clear: both;
@@ -369,23 +301,23 @@
         background-color: #33691E;
         border-top: solid 3px #ffffff;
         height: 50px;
-
     }
-
     .center {
         margin: 0 auto;
         max-width: 1024px;
         width: 100%;
         padding: 0;
-
     }
 
 @media screen and (min-width:480px) and (max-width:800px) {
     body{
         margin: 0;
+        width: 100%;
+        padding: 0;
     }
     main{
         margin: 0;
+
     }
     nav{
         width: 100%;
@@ -398,8 +330,10 @@
         padding-bottom: 0;
     }
     .content{
+        margin:0;
         clear: both;
-        width: 99%;
+        width: 100%;
+        padding: 0;
     }
     .gallery{
         width: 47%;
@@ -408,6 +342,7 @@
         clear: both;
         width: 100%;
         margin: 10px 0 10px 0;
+        padding: 0;
     }
     .sidebar{
         width: 48%;
@@ -428,7 +363,7 @@
     }
 
 }
-@media screen and (min-width:400px) and (max-width:480px) {
+@media screen and (min-width:200px) and (max-width:480px) {
     body{
         margin: 0;
     }
@@ -440,6 +375,27 @@
         border-left: none;
         border-right: none;
         margin-bottom: 20px;
+        position: absolute;
+    }
+    .menu-icon {
+        display:inline-block;
+    }
+    nav ul, nav:active ul {
+        display: none;
+        position: absolute;
+        padding: 0px;
+        background: #fff;
+        width: 100%;
+    }
+    nav li {
+        clear: both;
+        text-align: center;
+        width: 100%;
+        padding:  0;
+        margin: 0;
+    }
+    nav:active ul {
+        display: block;
     }
     header h1{
         padding-top: 0;
@@ -465,6 +421,7 @@
         clear: both;
         width: 100%;
         margin: 10px 0 10px 0;
+        padding: 0;
     }
     .sidebar{
         width: 100%;
@@ -489,34 +446,11 @@
         width: 94.5%;
         margin: 3%;
     }
-    .small_img1:hover, .small_img2:hover, .small_img3:hover{
+    .small_img:hover{
         filter:grayscale(100%);
         cursor:default;
     }
     .big_img img:hover {
         transform: none;
-    }
-    nav {
-        position: absolute;
-    }
-    .menu-icon {
-        display:inline-block;
-    }
-    nav ul, nav:active ul {
-        display: none;
-        position: absolute;
-        padding: 0px;
-        background: #fff;
-        width: 100%;
-    }
-    nav li {
-        clear: both;
-        text-align: center;
-        width: 100%;
-        padding:  0;
-        margin: 0;
-    }
-    nav:hover ul {
-        display: block;
     }
 }
