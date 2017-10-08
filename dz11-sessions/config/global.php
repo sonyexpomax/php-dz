@@ -6,6 +6,7 @@
  * Time: 20:13
  */
 $salt = sha1('salt');
+
 return [
     'salt' => $salt,
     'company' => 'Наша Компания',
@@ -24,7 +25,18 @@ return [
             'title' => 'Контакты',
         ]
     ],
-    'users' => [
+    /*'users' => [
         ['admin', sha1($salt.'123456')],
+    ],*/
+    'users' => unserialize(file_get_contents('./config/logins.txt')),
+    'files' => [
+        ['login', './config/logins.txt'],
     ]
 ];
+/*
+if($_SESSION['login']){
+    $config['users'][0][0]=$login;
+    $config['users'][0][1]=$passwd;
+    var_dump($config['users']);
+}
+*/

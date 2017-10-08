@@ -1,3 +1,49 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: gendos
+ * Date: 9/27/17
+ * Time: 21:01
+ */
+/**
+ * Тут должна быть проверка логина и пароля
+ * если они правильные, то нужно поставить $_SESSION['auth'] = true;
+ * затем обновить страницу.
+ */
+if ($_SERVER['REQUEST_METHOD']=='POST'){
+    $file = $config['files'][0][1];
+    $login=htmlspecialchars($_POST['login']);
+    $passwd=htmlspecialchars($_POST['password']);
+    if(strlen($passwd) >= 4) {
+        $passwd = sha1($passwd . $salt);
+        if (search_login_passwd($login, $passwd, $config['users'])!=false) {
+            $_SESSION['auth'] = true;
+            $_SESSION['login'] = $login;
+            require 'config'.DS.'global.php';
+            header( 'Location:./index.php');
+            die;
+        }
+        else{
+            $error = "Ошибка входа! Логин или пароль не найдены!";
+        }
+    }
+    else{
+        $error = "Ошибка входа! Пароль должен содержать не менее 4 символов!!!";
+    }
+
+}
+if (isset($error))  {echo "<div class='error'>$error</div>";}
+function search_login_passwd($login,$passwd,$str_massiv) {
+    foreach ($str_massiv as $key => $val) {
+        if ($val['login'] == $login && $val['passwd'] == $passwd ) {
+            return $key;
+            break;
+        }
+    }
+    return false;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,53 +93,6 @@
         <input type="submit" value="Войти" name="submit">
     </form>
     <a href="./index.php?page=registration">Регистрация</a>
-<?php
-/**
-* Created by PhpStorm.
-* User: gendos
-* Date: 9/27/17
-* Time: 21:01
-*/
-/**
-* Тут должна быть проверка логина и пароля
-* если они правильные, то нужно поставить $_SESSION['auth'] = true;
-* затем обновить страницу.
-*/
-if ($_SERVER['REQUEST_METHOD']=='POST'){
-    $file = './config/logins.txt';
-    $login=htmlspecialchars($_POST['login']);
-    $passwd=htmlspecialchars($_POST['password']);
-        if(strlen($passwd) >= 4) {
-            $logins = unserialize(file_get_contents($file));
-            $passwd = sha1($passwd . $salt);
-            if (search_login_passwd($login, $passwd, $logins)!=false) {
-                $_SESSION['auth'] = true;
-                $_SESSION['login'] = $login;
-                $config['users'][0][0]=$login;
-                $config['users'][0][1]=$passwd;
-                header( 'Location:./index.php');
-            }
-            else{
-                $error = "Ошибка входа! Логин или пароль не найдены!";
-            }
-        }
-        else{
-            $error = "Ошибка входа! Пароль должен содержать не менее 4 символов!!!";
-        }
-
-}
-if (isset($error))  {echo "<div class='error'>$error</div>";}
-function search_login_passwd($login,$passwd,$str_massiv) {
-    foreach ($str_massiv as $key => $val) {
-        if ($val['login'] == $login && $val['passwd'] == $passwd ) {
-            return $key;
-            break;
-        }
-    }
-    return false;
-}
-?>
-
 </div>
 </body>
 </html>

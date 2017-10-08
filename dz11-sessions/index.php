@@ -10,13 +10,17 @@ session_start();
 define('DS', DIRECTORY_SEPARATOR);
 ini_set('display_errors', 1);
 $config = require 'config'.DS.'global.php';
+//$config['users'][0] = unserialize(file_get_contents($config['files'][0][1]));
+/*
+echo "<pre>";
+print_r($config['users']);
+echo "</pre>";*/
 ob_start();
 ?>
     <!DOCTYPE html>
     <html>
     <head>
         <meta charset="utf-8">
-
         <title>Hello world</title>
         <style>
             /*---------------- NAV -------------------------*/
