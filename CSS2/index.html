@@ -13,8 +13,13 @@
         font-family: Verdana;
         font-size: 16px;
     }
-    input[type="checkbox"]:checked+span {
+    input[type="checkbox"]+span {
         color: #ffffff;
+    }
+    input[type="checkbox"] + span:before {
+        content: 'Я не отмечен';
+        color: #000000;
+        position: absolute;
     }
      input[type="checkbox"]:checked + span:before {
         content: 'Я отмечен';
@@ -79,6 +84,7 @@
     <div>2</div>
     <div>6</div>
     <div>5</div>
+
 </div>
 <style type="text/css">
     .task-3 {
@@ -98,27 +104,27 @@
 
     }
     .task-3 div:nth-child(1) {
-        margin-left: 195px;
+        margin-left: 160px;
         position: relative;
 
     }
     .task-3 div:nth-child(2) {
-        margin-left: -250px;
+        margin-left: -220px;
 
         position: relative;
     }
     .task-3 div:nth-child(3) {
-        margin-left: 75px;
+        margin-left: 55px;
         position: relative;
 
     }
     .task-3 div:nth-child(4) {
-        margin-left: -120px;
+        margin-left: -110px;
         position: relative;
     }
     .task-3 div:nth-child(5) {
     margin-top: 10px;
-        margin-left: 75px;
+        margin-left: 90px;
         position: relative;
         margin-right: 10px;
     }
@@ -187,40 +193,23 @@
 
 
 <style type="text/css">
-    .task-5 {
-        position: relative;
-        top:150px;
+    .box {
         width: 300px;
         height: 200px;
-        background: #F00;
-       /* overflow: hidden;*/
-
-        background: linear-gradient( #000, #F00);
-        transition: background 1000ms;
-    }
-    .task-5:hover {
-        background: #F00;
-        /*transition: all 1000ms;*/
-        /*transition: background 1000ms;*/
-
-    }
-    .box {
         position: relative;
         top:150px;
-        width: 150px;
-        height: 150px;
-        background: blue;
+        background: #F00;
+        overflow: hidden;
+        transition: all 1000ms;
         background: linear-gradient(135deg, #000 0%, #F00 100%);
-        -webkit-transition: background-color 1s linear;
-        -o-transition: background-color 1s linear;
-        -moz-transition: background-color 1s linear;
-        transition: background-color 1s linear;
     }
 
     .box:hover {
-        background: red;
-        cursor: pointer;
+        background: linear-gradient(135deg, #F00 0%, #F00 100%);
+        transition: all 1000ms;
     }
+
+
 </style>
 
 </body>
