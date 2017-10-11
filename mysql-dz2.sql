@@ -34,3 +34,22 @@ SELECT e.firstName, e.lastName, c.salesRepEmployeeNumber as employeeNumber, coun
 FROM customers AS c
 JOIN employees as e ON c.salesRepEmployeeNumber = e.employeeNumber
 GROUP BY c.salesRepEmployeeNumber;
+
+#----------Задание 7-----------------------
+SELECT of.officeCode,  count(of.officeCode) as count_of_orders 
+FROM offices AS of
+	JOIN employees AS e ON of.officeCode = e.officeCode 
+		JOIN customers AS c ON e.employeeNumber = c.salesRepEmployeeNumber
+			JOIN orders AS ord ON c.customerNumber = ord.customerNumber
+				WHERE YEAR(ord.orderDate) = 2005
+					GROUP BY of.officeCode
+						HAVING count_of_orders > 5;
+                        
+#----------Задание 8-----------------------                        
+SELECT t1.productLine, count(t1.productLine) AS count_of_orders
+FROM (	SELECT pl.productLine, od.orderNumber
+		FROM productlines AS pl
+			JOIN products AS p ON pl.productLine = p.productLine 
+				JOIN orderdetails AS od ON p.productCode = od.productCode
+					GROUP BY od.orderNumber, pl.productLine) AS t1
+GROUP BY t1.productLine;
