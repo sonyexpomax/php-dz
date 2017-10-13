@@ -13,18 +13,20 @@
         font-family: Verdana;
         font-size: 16px;
     }
+	input[type="checkbox"]{
+		position: relative;
+		left:140px;
+	}
     input[type="checkbox"]+span {
         color: #ffffff;
     }
     input[type="checkbox"] + span:before {
         content: 'Я не отмечен';
         color: #000000;
-        position: absolute;
     }
      input[type="checkbox"]:checked + span:before {
         content: 'Я отмечен';
         color: #000000;
-        position: absolute;
     }
 </style>
 
