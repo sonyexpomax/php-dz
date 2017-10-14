@@ -1,4 +1,4 @@
-@media screen and (min-width:400px) and (max-width:480px) {
+@media screen and (min-width:200px) and (max-width:480px) {
     body{
         margin: 0;
     }
@@ -10,6 +10,32 @@
         border-left: none;
         border-right: none;
         margin-bottom: 20px;
+        position: absolute;
+    }
+    label {
+        display:inline-block;
+        float: right;
+        position: relative;
+        top:-25px;
+        right: 10px;
+    }
+    nav ul{
+        display: none;
+        position: absolute;
+        padding: 0px;
+        background: #fff;
+        width: 100%;
+    }
+    nav li {
+        clear: both;
+        text-align: center;
+        width: 100%;
+        padding:  0;
+        margin: 0;
+    }
+
+    #menu_icon:checked ~ ul{
+        display:block;
     }
     header h1{
         padding-top: 0;
@@ -35,6 +61,7 @@
         clear: both;
         width: 100%;
         margin: 10px 0 10px 0;
+        padding: 0;
     }
     .sidebar{
         width: 100%;
@@ -59,34 +86,11 @@
         width: 94.5%;
         margin: 3%;
     }
-    .small_img1:hover, .small_img2:hover, .small_img3:hover{
+    .small_img:hover{
         filter:grayscale(100%);
         cursor:default;
     }
     .big_img img:hover {
         transform: none;
-    }
-    nav {
-        position: absolute;
-    }
-    .menu-icon {
-        display:inline-block;
-    }
-    nav ul, nav:active ul {
-        display: none;
-        position: absolute;
-        padding: 0px;
-        background: #fff;
-        width: 100%;
-    }
-    nav li {
-        clear: both;
-        text-align: center;
-        width: 100%;
-        padding:  0;
-        margin: 0;
-    }
-    nav:hover ul {
-        display: block;
     }
 }

@@ -73,15 +73,9 @@
         color: #ffffff;
         font-size: 18px;
     }
-    .menu-icon {
+    label{
         display: none;
-        float: right;
-        top: -25px;
-        right: 1.5%;
-        position: absolute;
-        color: #ffffff;
     }
-
     /*---------------- Content -----------------------------------*/
     .content {
         float: right;
@@ -377,10 +371,14 @@
         margin-bottom: 20px;
         position: absolute;
     }
-    .menu-icon {
+    label {
         display:inline-block;
+        float: right;
+        position: relative;
+        top:-25px;
+        right: 10px;
     }
-    nav ul, nav:active ul {
+    nav ul{
         display: none;
         position: absolute;
         padding: 0px;
@@ -394,8 +392,9 @@
         padding:  0;
         margin: 0;
     }
-    nav:active ul {
-        display: block;
+
+    #menu_icon:checked ~ ul{
+        display:block;
     }
     header h1{
         padding-top: 0;
