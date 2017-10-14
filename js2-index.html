@@ -25,23 +25,33 @@
     //------------------------  Задание 3 -----------------------
     console.log("Задание 3");
     var salaries = [3100, 890, 1120, 740, 2100, 550, 540, 3200, 1570, 250];
+    console.log("Исходный массив: \n" + salaries);
     function sortSalaries(salaryList) {
-       console.log("Исходный массив: \n" + salaryList);
-        var length=salaryList.length;
-        for (var j=0; j < length; j++){
-            for (var i=0; i < (length-j-1); i++){
-             var   salaryListCopy = salaryList.slice(i,(i+2));
-                if (salaryListCopy[0] > salaryListCopy[1]) {
-                    salaryList.splice(i, 2, salaryListCopy[1], salaryListCopy[0]);
-                }
-                else {
-                    salaryList.splice(i, 2, salaryListCopy[0], salaryListCopy[1]);
-                }
+        //------------------------перевод в двоичную систему-----------------------
+        var salaries2 = salaries.map(function (yy) {
+            return yy.toString(2);
+        })
+        var len = 0;
+        salaries2.forEach(function (item) {
+            if (item.length > len) {
+                len = item.length;
+            }
+        });
+        //--------------------------поиск максимальной длины элемента ---------------
+        for (var i = 0; i < salaries2.length; i++) {
+            while (salaries2[i].length < len) {
+                salaries2[i] = '0' + salaries2[i];
             }
         }
-        return salaryList;
+        salaries2.sort();
+        //--------------------------возвращаем в 10 ую систему----------------
+        var salaries3 = salaries2.map(function (yy) {
+            return parseInt(yy, 2);
+        })
+        return salaries3;
     }
-    console.log("Отсортированный массив: \n" + sortSalaries(salaries));
+     console.log("Отсортированный массив: \n" + sortSalaries(salaries));
+
 
     //------------------------  Задание 4 -----------------------
     console.log("Задание 4");
@@ -140,8 +150,6 @@
                 "Массив кодов имеющихся на складе товаров:");
         console.log(balanceArr(itemsInArr2,itemsOutArr2));
     }
-
-
     balance(transactions);
 </script>
 

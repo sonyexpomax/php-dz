@@ -7,40 +7,59 @@
 <body>
 <script>
     //--------------------Задание 1-------------------------------
-   console.log("Задание 1");
-    var a = prompt('Первый операнд (число)');
-    var action = prompt('Арифметическое действие');
-    var b = prompt('Второй операнд (число)');
-    var result;
-    if((!isNaN(a) && a != "") && (!isNaN(b) && b != "")){
-        if (action == '+' || action == '-' || action == '*' || action == '/') {
-            a = +a;
-            b = +b;
-            switch (action) {
-                case '*':
-                    result = a * b
-                    break;
-                case '/':
-                    result = a / b
-                    break;
-                case '+':
-                    result = a + b
-                    break;
-                case '-':
-                    result = a - b
-                    break;
-            }
-            if (result) {
-                alert("Ответ: " + a + " " + action + " " + b + " = " + result);
-            }
-        }
-        else
-        {
-            alert("Арифметическое действие введено некорректно!!")
-        }
+    console.log("Задание 1");
+    function isNumber(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
     }
-    else {
-        alert("Числа введены не корректно!!!")
+    function isAction(action) {
+        return action == '+' || action == '-' || action == '*' || action == '/';
+    }
+    function checking_Number(number, name) {
+        do {
+            number = prompt(name + ' число введено не корректно!!!  \r\nВведите ' + name + ' число');
+        } while (isNumber(number) == false);
+        return number;
+    }
+   var a = prompt('Первый операнд (число)');
+   if(isNumber(a) == false) {
+        a = checking_Number(a, "первое");
+    }
+    if(isNumber(a)) {
+        var action = prompt('Арифметическое действие');
+        if (isAction(action)==false) {
+            do {
+                action = prompt('Арифметическое действие введено некорректно!! ' +
+                        '\r\nВведите арифметическое действие');
+            } while (isAction(action) == false);
+        }
+        if (isAction(action)==true){
+            var b = prompt('Второй операнд (число)');
+            if(isNumber(b) == false) {
+                b = checking_Number(b, "второе");
+            }
+            if(isNumber(b)==true){
+                var result;
+                a = +a;
+                b = +b;
+                switch (action) {
+                    case '*':
+                        result = a * b
+                        break;
+                    case '/':
+                        result = a / b
+                        break;
+                    case '+':
+                        result = a + b
+                        break;
+                    case '-':
+                        result = a - b
+                        break;
+                }
+                if (result) {
+                    alert("Ответ: " + a + " " + action + " " + b + " = " + result);
+                }
+            }
+        }
     }
 </script>
 </body>
