@@ -30,7 +30,7 @@ return [
     ],*/
     'users' => unserialize(file_get_contents('./config/logins.txt')),
     'files' => [
-        ['login', './config/logins.txt'],
+        ['login', __DIR__.'/logins.txt'],
     ]
 ];
 /*

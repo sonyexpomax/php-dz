@@ -1,7 +1,8 @@
 #----------Задание 1-----------------------
-SELECT e.firstName, e.lastName 
-FROM employees AS e 
-ORDER BY e.firstName DESC;
+SELECT e.firstName, e.lastName
+FROM employees AS e
+WHERE e.firstName IN ('Barry', 'Larry', 'Leslie')
+ORDER BY e.firstName ASC;
 
 #----------Задание 2-----------------------
 SELECT p.productName, p.buyPrice 
