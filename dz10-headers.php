@@ -1,11 +1,12 @@
 <?php
 //---------------------------------------HEADER------------------------
-if (isset($_POST['file'])){
-    $filename = (string) $_POST['file'];
-    //  var_dump($_POST);
-   header("Content-type: application/octet-stream");
-   header("Content-disposition: attachment; filename=\"{$filename}\"");
-    readfile($filename);
+var_dump($_FILES);
+if (isset($_FILES['file']['name'])){
+    $filename = (string) $_FILES['file']['name'];
+    $tmp_filename = (string) $_FILES['file']['tmp_name'];
+    header("Content-type: application/octet-stream");
+    header("Content-disposition: attachment; filename=\"{$filename}\"");
+    readfile($tmp_filename);
 }
 
 //---------------------------------------COOKIE------------------------
@@ -35,7 +36,8 @@ echo "
 </head>
 <body>
             <h2>Загрузите файл</h2>
-            <form method=\"post\" action=\"dz10-headers.php\">
+            <form method=\"post\" action=\"dz10-headers.php\" enctype=\"multipart/form-data\">
+                <input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"3000000\" />
                 <input type='file' name=\"file\" required class=\"form-control\" />
                 <input type=\"submit\" class=\"btn btn-primary\" value=\"Скачать\" />
             </form>
