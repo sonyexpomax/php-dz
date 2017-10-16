@@ -112,11 +112,9 @@
         var itemsIn = 0;
         var itemsOut = 0;
         var itemsAvailable = [];
-
         var itemsInArr = actions.filter(function(val, index) {
             if(index % 2 == 0){ return val; }
         });
-
         var itemsOutArr = actions.filter(function(val, index) {
             if(index % 2 != 0){ return val; }
         });
@@ -128,27 +126,29 @@
         itemsOutArr2 = itemsOutArr.reduce(ForReduce, []);//получаем массив out
         itemsIn = itemsInArr2.length;
         itemsOut = itemsOutArr2.length;
-        itemsAvailable=itemsIn-itemsOut;
 
-        //----------------------------------------balanceArr----------------
-
-        function balanceArr(itemsIn, itemsOut) {
-            var arr = [];
-            for (i=0; i < itemsIn.length; i++){
-                var f = itemsIn[i];
+        //----------------------------------------itemsAvailable----------------
+        function balanceArr(In, Out) {
+            var len = In.length;
+            for (var i=0; i < len; i++){
                 var t = 0;
-                for (j=0; j<itemsOut.length; j++){
-                    itemsOut[j] === f ? t++ : "";
+                for (var j = 0; j < Out.length; j++){
+                    if(Out[j] === In[i]){
+                        delete In[i];
+                        Out.splice(j,1);
+                        break;
+                    }
                 }
-                t === 1 ? arr.push(f): "";
             }
-            return arr;
+            In = In.filter(function(n){ return n != undefined });
+            return In;
         }
+        itemsAvailable = (balanceArr(itemsInArr2,itemsOutArr2));
+
+        //-------------------------------- Вывод ---------------------
         console.log('Пришло: ' + itemsIn + '\n' +
                 'Отправлено: ' + itemsOut + '\n' +
-                'Товары на складе: ' + itemsAvailable + "\n" +
-                "Массив кодов имеющихся на складе товаров:");
-        console.log(balanceArr(itemsInArr2,itemsOutArr2));
+                'Товары на складе: ' + itemsAvailable);
     }
     balance(transactions);
 </script>
