@@ -28,7 +28,7 @@ return [
     /*'users' => [
         ['admin', sha1($salt.'123456')],
     ],*/
-    'users' => unserialize(file_get_contents('./config/logins.txt')),
+    'users' => unserialize(file_get_contents(__DIR__.'/logins.txt')),
     'files' => [
         ['login', __DIR__.'/logins.txt'],
     ]
