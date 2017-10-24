@@ -1,17 +1,16 @@
 
-
 //------------------------  Задание 1 -----------------------
 console.log("Задание 1");
-var obj1 = { name: 'Rea', age: 24 };
+var obj1 = { name: 'Rea', age: 24, look:'bad' };
 var obj2 = { name: "Val", size: 43, look:"nice"};
-
 objects = function (obj1,obj2) {
-    var objRes = obj1;
+    var objRes = {};
     var key;
+    for (key in obj1) {
+        objRes[key] = obj1[key]
+    }
     for (key in obj2) {
-        if (obj2.hasOwnProperty(key)) {
-            objRes[key] = obj2[key]
-        }
+        objRes[key] = obj2[key]
     }
     return objRes;
 }
@@ -36,27 +35,29 @@ function topOldest(menlist, limit) {
             return a.age < b.age;
         });
         var i = 0;
+        var topOld=[];
         console.log("Имена " + limit + " самых старых спортсменов");
         while (i < limit) {
-
-            console.log('' +
-                'Спортсмен ' + menlist[i].name + ' - ' + menlist[i].age);
+            topOld[topOld.length] = menlist[i].name;
             i++;
         }
+        return topOld;
     }
     else {
         alert("limit не может принимать значение больше чем количество спортсменов!");
     }
 }
-topOldest(sportsmen,3);
+console.log(topOldest(sportsmen,3));
 
 //--------------------------- Задание 3 ---------------------
 console.log('Задание 3')
 var runner = {
     name:'hert',
-    medals: {}
 }
 function give(obj, medalType, medalNum) {
+    if (runner.medals == undefined) {
+        runner.medals = {}
+    }
     if (medalType == 'gold' || medalType == 'silver' || medalType == 'bronze') {
         if (medalNum % 1 == 0 && medalNum > 0) {
             if (obj.medals[medalType] != undefined) {
@@ -86,40 +87,48 @@ var existTimer = false;
 var spammer = {
     startSpam: function (input){
         this.arr.push(input);
-        (!existTimer) ? StartStopTimer() : "";
+        (!existTimer) ? this.StartStopTimer() : "";
     },
+
+
     stopSpam: function (output) {
         this.arr.splice(this.arr.indexOf(output),1);
-        StartStopTimer();
+        this.StartStopTimer();
     },
-    arr:[]
+    arr:[],
+
+    /**
+     *
+     * @constructor
+     */
+    StartStopTimer:function () {
+        var fnc = setInterval(function() {
+            if (spammer.arr.length == 0) {
+                existTimer = false;
+                clearInterval(fnc);
+            }
+            else{
+                existTimer = true;
+                spammer.listStr();
+            }
+
+        }, 1000);
+    },
+
+
+    listStr: function () {
+        var ListStrings ='';
+        this.arr.forEach(function(item,i,arr){
+            var TimeNow = new Date();
+            ListStrings = ListStrings + '\r\n' + arr[i] + "  //  " +
+                TimeNow.getHours()+ ":" +
+                TimeNow.getMinutes() + ":" +
+                TimeNow.getSeconds();
+        });
+        console.log(ListStrings);
+    }
 };
 
-function StartStopTimer() {
-    var fnc = setInterval(function() {
-        if (spammer.arr.length == 0) {
-            existTimer = false;
-            clearInterval(fnc);
-        }
-        else{
-            existTimer = true;
-            listStr();
-        }
-
-    }, 1000);
-}
-
-function listStr() {
-    var ListStrings ='';
-    spammer.arr.forEach(function(item,i,arr){
-        var TimeNow = new Date();
-        ListStrings = ListStrings + '\r\n' + arr[i] + "  //  " +
-            TimeNow.getHours()+ ":" +
-            TimeNow.getMinutes() + ":" +
-            TimeNow.getSeconds();
-    });
-    console.log(ListStrings);
-}
 
 //--------------------------- Задание 5 ---------------------
 console.log('Задание 5')
@@ -151,37 +160,45 @@ beautify('Поддерживается. в следующих, режимах д
 
 //--------------------------- Задание 6 ---------------------
 console.log('Задание 6')
-//var txt = "a22";
-//var encode = window.btoa(txt);
-var password = "YTFiMmMz";
+var password = "YzBiYTk=";
 console.log("Зашифрованный пароль: " + password);
 
 function bruteForce(password) {
     var arr = ['a', 'b', 'c',0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    var size = 6;
+    var MaxSize = 6;
     var res = [];
     var answer = '';
-    perebor(arr,res,size);
-    function perebor(arr,res,SizeSmall) {
-        if (SizeSmall != 0) {
-            for (var i = 0; i < arr.length; i++) {
-                res[size-SizeSmall] = arr[i];
-                perebor(arr, res, SizeSmall-1);
-                if (SizeSmall == 1 && answer =='') {
-                    var variant = res.join('');
-                    var encodedVariant = btoa(variant);
-                    if ( encodedVariant == password){
-                        answer = "Расшифрованный пароль: " + variant;
-                    }
-                }
-            }
-        }
+    for (var j = 1; j <= MaxSize; j++) {
+        perebor(arr, res, j);
     }
+
     if (answer == ''){
         return "Расшифровать пароль не удалось";
     }
     else {
         return answer;
+    }
+
+    /**
+     *
+     * @param arr
+     * @param res
+     * @param SizeSmall
+     */
+    function perebor(arr,res,SizeSmall) {
+        if (SizeSmall != 0) {
+            for (var i = 0; i < arr.length; i++) {
+                res[MaxSize-SizeSmall] = arr[i];
+                perebor(arr, res, SizeSmall-1);
+                if (SizeSmall == 1 && answer =='') {
+                    var variant = res.join('');
+                    var encodedVariant = btoa(variant);
+                    if ( encodedVariant == password){
+                        answer = /*"Расшифрованный пароль: " + */ variant;
+                    }
+                }
+            }
+        }
     }
 }
 
