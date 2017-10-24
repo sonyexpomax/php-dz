@@ -1,4 +1,3 @@
-
 //------------------------  Задание 1 -----------------------
 console.log("Задание 1");
 var obj1 = { name: 'Rea', age: 24, look:'bad' };
@@ -164,7 +163,7 @@ var password = "YzBiYTk=";
 console.log("Зашифрованный пароль: " + password);
 
 function bruteForce(password) {
-    var arr = ['a', 'b', 'c',0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+    var arr = [0, 'a', 'b', 'c', 1, 2, 3, 4, 5, 6, 7, 8, 9];
     var MaxSize = 6;
     var res = [];
     var answer = '';
@@ -186,15 +185,17 @@ function bruteForce(password) {
      * @param SizeSmall
      */
     function perebor(arr,res,SizeSmall) {
+        var StartCountI;
         if (SizeSmall != 0) {
-            for (var i = 0; i < arr.length; i++) {
+            SizeSmall == j ? StartCountI = 1 : StartCountI = 0
+            for (var i = StartCountI; i < arr.length; i++) {
                 res[MaxSize-SizeSmall] = arr[i];
                 perebor(arr, res, SizeSmall-1);
                 if (SizeSmall == 1 && answer =='') {
                     var variant = res.join('');
                     var encodedVariant = btoa(variant);
                     if ( encodedVariant == password){
-                        answer = /*"Расшифрованный пароль: " + */ variant;
+                        answer = /*"Расшифрованный пароль: " + */  variant;
                     }
                 }
             }
