@@ -66,6 +66,18 @@ function createCategory($fields)
         $fields
     );
 }
+
+/**
+ * @param $fields
+ * @return bool|mysqli_result
+ */
+function createProduct($fields)
+{
+    return createEntity(
+        $GLOBALS['tablesMap']['product'],
+        $fields
+    );
+}
 /**
  * @param $tableName
  * @param $data
@@ -98,6 +110,20 @@ function updateCategory($id, $data)
         $data
     );
 }
+
+/**
+ * @param $id
+ * @param $data
+ * @return bool|mysqli_result
+ */
+function updateProduct($id, $data)
+{
+    return updateEntity(
+        $GLOBALS['tablesMap']['product'],
+        $id,
+        $data
+    );
+}
 /**
  * @param $tableName
  * @param $id
@@ -113,8 +139,38 @@ function updateEntity($tableName, $id, $data)
         $values[] = "$key = '$val'";
     }
     $values = implode(',', $values);
+    var_dump("UPDATE $tableName SET $values WHERE id = $id");
     return mysqli_query(
         $connection,
         "UPDATE $tableName SET $values WHERE id = $id;"
     );
+}
+
+/**
+ * @param $tableName
+ * @param $id
+ * @return bool|mysqli_result
+ */
+function deleteEntity($tableName, $id)
+{
+    global $connection;
+    return mysqli_query($connection, "DELETE FROM $tableName WHERE id = $id;");
+}
+
+/**
+ * @param $id
+ * @return bool|mysqli_result
+ */
+function deleteCategory($id)
+{
+    return deleteEntity($GLOBALS['tablesMap']['category'],$id);
+}
+
+/**
+ * @param $id
+ * @return bool|mysqli_result
+ */
+function deleteProduct($id)
+{
+    return deleteEntity($GLOBALS['tablesMap']['product'],$id);
 }

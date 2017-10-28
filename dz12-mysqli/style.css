@@ -1,0 +1,159 @@
+body{
+    background-color: #F1F8E9;
+    font-family: 'Arial';
+    font-size: 14px;
+    color: black;
+    height: 100%;
+}
+
+
+/*---------------- NAV -------------------------*/
+.title h3{
+    font-family: 'Permanent Marker', cursive;
+    font-size: 40px;
+    width: 80%;
+    margin: 0 auto;
+}
+nav{
+    margin:10px auto;
+    width: 80%;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    background-color: #000000;
+    padding: 5px;
+}
+nav ul{
+    width:60%;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+nav li{
+    float: left;
+    display: inline;
+    width: 25%;
+    height: 40px;
+}
+nav li:hover{
+    background-color: #696969;
+}
+nav li a{
+    margin-top: 7px;
+    display: block;
+    text-align: center;
+    padding: 5px 5px;
+    text-decoration: none;
+    font-size: 14px;
+    color: #ffffff;
+}
+.exit{
+    float: right;
+    position: relative;
+    top:-30px;
+    margin-right:20px;
+}
+.exit a{
+    text-decoration: none;
+    color: #f5f5f5;
+    font-weight: 600;
+
+}
+/*---------------- main -------------------------*/
+
+main{
+    width: 80%;
+    padding: 5px;
+    margin:0px auto;
+}
+main p{
+   margin: 0;
+}
+
+.list{
+    float: left;
+    width: 49%;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+.list h2, .add_form h2 {
+    width: 97%;
+    margin: 0;
+    padding: 5px 1.5%;
+    background-color: #424242;
+    color: #ffffff;
+    text-align: center;
+    height: 45px;
+    font-size: 20px;
+
+}
+
+.list ul{
+    list-style-type: decimal;
+    line-height: 30px;
+    font-size: 18px;
+    }
+.list a{
+    text-decoration: none;
+    color: #000000;
+}
+.list a:hover{
+    text-decoration: underline;
+    color: #bd081c;
+}
+.list img{
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+}
+
+.add_form{
+    float: right;
+    width: 49%;
+    background-color: #ffffff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    padding-bottom: 20px;
+}
+.add_form p{
+    margin: 0;
+    padding: 10px 0 0 20px;
+}
+.add_form input,.add_form textarea, .add_form select{
+    width: 93%;
+    margin-left: 2%;
+    margin-right:0;
+    padding: 0;
+    margin-top: 5px;
+
+}
+.link{
+    background-color: #000000;
+    width: 87%;
+    margin: 20px auto;
+    font-size: 18px;
+    text-align: center;
+    padding: 10px 5px;
+}
+.link a{
+    color: #ffffff;
+    text-decoration: none;
+}
+.link:hover{
+    background-color: #696969;
+}
+.clear{
+    clear: both;
+}
+/*---------------- footer -------------------------*/
+footer{
+    position: absolute;
+    bottom: 0;
+    height:40px;
+    left:10%;
+    background-color: #000000;
+    color: #ffffff;
+    width:80%;
+    /*margin: 10px 0;*/
+    padding: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
