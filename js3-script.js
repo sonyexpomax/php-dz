@@ -82,13 +82,13 @@ console.log(runner.medals);
 
 //--------------------------- Задание 4 ---------------------
 console.log('Задание 4')
-var existTimer = false;
+//var existTimer = false;
 var spammer = {
+    existTimer: false,
     startSpam: function (input){
         this.arr.push(input);
-        (!existTimer) ? this.StartStopTimer() : "";
+        (!spammer.existTimer) ? this.StartStopTimer() : "";
     },
-
 
     stopSpam: function (output) {
         this.arr.splice(this.arr.indexOf(output),1);
@@ -96,22 +96,19 @@ var spammer = {
     },
     arr:[],
 
-    /**
-     *
-     * @constructor
-     */
     StartStopTimer:function () {
-        var fnc = setInterval(function() {
-            if (spammer.arr.length == 0) {
-                existTimer = false;
-                clearInterval(fnc);
+        if (spammer.arr.length == 0) {
+            spammer.existTimer = false;
+            clearInterval(spammer.timer);
+        }
+        else{
+            if (!spammer.existTimer) {
+                spammer.existTimer = true;
+                spammer.timer = setInterval(function () {
+                    spammer.listStr();
+                }, 1000);
             }
-            else{
-                existTimer = true;
-                spammer.listStr();
-            }
-
-        }, 1000);
+        }
     },
 
 
@@ -170,7 +167,6 @@ function bruteForce(password) {
     for (var j = 1; j <= MaxSize; j++) {
         perebor(arr, res, j);
     }
-
     if (answer == ''){
         return "Расшифровать пароль не удалось";
     }
@@ -184,10 +180,10 @@ function bruteForce(password) {
      * @param res
      * @param SizeSmall
      */
-    function perebor(arr,res,SizeSmall) {
+    function perebor(res,SizeSmall) {
         var StartCountI;
         if (SizeSmall != 0) {
-            SizeSmall == j ? StartCountI = 1 : StartCountI = 0
+            StartCountI = (SizeSmall == j ?  1 :  0);
             for (var i = StartCountI; i < arr.length; i++) {
                 res[MaxSize-SizeSmall] = arr[i];
                 perebor(arr, res, SizeSmall-1);
