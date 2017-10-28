@@ -1,7 +1,3 @@
-/**
- * Created by max on 24.10.17.
- */
-
 //------------------------  Задание 1 -----------------------
 console.log("Задание 1");
 var user = {
@@ -25,7 +21,6 @@ console.log("Задание 2");
 var tempClone = {};
 var Clone = function() {
     if (tempClone.number == undefined){
-        this.number = 10;
         tempClone = this;
     }
     else{
@@ -34,24 +29,29 @@ var Clone = function() {
 };
 var clone1 = new Clone;
 var clone2 = new Clone;
-clone1 == clone2 // true
+clone1 == clone2 ;// true
 
 //--------------------------- Задание 3 ---------------------
 console.log('Задание 3')
 function Spammer(TimeInterval) {
-    this.TimeInterval = TimeInterval
-    this.startSpam = function (SpamText) {
-        setInterval(function() {
-            var TimeNow = new Date();
-            console.log(SpamText + "  //  " +
-                TimeNow.getHours()+ ":" +
-                TimeNow.getMinutes() + ":" +
-                TimeNow.getSeconds());
-        }, TimeInterval);
+    if (IsSeconds(TimeInterval)) {
+        this.TimeInterval = TimeInterval
+        this.startSpam = function (SpamText) {
+            setInterval(function () {
+                var TimeNow = new Date();
+                console.log(SpamText + "  //  " +
+                    TimeNow.getHours() + ":" +
+                    TimeNow.getMinutes() + ":" +
+                    TimeNow.getSeconds());
+            }, TimeInterval);
+        }
+    }
+    else{
+        console.log('Значение Timeinterval должно вводиться в милисекундах!');
     }
 }
-function isNumber(n) {
-    return !isNaN(parseFloat(n)) && isFinite(n);
+function IsSeconds(n) {
+    return (n > 0) && (n % 1 == 0) && (n % 1000 == 0);
 }
 
 //--------------------------- Задание 4 ---------------------
