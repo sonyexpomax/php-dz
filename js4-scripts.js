@@ -64,14 +64,14 @@ console.log('Задание 4')
  * @constructor
  */
 var Pet = function(type,name,birthYear) {
-    this.type = type;
     this.name = name;
-    this.birthYear = birthYear;
     Object.defineProperty(this, "type", {
+        value: type,
         configurable: false,
         writable: false
     } );
     Object.defineProperty(this, "birthYear", {
+        value: birthYear,
         configurable: false,
         writable: false,
         enumerable: false
