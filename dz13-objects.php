@@ -90,7 +90,7 @@ class Task3{
      * @param $age
      */
     public function setAge($age){
-        if($age > 1 && $age < 100){
+        if ($this->checkAge($age)){
             $this->age = $age;
         }
     }
@@ -100,6 +100,11 @@ class Task3{
      */
     public function setSalary($salary){
         $this->salary = $salary;
+    }
+    private function checkAge($age){
+        if($age > 1 && $age < 100){
+            return true;
+        }
     }
 
     /**
@@ -182,8 +187,8 @@ echo "Имя: ".           ($man6 -> getName()) .
 echo "<br /> <b>Задание 5 </b><br />";
 
 class User{
-    private $name;
-    private $age;
+    protected $name;
+    protected $age;
 
     /**
      * @param $name
@@ -348,35 +353,57 @@ class Form{
      * @param $arr
      */
     function open($arr){
-        echo "<form action='{$arr['action']}' method='{$arr['method']}'><br />";
+        echo "<form ";
+        foreach ($arr  as $key => $val) {
+            echo "$key = $val ";
+        }
+        echo "><br />";
     }
 
     /**
      * @param $arr
      */
     function input($arr){
-        echo "<input type='{$arr['type']}' value='{$arr['value']}'><br />";
+        echo "<input ";
+        foreach ($arr  as $key => $val) {
+            echo "$key = $val ";
+        }
+        echo "><br />";
     }
 
     /**
      * @param $arr
      */
     function password($arr){
-        echo "<input type='password' value='{$arr['value']}'><br />";
+        echo "<input type = 'password' ";
+        foreach ($arr  as $key => $val) {
+            echo "$key = $val ";
+        }
+        echo "><br />";
     }
 
     /**
      * @param $arr
      */
     function submit($arr){
-        echo "<input type='submit' value='{$arr['value']}'><br />";
+        echo "<input type = 'submit' ";
+        foreach ($arr  as $key => $val) {
+            echo "$key = $val";
+        }
+        echo "><br />";
     }
 
     /**
      * @param $arr
      */
     function textarea($arr){
-        echo "<textarea placeholder='{$arr['placeholder']}'>{$arr['value']}</textarea><br />";
+        echo "<textarea ";
+        foreach ($arr  as $key => $val) {
+            if($key != 'value'){
+                echo "$key = $val ";
+            }
+        }
+        echo ">{$arr['value']}</textarea><br />";
     }
 
     function close(){
@@ -389,17 +416,18 @@ $form = new Form();
 echo $form->open(['action'=>'index.php', 'method'=>'POST']);
 //Код выше выведет <form action="index.php" method="POST">
 
-echo $form->input(['type'=>'text', 'value'=>'!!!']);
+echo $form->input(['type'=>'text', 'value'=>'!!!', 'name' => 'dfdfs']);
 //Код выше выведет <input type="text" value="!!!">
 
 echo $form->password(['value'=>'!!']);
 //Код выше выведет <input type="password" value="!!!">
 
+echo $form->textarea(['placeholder'=>'123', 'value'=>'!!!']);
+//Код выше выведет <textarea placeholder="123">!!!</textarea>
+
 echo $form->submit(['value'=>'go']);
 //Код выше выведет <input type="submit" value="go">
 
-echo $form->textarea(['placeholder'=>'123', 'value'=>'!!!']);
-//Код выше выведет <textarea placeholder="123">!!!</textarea>
 
 echo $form->close();
 //Код выше выведет </form>
@@ -411,54 +439,27 @@ echo "<br /> <b>Задание 8 </b><br />";
 
 class Cookie{
 
-    /**
-     * @var array
-     */
-    private $cookieArray = [];
-    public function set($nameCookie, $valueCookie){
-        $this->cookieArray[$nameCookie] = $valueCookie;
+    public function setcookie($nameCookie,$valueCookie){
+        setcookie($nameCookie,$valueCookie);
+    }
+    public function delcookie($nameCookie){
+        setcookie($nameCookie,func_num_args(1), time() -3600);
     }
 
-    /**
-     * @param $nameCookie
-     * @return string
-     */
-    public function get($nameCookie){
-        if (array_key_exists($nameCookie, $this->cookieArray)) {
-            return "Значение куки ". $nameCookie . " равно " . $this->cookieArray[$nameCookie] . "<br />";
-        }
-        else{
-            return "Куки со значением ". $nameCookie . " НЕТ<br />";
-        }
+    public function getcookie($nameCookie){
+       echo '$_COOKIE[$nameCookie]'." => $_COOKIE[$nameCookie]<br />";
     }
 
-    /**
-     * @param $nameCookie
-     * @return string
-     */
-    public function del($nameCookie){
-        if (array_key_exists($nameCookie, $this->cookieArray)) {
-             unset($this->cookieArray[$nameCookie]);
-        }
-        else{
-            return "Куки со значением ". $nameCookie . " НЕТ<br />";
-        }
-    }
 }
+
 $cookie1 = new Cookie();
-$cookie1 ->set('first', '111');
-$cookie1 ->set('second', '222');
+$cookie1 ->setcookie('first', '111');
+$cookie1 ->setcookie('second', '222');
 
-echo $cookie1->get('second');
-echo $cookie1->get('first');
+echo $cookie1->delcookie('second');
+echo $cookie1->getcookie('first');
 
-echo $cookie1->get('fifth');
-
-echo $cookie1->del('first');
-
-echo $cookie1->get('first');
-
-
+//var_dump($_COOKIE);
 
 
 /*-------------------------<>Задание 9 ----------------------*/
@@ -466,99 +467,40 @@ echo $cookie1->get('first');
 echo "<br /> <b>Задание 9 </b><br />";
 
 class Session{
-    private $ArrayVariable = [];
-    private $SessionStat = false;
-    /**
-     * @param $nameVariable
-     * @param $valueVariable
-     */
+    function __construct() {
+        session_start();
+    }
+    function __destruct()
+    {
+        session_unset();
+    }
     public function setVariable($nameVariable, $valueVariable){
-        if ($this->SessionStat) {
-            $this->ArrayVariable[$nameVariable] = $valueVariable;
-        }
-        else
-        {
-            echo "Необходимо запустить сессию!<br />";
-        }
+            $_SESSION[$nameVariable] = $valueVariable;
     }
-
-    /**
-     * @param $nameVariable
-     * @return string
-     */
+    public function issetVariable($nameVariable){
+        echo isset($_SESSION[$nameVariable]) ? 'true<br />' : 'false<br />';
+    }
     public function getVariable($nameVariable){
-        if ($this->SessionStat) {
-            if (array_key_exists($nameVariable, $this->ArrayVariable)) {
-                return $nameVariable . " = " . $this->ArrayVariable[$nameVariable] . "<br />";
-            } else {
-                return "Переменной сессии " . $nameVariable . " НЕТ<br />";
-            }
-        }
-        else{
-                echo "Необходимо запустить сессию!<br />";
-            }
+       if(isset($_SESSION[$nameVariable])) {
+           echo $nameVariable." => ".$_SESSION[$nameVariable]."<br />";
+       }
     }
-
-    /**
-     * @param $nameVariable
-     * @return string
-     */
     public function delVariable($nameVariable){
-        if ($this->SessionStat) {
-            if (array_key_exists($nameVariable, $this->ArrayVariable)) {
-                unset($this->ArrayVariable[$nameVariable]);
-            }
-            else{
-                return "Переменная сессии ". $nameVariable . " НЕ Существует <br />";
-            }
-        }
-        else{
-            echo "Необходимо запустить сессию!<br />";
+        if(isset($_SESSION[$nameVariable])) {
+            unset($_SESSION[$nameVariable]);
         }
     }
 
-    /**
-     * @param $nameVariable
-     * @return string
-     */
-    public function statusVariable($nameVariable){
-        if ($this->SessionStat) {
-            if (array_key_exists($nameVariable, $this->ArrayVariable)) {
-                return "Переменная сессии ". $nameVariable . " Существует<br />";
-            }
-            else{
-                return "Переменная сессии ". $nameVariable . " НЕ Существует <br />";
-            }
-        }
-        else{
-            echo 'Необходимо запустить сессию!<br />';
-        }
-    }
-
-    /**
-     * Session constructor.
-     * @param $session_start
-     */
-     function __construct($session_start){
-         if($session_start == "session_start") {
-                 $this->SessionStat = true;
-         }
-     }
 }
 
-$session1 = new Session('session_start');
-$session1 ->setVariable('first', '111');
-$session1 ->setVariable('second', '222');
+$session1 = new Session();
+$session1 -> setVariable('first', '111');
+$session1 -> issetVariable('first');
+$session1->getVariable('first');
 
-$session1 = new Session('session_start');
-echo $session1->getVariable('second');
-echo $session1->getVariable('first');
-
-echo $session1->delVariable('first');
-
-echo $session1->getVariable('first');
-
-
+$session1->delVariable('first');
+$session1->getVariable('first');
+//var_dump($_SESSION);
 
 
 
