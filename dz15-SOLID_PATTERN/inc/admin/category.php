@@ -1,7 +1,7 @@
 <?php
 //ini_set("display_errors",1);
 //error_reporting(E_ALL);
-$NewCategory = new \App\Entity\Category();
+$NewCategory = new \App\Entity\Category(\App\DB\Connection::getInstance());
 if (isset($_POST['save'])) {
     $id = $_POST['id'];
     $title = $_POST['title'];

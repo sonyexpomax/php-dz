@@ -1,7 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: max
- * Date: 02.11.17
- * Time: 10:21
- */
+
+namespace App\Main;
+include('IConfig.php');
+class Config implements \IConfig {
+
+    static private  $options = [
+        'dbHost' =>     'localhost',
+        'dbUser' =>     'goods',
+        'dbPassword' => 'goods',
+        'dbName' =>     'goods',
+    ];
+
+    public static function  get($paramName){
+        return self::$options[$paramName];
+    }
+}

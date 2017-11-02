@@ -1,5 +1,7 @@
 <?php
 namespace App\Entity;
+use App\DB\Connection;
+
 abstract class Base
 {
    /**
@@ -45,6 +47,11 @@ abstract class Base
             $StaticTableFields[$this->getTableName()] = $TableFields;
             return $TableFields;
     }
+    protected $query1;
+    public function __construct(\IConnection $query)
+    {
+         $this->query1 = $query;
+    }
 
     /**
      * @param int|null $id
@@ -56,7 +63,9 @@ abstract class Base
             $where = ' WHERE id = '.$id;
         }
         $query = "SELECT * FROM {$this->getTableName()} $where";
-        $result = mysqli_query($this->getConnection(), $query );
+        $result = $this->query1->query($query);
+        //$result = Connection::getInstance()->query($query);
+        //$result = mysqli_query($this->getConnection(), $query );
         return $result;
     }
 
@@ -72,7 +81,9 @@ abstract class Base
             $cols = implode(',', array_keys($data));
             $values = "'" . implode("','", $data) . "'";
             $query = "INSERT INTO {$this->getTableName()} ($cols) VALUES ($values)";
-            return mysqli_query($this->getConnection(), $query);
+            //return mysqli_query($this->getConnection(), $query);
+            //$result = Connection::getInstance()->query($query);
+            $result = $this->query1->query($query);
         }
     }
 
@@ -90,7 +101,9 @@ abstract class Base
             }
             $values = implode(',', $values);
             $query = "UPDATE {$this->getTableName()} SET $values WHERE id = $id;";
-            return mysqli_query($this->getConnection(),$query);
+            //return mysqli_query($this->getConnection(),$query);
+            //return Connection::getInstance()->query($query);
+            return $this->query1->query($query);
         }
     }
 
@@ -100,7 +113,9 @@ abstract class Base
      */
     public function delete(int $id) {
        $query = "DELETE FROM {$this->getTableName()} WHERE id = $id";
-       return mysqli_query($this->getConnection(), $query);
+       // return  Connection::getInstance()->query($query);
+       //return mysqli_query($this->getConnection(), $query);
+        return $this->query1->query($query);
     }
 }
 

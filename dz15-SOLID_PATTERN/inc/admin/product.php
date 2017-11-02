@@ -1,6 +1,6 @@
 <?php
-$NewProduct = new \App\Entity\Product();
-$NewCategory = new \App\Entity\Category();
+$NewProduct = new \App\Entity\Product(\App\DB\Connection::getInstance());
+$NewCategory = new \App\Entity\Category(\App\DB\Connection::getInstance());
 $CategoryList = $NewCategory->get();
 $ProductList   = $NewProduct->get();
 if (isset($_POST['save'])) {
