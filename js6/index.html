@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // ---------------------------- задание 1 -----------------
+
+    function Tank(totalCapacity, speedInput) {
+
+        var speedOutput1 = 0;
+        var speedOutput2 = 0;
+        var speedInput1 = 0;
+
+        var currentCapacity = 0;
+
+        var isOpenInputConnection = false;
+        var isOpenOutputConnection1 = false;
+        var isOpenOutputConnection2 = false;
+
+        var ctx = this;
+        mainTimer = function () {
+
+            timer = setInterval(function() {
+                var outputText = '';
+
+                outputText += isOpenInputConnection ? "@ " : ". ";
+                outputText += isOpenOutputConnection1 ? "@ " : ". ";
+                outputText += isOpenOutputConnection2 ? "@ " : ". ";
+               // outputText += '!!' + speedInput1 + ' !! ' + speedOutput1 + ' !! ' + speedOutput2 + ' !! '
+                currentCapacity += (speedInput1 - speedOutput1 - speedOutput2);
+
+                if(currentCapacity >= totalCapacity ){
+                    //checkForDisconnection();
+                    currentCapacity = totalCapacity;
+                }
+                if(currentCapacity <= 0 && (isOpenOutputConnection1 || isOpenOutputConnection2) ){
+                    //checkForDisconnection();
+                    currentCapacity = 0;
+                }
+
+                outputText += ((currentCapacity/totalCapacity)*100).toFixed(2);
+                outputText += '%';
+
+                console.clear();
+                console.log(outputText)}, 1000);
+
+        }
+
+        function checkForDisconnection() {
+            isOpenInputConnection ? ctx.inputDisconnection() : '';
+            isOpenOutputConnection1 ? ctx.outputDisconnection1() : '';
+            isOpenOutputConnection2 ? ctx.outputDisconnection2() : '';
+        }
+
+        this.get = function () {
+            console.log(isOpenInputConnection + " - " + isOpenOutputConnection1 + " - " + isOpenOutputConnection2 )
+        }
+
+        //---------------- Connection---------------------
+
+        this.inputConnection = function () {
+            if (isOpenInputConnection){
+                console.log('Вы не можете подключиться к первому выходу. Он занят');
+            }
+            else {
+                console.log('Вы подключены к первому выходу');
+                isOpenInputConnection = true;
+                speedInput1 = speedInput;
+            }
+        }
+
+        this.outputConnection1 = function (speedOutput) {
+           if (isOpenOutputConnection1){
+                console.log('Вы не можете подключиться к первому выходу. Он занят');
+            }
+            else {
+                speedOutput1 = speedOutput;
+                isOpenOutputConnection1 = true;
+                console.log('Вы подключены к первому выходу');
+
+            }
+        }
+
+        this.outputConnection2 = function (speedOutput) {
+            if (isOpenOutputConnection2){
+                console.log('Вы не можете подключиться ко второму выходу. Он занят');
+            }
+            else {
+                console.log('Вы подключены ко второму выходу');
+                speedOutput2 = speedOutput;
+                isOpenOutputConnection2 = true;
+            }
+        }
+
+        //--------------Disconnection--------------------
+
+        this.outputDisconnection1 = function () {
+            if (isOpenOutputConnection1){
+                console.log('Вы одключены от первого выхода');
+                isOpenOutputConnection1 = false;
+                speedOutput1 = 0;
+            }
+            else {
+                console.log('Вы не были подключены ко первому выходу');
+            }
+        }
+
+
+        this.outputDisconnection2 = function () {
+            if (isOpenOutputConnection2){
+                console.log('Вы одключены от второго выхода');
+                isOpenOutputConnection2 = false;
+                speedOutput2 = 0;
+            }
+            else {
+                console.log('Вы не были подключены к второму выходу');
+            }
+        }
+
+        this.inputDisconnection = function () {
+            if (isOpenInputConnection){
+                console.log('Вы одключены от водопровода');
+                isOpenInputConnection = false;
+                speedInput1 = 0;
+            }
+            else {
+                console.log('Вы не были подключены к водопроводу');
+            }
+        }
+        mainTimer();
+    }
+
+   //newTank = new Tank(100, 30);
+
+
+    //-----------------задание 2-----------------------
+function Runner() {
+    var medals = [];
+    this.getSet = function () {
+        if (arguments.length == 1) {
+            var count = 0;
+            medals.forEach(function (val) {
+                if (val == arguments[0]){
+                    count++;
+                }
+            });
+            return count;
+        }
+        if (arguments.length == 2){
+            for(var i = 1; i <= arguments[1]; i++){
+                medals.push(arguments[0]);
+            }
+        }
+    }
+}
+
+myRunner = new Runner();
+
+    //-----------------задание 3-----------------------
+    function Reading(countOfPages, colored, format, langugage) {
+        this.countOfPages = countOfPages;
+        this.colored = colored;
+        this.format = format;
+        this.langugage = langugage;
+
+        this._edition = '';
+
+        this.getEdition = function () {
+            console.log(this._edition);
+        };
+        this.setEdition = function (nameOfEdition) {
+            this._edition = nameOfEdition;
+        };
+
+    }
+
+    function Magazine(countOfPages, colored, format, langugage, period, news) {
+        Reading.apply(this, arguments);
+        this.period = period;
+        this.news = news;
+    }
+
+    function Book(countOfPages, colored, format, langugage, author) {
+        Reading.apply(this, arguments);
+        this.author = author;
+
+    }
+
+</script>
+</body>
+</html>
