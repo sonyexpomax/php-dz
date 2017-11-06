@@ -8,42 +8,18 @@ var Runner = function() {
 Runner.DescriptionMedal = [];
 
 Runner.giveMedal = function (obj, description) {
-
-    if (FindId(description) == -1){
+    if (Runner.DescriptionMedal.indexOf(description) == -1){
         var NewId = Runner.DescriptionMedal.length;
         Runner.DescriptionMedal[NewId] = description;
         obj.medals[obj.medals.length] = NewId;
     }
     else {
-        obj.medals[obj.medals.length] = FindId(description);
+        obj.medals[obj.medals.length] = Runner.DescriptionMedal.indexOf(description);
     }
 
-    /**
-     *
-     * @param description
-     * @returns {number}
-     * @constructor
-     */
-    function FindId (description) {
-        for (var i = 0; i < Runner.DescriptionMedal.length; i++) {
-            if (Runner.DescriptionMedal[i] == description) {
-                return i;
-            }
-        }
-        return -1;
-    }
+
 }
-/*
-    var DecorRunnerMedals = function (f) {
-        return function() {
-            var result = f.apply(this, arguments);
-            result = result.join(',');
-            return result;
-        }
-    }
 
-    Runner.medals = DecorRunnerMedals(Runner.medals);
-*/
 var runner1 = new Runner;
 var runner2 = new Runner;
 Runner.giveMedal(runner1, 'Gold, 1000 m');
@@ -65,16 +41,14 @@ var Car = function(brand) {
 };
 
 Car.FromCarWith3Wheels = function(brand) {
-    var car = new Car();
-    car.brand = brand;
-    car.wheels = 3;
-    return car;
+    var newCar = new Car(brand);
+    newCar.wheels = 3;
+    return newCar;
 }
 Car.FromCarWith8Wheels = function(brand) {
-    var car = new Car();
-    car.brand = brand;
-    car.wheels = 8;
-    return car;
+    var newCar = new Car(brand);
+    newCar.wheels = 8;
+    return newCar;
 }
 
 
@@ -88,31 +62,35 @@ var RuningPlayer = function (name, medals) {
 
 }
 
-var LotteryPlayer = function (CountBuyingTickets, CountWinningTickets) {
-    this.CountBuyingTickets = CountBuyingTickets;
-    this.CountWinningTickets = CountWinningTickets;
+var LotteryPlayer = function (countBuyingTickets, countWinningTickets) {
+    this.countBuyingTickets = countBuyingTickets;
+    this.countWinningTickets = countWinningTickets;
 
 }
-LotteryPlayer.Payment = function() {
-    this.PrizeMoney = 1000;
+
+var newLotteryPlayer = new LotteryPlayer(32,2);
+
+newLotteryPlayer.payment = function() {
+    this.prizeMoney = 1000;
 };
 
+var newRunner = new RuningPlayer('Ivan',12);
 
-var NewRunner = new RuningPlayer('Ivan',12);
-var NewLotteryPlayer = new LotteryPlayer(32,2);
-LotteryPlayer.Payment.call(NewRunner);
+
+newLotteryPlayer.payment.call(newRunner);
 
 
 //------------------------  Задание 4 -----------------------
 console.log("Задание 4");
 
 function sorting() {
-    arguments.sort=[].sort;
-    arguments.sort(function (a,b) {
+    var Arr = arguments;
+    Arr.sort=[].sort;
+    Arr.sort(function (a,b) {
         return (b%10 - a%10)
     })
-    delete arguments.sort;
-    return arguments;
+    delete Arr.sort;
+    return Arr;
 }
 
 console.log(sorting(72,25,51,35,96));
@@ -120,22 +98,25 @@ console.log(sorting(72,25,51,35,96));
 //------------------------  Задание 5 -----------------------
 console.log("Задание 5");
 
-var DecorMax = function (f) {
+var decorMax = function (f) {
     return function() {
         var args = arguments;
         console.log(args);
         for (var key in args) {
             if (typeof args[key] == "string") {
-                var VarString = args[key];
-                args[key] = VarString.length;
+                var varString = args[key];
+                args[key] = varString.length;
             }
             if (typeof  args[key] == "object") {
-                var VarObject = args[key];
-                for (var key1 in VarObject) {
-                    if (typeof VarObject[key1] == "number") {
-                        args[key]  = VarObject[key1];
+                var varObject = args[key];
+                for (var key1 in varObject) {
+                    if (typeof varObject[key1] == "number") {
+                        args[key]  = varObject[key1];
                         break;
                     }
+                }
+                if (typeof  args[key] == "object") {
+                    args[key] = 0;
                 }
             }
         };
@@ -144,7 +125,7 @@ var DecorMax = function (f) {
     };
 };
 
-Math.max = DecorMax(Math.max);
+Math.max = decorMax(Math.max);
 
 console.log(
     Math.max(
