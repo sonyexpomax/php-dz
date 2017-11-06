@@ -298,6 +298,7 @@ echo "<br /> <b>Задание 6 </b><br />";
 
 class  Driver extends Worker{
     private $DrvExperience;
+    private $DrvСategory;
     /**
      * @param $DrvExperience
      */
@@ -349,15 +350,20 @@ echo "Имя водителя: ".          ($drv1 -> getName()) .
 
 echo "<br /> <b>Задание 7 </b><br />";
 class Form{
+
+    private function echoParams($arr){
+        foreach ($arr  as $key => $val) {
+            echo "$key = '$val' ";
+        }
+        echo "><br />";
+    }
+
     /**
      * @param $arr
      */
     function open($arr){
         echo "<form ";
-        foreach ($arr  as $key => $val) {
-            echo "$key = $val ";
-        }
-        echo "><br />";
+        $this->echoParams($arr);
     }
 
     /**
@@ -365,10 +371,7 @@ class Form{
      */
     function input($arr){
         echo "<input ";
-        foreach ($arr  as $key => $val) {
-            echo "$key = $val ";
-        }
-        echo "><br />";
+        $this->echoParams($arr);
     }
 
     /**
@@ -376,10 +379,7 @@ class Form{
      */
     function password($arr){
         echo "<input type = 'password' ";
-        foreach ($arr  as $key => $val) {
-            echo "$key = $val ";
-        }
-        echo "><br />";
+        $this->echoParams($arr);
     }
 
     /**
@@ -387,10 +387,7 @@ class Form{
      */
     function submit($arr){
         echo "<input type = 'submit' ";
-        foreach ($arr  as $key => $val) {
-            echo "$key = $val";
-        }
-        echo "><br />";
+        $this->echoParams($arr);
     }
 
     /**
@@ -400,7 +397,7 @@ class Form{
         echo "<textarea ";
         foreach ($arr  as $key => $val) {
             if($key != 'value'){
-                echo "$key = $val ";
+                echo "$key = '$val' ";
             }
         }
         echo ">{$arr['value']}</textarea><br />";
@@ -447,7 +444,7 @@ class Cookie{
     }
 
     public function getcookie($nameCookie){
-       echo '$_COOKIE[$nameCookie]'." => $_COOKIE[$nameCookie]<br />";
+       echo $_COOKIE[$nameCookie]."<br />";
     }
 
 }
@@ -472,7 +469,7 @@ class Session{
     }
     function __destruct()
     {
-        session_unset();
+        session_write_close();
     }
     public function setVariable($nameVariable, $valueVariable){
             $_SESSION[$nameVariable] = $valueVariable;
