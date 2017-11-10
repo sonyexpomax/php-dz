@@ -20,10 +20,13 @@ else{
 if ($_GET['page']) {
     $page = str_replace('/', '', $_GET['page']);
 }
+else{
+    $page = 'index';
+}
 ob_start();
 include($incPath.'/header.php');
-if (!include($incPath."/$page.php")) {
-    echo '404';
+if (!include("$incPath/$page.php")) {
+    echo "$incPath/$page.php". '  - not found => 404';
 }
 
 include($incPath.'/footer.php');

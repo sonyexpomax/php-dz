@@ -6,7 +6,7 @@ error_reporting(E_ALL);
 $LoginPasswds = ['admin' => ['12345','admin'],
                  'user' =>  ['12345','user']
                 ];
-$PathToGoOut = 'Location:http://x:x@localhost/test1/dz12-mysqli/'."index.php";
+$PathToGoOut = 'Location:http://x:x@localhost/test1/dz15-SOLID_PATTERN/'."index.php";
 if (isset($_GET['out'])) {
     session_unset();
     $_SERVER['PHP_AUTH_USER']= 'x';

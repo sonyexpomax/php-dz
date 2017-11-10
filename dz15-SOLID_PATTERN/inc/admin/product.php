@@ -1,8 +1,6 @@
 <?php
 $NewProduct = new \App\Entity\Product(\App\DB\Connection::getInstance());
 $NewCategory = new \App\Entity\Category(\App\DB\Connection::getInstance());
-$CategoryList = $NewCategory->get();
-$ProductList   = $NewProduct->get();
 if (isset($_POST['save'])) {
     $id = $_POST['id'];
     $title = $_POST['title'];
@@ -37,11 +35,24 @@ if (isset($_GET['del'])) {
 
 $id = $_GET['id'];
 
+$str_count = ceil($NewCategory->getCount()/5);
+//echo "str_count = $str_count<br>";
+//echo "NewCategory getcount = {$NewCategory->getCount()}<br>";
+if (isset($_GET['p']) && ($_GET['p'] >= 1 || $_GET['p'] <= $str_count) ) {
+    $p = $_GET['p'];
+}
+else{
+    $p = 1;
+}
+
+$CategoryList = $NewCategory->get(0);
+$ProductList   = $NewProduct->get($p);
+
 ?>
 
 <div class="list">
     <h2>Список имеющихся товаров</h2>
-    <ul>
+    <ol start = '<?=($p*5-4)?>'>
         <?php
         while ($product = mysqli_fetch_assoc($ProductList)) {
             ?>
@@ -55,7 +66,22 @@ $id = $_GET['id'];
             <?php
         }
         ?>
-    </ul>
+    </ol>
+    <div class="pagination">
+
+        <?php for ($i = 1; $i <= $str_count; $i++) {
+            if ($p == $i) {
+                ?>
+                <strong style='margin: 5px; text-decoration: none; color: red;font-weight: 600; font-size: larger'><?=$i?></strong>
+                <?php
+            } else {
+                ?>
+                <a style='margin: 5px;' href='?page=product&p=<?=$i?>'><?=$i?></a>
+                <?php
+            }
+        }
+        ?>
+    </div>
 </div>
 <div class="add_form">
     <?php
@@ -64,7 +90,7 @@ $id = $_GET['id'];
         if ($id > 0) { ?>
             <h2>Редактирование товаров</h2>
             <?php
-            $product = mysqli_fetch_assoc(productList($id));
+            $product = mysqli_fetch_assoc($NewCategory->get(0, $id));
             $title = $product['title'];
             $price = $product['price'];
             $description = $product['description'];

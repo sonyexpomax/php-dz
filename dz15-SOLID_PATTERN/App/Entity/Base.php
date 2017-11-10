@@ -1,12 +1,14 @@
 <?php
 namespace App\Entity;
 use App\DB\Connection;
+use App\DB\IConnection;
 
 abstract class Base
 {
    /**
      * @return \mysqli
      */
+   /*
     public function getConnection()
     {
          $dbHost = 'localhost';
@@ -20,7 +22,7 @@ abstract class Base
             $dbName
         );
     }
-
+*/
     abstract public function getTableName(): string ;
 
     abstract protected function checkFields(array $data): bool;
@@ -36,7 +38,7 @@ abstract class Base
         }
             $TableFields = [];
             $query = "SELECT * FROM {$this->getTableName()}";
-            $result = mysqli_query($this->getConnection(), $query);
+            $result = mysqli_query(Connection::getInstance()->getConnection(), $query);
             $fields = mysqli_num_fields($result);
             for ($i = 0; $i < $fields; $i++) {
                 $FieldInfo = mysqli_fetch_field_direct($result, $i);
@@ -48,21 +50,29 @@ abstract class Base
             return $TableFields;
     }
     protected $query1;
-    public function __construct(\IConnection $query)
+    public function __construct(IConnection $query)
     {
          $this->query1 = $query;
     }
 
     /**
+     * @param int $p
      * @param int|null $id
-     * @return bool|\mysqli_result
+     * @return mixed
      */
-    public function get(int $id = null) {
+    public function get(int $p, int $id = null) {
         $where = '';
         if ($id > 0) {
             $where = ' WHERE id = '.$id;
         }
-        $query = "SELECT * FROM {$this->getTableName()} $where";
+        if ($p !=0 ){
+            $limit = "LIMIT ".($p*5-5).", 5";
+        }
+        else{
+            $limit = '';
+        }
+        $query = "SELECT * FROM {$this->getTableName()} $where $limit";
+        //echo $query;
         $result = $this->query1->query($query);
         //$result = Connection::getInstance()->query($query);
         //$result = mysqli_query($this->getConnection(), $query );
@@ -76,7 +86,7 @@ abstract class Base
     public function create(array $data) {
         if($this->checkFields($data)) {
             foreach ($data as &$val) {
-                $val = mysqli_escape_string($this->getConnection(), $val);
+                $val = mysqli_escape_string(Connection::getInstance()->getConnection(), $val);
             }
             $cols = implode(',', array_keys($data));
             $values = "'" . implode("','", $data) . "'";
@@ -96,7 +106,7 @@ abstract class Base
         if($this->checkFields($data)) {
             $values = [];
             foreach ($data as $key => $val) {
-                $val = mysqli_escape_string($this->getConnection(), $val);
+                $val = mysqli_escape_string(Connection::getInstance()->getConnection(), $val);
                 $values[] = "$key = '$val'";
             }
             $values = implode(',', $values);
@@ -116,6 +126,12 @@ abstract class Base
        // return  Connection::getInstance()->query($query);
        //return mysqli_query($this->getConnection(), $query);
         return $this->query1->query($query);
+    }
+
+
+    public function getCount(){
+        $query = " SELECT * FROM {$this->getTableName()}";
+        return mysqli_num_rows($this->query1->query($query));
     }
 }
 

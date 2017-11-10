@@ -7,10 +7,10 @@
  */
 
 namespace App\DB;
-include('IConnection.php');
+//include('IConnection.php');
 use App\Main\Config;
 
-class Connection implements \IConnection
+class Connection implements IConnection
 {
 
     private $connection;

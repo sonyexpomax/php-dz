@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Main;
-include('IConfig.php');
-class Config implements \IConfig {
+class Config implements IConfig {
 
     static private  $options = [
         'dbHost' =>     'localhost',

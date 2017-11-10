@@ -22,16 +22,24 @@ if (isset($_POST['save'])) {
 }
 if (isset($_GET['del'])) {
     $del_id = $_GET['del'];
-    $result = deleteCategory($del_id);
+    $NewCategory->delete($del_id);
+   // $result = deleteCategory($del_id);
 }
 $id = $_GET['id'];
+$str_count = ceil($NewCategory->getCount()/5);
+if (isset($_GET['p']) && ($_GET['p'] >= 1 || $_GET['p'] <= $str_count) ) {
+    $p = $_GET['p'];
+}
+else{
+    $p = 1;
+}
 
-$CategoryList = $NewCategory->get()
+$CategoryList = $NewCategory->get($p);
 ?>
 
 <div class="list">
     <h2>Список имеющихся категорий</h2>
-    <ul>
+    <ol start = '<?=($p*5-4)?>'>
         <?php
         while ($category = mysqli_fetch_assoc($CategoryList)) {
             ?>
@@ -45,7 +53,21 @@ $CategoryList = $NewCategory->get()
             <?php
         }
         ?>
-    </ul>
+    </ol>
+    <div class="pagination">
+        <?php for ($i = 1; $i <= $str_count; $i++) {
+            if ($p == $i) {
+            ?>
+                <strong style='margin: 5px; text-decoration: none; color: red;font-weight: 600; font-size: larger'><?=$i?></strong>
+            <?php
+            } else {
+            ?>
+                <a style='margin: 5px;' href='?page=category&p=<?=$i?>'><?=$i?></a>
+            <?php
+            }
+        }
+        ?>
+    </div>
 </div>
 <div class="add_form">
          <?php
@@ -54,7 +76,7 @@ $CategoryList = $NewCategory->get()
             if ($id > 0) { ?>
                 <h2>Редактирование категории</h2>
                 <?php
-                $category = mysqli_fetch_assoc($NewCategory->get($id));
+                $category = mysqli_fetch_assoc($NewCategory->get(0, $id));
                 $title = $category['title'];
                 $description = $category['description'];
             }
