@@ -21,9 +21,10 @@
         var isOpenOutputConnection2 = false;
 
         var ctx = this;
+
         mainTimer = function () {
 
-            timer = setInterval(function() {
+          var timer = setInterval(function() {
                 var outputText = '';
 
                 outputText += isOpenInputConnection ? "@ " : ". ";
@@ -160,11 +161,11 @@ function Runner() {
 myRunner = new Runner();
 
     //-----------------задание 3-----------------------
-    function Reading(countOfPages, colored, format, langugage) {
+    function Reading(countOfPages, colored, format, language) {
         this.countOfPages = countOfPages;
         this.colored = colored;
         this.format = format;
-        this.langugage = langugage;
+        this.language = language;
 
         this._edition = '';
 
@@ -177,13 +178,13 @@ myRunner = new Runner();
 
     }
 
-    function Magazine(countOfPages, colored, format, langugage, period, news) {
+    function Magazine(countOfPages, colored, format, language, period, news) {
         Reading.apply(this, arguments);
         this.period = period;
         this.news = news;
     }
 
-    function Book(countOfPages, colored, format, langugage, author) {
+    function Book(countOfPages, colored, format, language, author) {
         Reading.apply(this, arguments);
         this.author = author;
 
