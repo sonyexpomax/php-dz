@@ -11,13 +11,11 @@ Runner.giveMedal = function (obj, description) {
     if (Runner.DescriptionMedal.indexOf(description) == -1){
         var NewId = Runner.DescriptionMedal.length;
         Runner.DescriptionMedal[NewId] = description;
-        obj.medals[obj.medals.length] = NewId;
+        obj.medals.push(NewId);
     }
     else {
-        obj.medals[obj.medals.length] = Runner.DescriptionMedal.indexOf(description);
+        obj.medals.push(Runner.DescriptionMedal.indexOf(description));
     }
-
-
 }
 
 var runner1 = new Runner;
@@ -83,17 +81,43 @@ newLotteryPlayer.payment.call(newRunner);
 //------------------------  Задание 4 -----------------------
 console.log("Задание 4");
 
-function sorting() {
-    var Arr = arguments;
-    Arr.sort=[].sort;
-    Arr.sort(function (a,b) {
-        return (b%10 - a%10)
-    })
-    delete Arr.sort;
-    return Arr;
-}
+/*
+pseudomass = {
+    0:72,
+    1:25,
+    2:51,
+    3:35,
+    4:96
+};
+*/
+pseudomass = [72, 25, 51, 35, 96];
 
-console.log(sorting(72,25,51,35,96));
+console.log("-----------Входные данные:--------");
+console.log(pseudomass);
+
+pseudomass.sort = function () {
+    var count = this.length-1;
+    for (var i = 0; i < count; i++) {
+        for (var j = 0; j < count - i; j++) {
+            if ((this[j] % 10) < (this[j + 1]) % 10) {
+                var max = this[j];
+                this[j] = this[j + 1];
+                this[j + 1] = max;
+            }
+        }
+    }
+    return this;
+};
+
+console.log("---------Собственный метод:-------");
+console.log(pseudomass.sort());
+
+console.log("---------Отдолженный метод:-------");
+var pseudomassTemp = [].sort.call(pseudomass);
+
+console.log(pseudomassTemp.sort(function (a,b) {  return (b%10 - a%10) }));
+
+delete pseudomassTemp;
 
 //------------------------  Задание 5 -----------------------
 console.log("Задание 5");
