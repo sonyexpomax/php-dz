@@ -24,8 +24,6 @@ QUnit.test('test formatDate', function ( assert ) {
     assert.ok(dashboard.formatDate("text") == "Invalid timestamp", ' formatDate("text") == "Invalid timestamp" OK');
     assert.equal(dashboard.formatDate(1510158800000000),"Invalid timestamp", ' formatDate(1510158800000000) = "Invalid timestamp" true');
     assert.equal(dashboard.formatDate(151), "03:00 at 01-01-1970", ' formatDate(151) =  "03:00 at 01-01-1970" true');
-
-
 });
 
 //formatDateAgo
