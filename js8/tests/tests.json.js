@@ -46,11 +46,12 @@ var testPack = [
 	{
 		name: "formatDateAgo",
 		func: dashboard.formatDateAgo,
+		mock: 'args.forEach(function(item, i) { args[i] = Date.now() + args[i];});',
 		tests:[
-            [[Date.now()-1000], "2 seconds ago"],
-            [[Date.now()+1000], "Invalid timestamp"],
-            [[Date.now()-1000000000], "2 weeks ago"],
-            [[Date.now()-10000000000000], "Invalid timestamp"],
+            [[-2000], "3 seconds ago"],
+            [[1000], "Invalid timestamp"],
+            [[-1000000000], "2 weeks ago"],
+            [[-10000000000000], "Invalid timestamp"],
 			[["text"], "Invalid timestamp"],
 		]
 	}

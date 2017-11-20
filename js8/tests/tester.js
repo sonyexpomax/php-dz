@@ -1,6 +1,7 @@
 var tester = {};
 
 tester.test = function(f, args, result, mock) {
+	//console.log(args[0]);
 	if(mock) {
 		eval(mock);
 	}
