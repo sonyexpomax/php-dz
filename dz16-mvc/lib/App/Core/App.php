@@ -18,6 +18,19 @@ class App
     /** @var DB\IConnection */
     private static $conn;
 
+    /** @var Session */
+    private static $session;
+
+
+    /**
+     * @return Session
+     */
+    public static function getSession(): Session
+    {
+        return self::$session;
+    }
+
+
     /**
      * @return Router
      */
@@ -48,6 +61,7 @@ class App
         );
 
         static::$router = new Router($uri);
+        static::$session = Session::getInstance();
 
         $route = static::$router->getRoute();
         $className = static::$router->getController();
@@ -65,6 +79,16 @@ class App
         if (!class_exists($controllerName)) {
             throw new \Exception('Controller '.$controllerName.' not found');
         }
+
+        $layout = self::$router->getRoute();
+        if($layout == 'admin' &&  Session::get('role') !='admin'){
+            if ($action != 'loginAction'){
+                Router::redirect('/admin/users/login');
+            }
+
+        }
+
+
 
         /** @var \App\Controllers\Base $controller */
         $controller = new $controllerName($params);

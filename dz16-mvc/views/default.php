@@ -9,6 +9,7 @@
 /** @var array $data */
 
 $router = \App\Core\App::getRouter();
+$session = \App\Core\App::getSession();
 
 ?>
 <!DOCTYPE html>
@@ -33,10 +34,27 @@ $router = \App\Core\App::getRouter();
                     <a class="nav-link" href="<?=$router->buildUri('contacts.index')?>"><?=__('header.contact_us')?></a>
                 </li>
             </ul>
+
+            <?php if(\App\Core\Session::get('login')){ ?>
+                <a href="/users/logout/" type="button" class="btn second-button btn-default navbar-btn">
+                    <span class="glyphicon glyphicon-shopping-cart"></span><?=\App\Core\Session::get('login')?>, exit?
+                </a>
+            <?php }else { ?>
+                <a href="/users/login/" type="button" class="btn second-button btn-default navbar-btn">
+                    <span class="glyphicon glyphicon-shopping-cart"></span>Enter
+                </a>
+            <?php }?>
         </div>
     </nav>
     <main class="container main">
         <div class="row">
+            <?php if(\App\Core\Session::hasFlash()){ ?>
+                <div class="alert alert-info" role="alert">
+                    <?php foreach (\App\Core\Session::flash() as $message){
+                        echo $message;
+                    }?>
+                </div>
+            <?php }?>
             <?=$data['content']?>
         </div>
     </main>

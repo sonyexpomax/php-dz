@@ -40,7 +40,11 @@ Config::set('siteName', 'Academy MVC');
  * Database
  */
 Config::set('db.host', 'localhost:3306');
-Config::set('db.user', 'root');
-Config::set('db.password', 'root');
+Config::set('db.user', 'mvc');
+Config::set('db.password', 'mvc');
 Config::set('db.name', 'mvc');
 
+/**
+ * password login
+ */
+Config::set('salt', 'asdfqwer');

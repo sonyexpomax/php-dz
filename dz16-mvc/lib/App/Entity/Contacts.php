@@ -8,28 +8,29 @@
 
 namespace App\Entity;
 
-class Page extends Base
+class Contacts extends Base
 {
     public function getTableName()
     {
-        return 'pages';
+        return 'feedback';
     }
 
     public function getFields()
     {
         return [
             'id',
-            'title',
-            'alias',
-            'content',
-            'active',
+            'name',
+            'email',
+            'messages',
         ];
     }
 
     public function checkFields($data)
     {
-        if (!is_string($data['title']) || !strlen($data['title'])) {
+        if (!is_string($data['name']) || !strlen($data['name'])) {
             throw new \Exception('Page title can\'t be empty');
         }
     }
+
+
 }

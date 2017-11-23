@@ -13,10 +13,10 @@
 <div class="col-lg-12">
     <ul class="list-group">
         <li class="list-group-item active">Pages List</li>
-        <?foreach ($data as $page):?>
+        <?php foreach ($data as $page):?>
             <li class="list-group-item">
                 <a href="<?=\App\Core\App::getRouter()->buildUri('view', [$page['id']])?>"><?=$page['title']?></a>
             </li>
-        <?endforeach;?>
+        <?php endforeach;?>
     </ul>
 </div>

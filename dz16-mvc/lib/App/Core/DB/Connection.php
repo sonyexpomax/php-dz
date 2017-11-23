@@ -47,10 +47,9 @@ class Connection implements IConnection
             $result = $this->conn->query($sql);
         }
 
-        if (is_bool($result)) {
+        if (is_bool($result) || !$result->columnCount()) {
             return $result;
         }
-
         return $result->fetchAll();
     }
 
