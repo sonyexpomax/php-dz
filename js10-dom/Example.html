@@ -6,16 +6,18 @@
 		
 		<title>Example</title>
 		<script type="text/javascript" src="./Example_files/tree.js"></script>
-		<script type="text/javascript" src="./Example_files/highlight.js"></script>
 		<script type="text/javascript" src="./Example_files/notifications.js"></script>
+		<script type="text/javascript" src="./Example_files/highlight.js"></script>
 		<script type="text/javascript" src="./Example_files/info.js"></script>
 		<link rel="stylesheet" href="./style.css">
 	</head>
 	<body>
 		<h1>Dashboard</h1>
+
 		<button class = "btn" onclick="printDom(document.body,'')">Задание 1</button>
-		<button class = "btn" onclick="createDivFromUri()">Задание 2</button>
-		<button class = "btn" onclick="startCreation()">Задание 3</button>
+		<button class = "btn" onclick="highligts.findDivFromUri()">Задание 2</button>
+		<button class = "btn" onclick="info.startCreation()">Задание 3</button>
+
 		<section class="highlight" data-id="1">
 			<!-- message 1 -->
 			<h2>[News] Running 400m Results</h2>
@@ -28,6 +30,7 @@
 			</ol>
 			<footer>Delivered: <span class="date">1510138800000</span></footer>
 		</section>
+
 		<section class="highlight" data-id="2">
 			<!-- message 2 -->
 			<h2>[Message] Important info</h2>

@@ -77,7 +77,8 @@ dashboard.formatDate = function(timestamp) {
  * @returns {*}
  */
 dashboard.formatDateAgo = function(timestamp) {
-    if(!(timestamp > 1 && timestamp < (Date.now()))){
+    var currentDate = +(new Date());
+    if(!(timestamp > 1 && timestamp < currentDate)){
         return "Invalid timestamp";
     }
 
@@ -86,7 +87,6 @@ dashboard.formatDateAgo = function(timestamp) {
     }
 
 	var result = '';
-	var currentDate = +(new Date());
 	var delta = (currentDate - timestamp)/1000;
 	var timelines = {
 		weeks: 7 * 24 * 60 * 60,

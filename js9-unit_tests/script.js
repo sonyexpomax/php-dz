@@ -8,13 +8,7 @@ dashboard.init = function() {
 		dates[i].setAttribute('title', dashboard.formatDate(timestamp));
 		dates[i].innerText = dashboard.formatDateAgo(timestamp);
 	}
-	// add date additional info
-	/*var times = document.querySelectorAll('.time');
-	for(var j = 0; j < times.length; j++) {
-		var result = times[j].innerText;
-		times[j].innerText = '>' + result;
-	} */
-	//
+
 };
 dashboard.leadZero = function(num) {
 	if (typeof num === "number"){
@@ -33,9 +27,9 @@ dashboard.leadZero = function(num) {
 dashboard.sum = function(a, b) {
 	if(typeof a !== 'string' && typeof b !== 'string'){
         var sum = a + b;
-        var pattern = /^\d+\.\d+0{3,}\d$/;
+        var pattern = /^\d+\.\d+0{9,}\d$/;
         if (pattern.test(sum)) {
-            var findIndexOfZeros = sum.toString().indexOf('000');
+            var findIndexOfZeros = sum.toString().indexOf('000000000');
             sum = sum.toPrecision(findIndexOfZeros - 2);
         }
         return (+sum);
@@ -81,7 +75,9 @@ dashboard.formatDate = function(timestamp) {
  * @returns {*}
  */
 dashboard.formatDateAgo = function(timestamp) {
-    if(!(timestamp > 1 && timestamp < (Date.now()))){
+    var currentDate = +(new Date());
+
+    if(!(timestamp > 1 && timestamp < currentDate)){
         return "Invalid timestamp";
     }
 
@@ -90,7 +86,6 @@ dashboard.formatDateAgo = function(timestamp) {
     }
 
 	var result = '';
-	var currentDate = +(new Date());
 	var delta = (currentDate - timestamp)/1000;
 	var timelines = {
 		weeks: 7 * 24 * 60 * 60,

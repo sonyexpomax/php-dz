@@ -1,28 +1,30 @@
-var i = 0;
-var box;
+var info = {
+    i : 0,
+    box : "",
 
-function createDiv3() {
-    deleteDiv(i-1);
-    if(i < notifications.length){
-        var newDiv = document.createElement('div');
-        newDiv.id = notifications[i].type;
-        newDiv.className = 'info ' + notifications[i].type + 'Background';
-        newDiv.textContent = notifications[i].message;
-        document.body.appendChild(newDiv);
-        i++;
-    }
-    else{
-        i = 0;
-        clearInterval(box);
-    }
-}
+    createDiv : function() {
+        info.deleteDiv(info.i - 1);
+        if (info.i < notifications.length) {
+            var newDiv = document.createElement('div');
+            newDiv.id = notifications[info.i].type;
+            newDiv.className = 'info ' + notifications[info.i].type + 'Background';
+            newDiv.textContent = notifications[info.i].message;
+            document.body.appendChild(newDiv);
+            info.i++;
+        }
+        else {
+            info.i = 0;
+            clearInterval(info.box);
+        }
+    },
 
-function deleteDiv() {
-    if(i > 0){
-        document.body.removeChild(document.getElementById((notifications[i-1].type)))
-    }
-}
+    deleteDiv : function() {
+        if (info.i > 0) {
+            document.body.removeChild(document.getElementById((notifications[info.i - 1].type)))
+        }
+    },
 
-function startCreation() {
-    box = setInterval(createDiv3, 2000);
-}
+    startCreation :function () {
+        info.box = setInterval(info.createDiv, 2000);
+    }
+};
