@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Forms</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>
+
+function moveElementToTheCenter(element) {
+   var newElemX = window.innerWidth/2 - parseInt(getComputedStyle(element).width)/2 + 50;
+   var newElemY = window.innerHeight/2 - parseInt(getComputedStyle(element).height)/2 + 50;
+
+   giveCoordToTheElement(element, newElemX, newElemY);
+}
+
+function moveElementWithTheShift(element, shiftCoordsX, shiftCoordsY) {
+    var newElemX = element.getBoundingClientRect().left - shiftCoordsX;
+    var newElemY = element.getBoundingClientRect().top - shiftCoordsY;
+
+    giveCoordToTheElement(element, newElemX, newElemY);
+}
+
+function giveCoordToTheElement(element, newElemX, newElemY) {
+    element.style.left = newElemX + 'px';
+    element.style.top = newElemY + 'px';
+}
+
+function moveBodyBackground(shiftCoordsX, shiftCoordsY) {
+    var element = document.body;
+
+    var newElemY = element.getBoundingClientRect().top + shiftCoordsY;
+    var newElemX =  element.getBoundingClientRect().left + shiftCoordsX;
+
+    element.style.backgroundPositionY = newElemY + 'px';
+    element.style.backgroundPositionX = newElemX + 'px';
+}
+
+document.body.addEventListener('mousemove',function (event) {
+    var element = '';
+    var shiftCoordsX = 0;
+    var shiftCoordsY = 0;
+    for(var i = 1; i < 4; i++){
+
+        element = document.querySelector('.layer'+i);
+
+        if (event.pageX > (window.innerWidth/2 - 30) && event.pageX < (window.innerWidth/2 + 30) &&
+            event.pageY > (window.innerHeight/2 - 30) && event.pageY < (window.innerHeight/2 + 30)){
+            moveElementToTheCenter(element);
+        }else {
+            shiftCoordsX = event.movementX > 0 ? (event.movementX + 3 / i) : (event.movementX - 3 / i);
+            shiftCoordsY = event.movementY > 0 ? (event.movementY + 3 / i) : (event.movementY - 3 / i);
+
+            moveElementWithTheShift(element,shiftCoordsX,shiftCoordsY);
+            moveBodyBackground(shiftCoordsX, shiftCoordsY);
+        }
+    }
+});
+
+
+
+</script>
+    <div class="layer1" id ="layer1">
+        <div class="layer2" id ="layer2">
+            <div class="layer3" id ="layer3"></div>
+        </div>
+    </div>
+</body>
+</html>

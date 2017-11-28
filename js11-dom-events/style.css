@@ -1,0 +1,40 @@
+
+body {
+    background-image: url("bg2.png") ;
+    height: 100%;
+
+    margin: 0;
+    padding: 0;
+    background-color: #FFCC00;
+}
+html {
+    height: 100%;
+}
+
+.layer1,.layer2,.layer3{
+    position: fixed;
+}
+.layer1{
+    top:200px;
+    left:200px;
+    width: 400px;
+    height: 400px;
+    border-radius: 10px;
+    background-color: #008800;
+}
+.layer2{
+    top:250px;
+    left:250px;
+    width: 300px;
+    height: 300px;
+    border-radius: 10px;
+    background-color: gold;
+}
+.layer3{
+    top:300px;
+    left:300px;
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    background-color: #bd081c;
+}
