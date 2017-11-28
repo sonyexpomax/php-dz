@@ -1,5 +1,6 @@
 <?php
 namespace App\Entity;
+use App\Main\Config;
 use App\DB\Connection;
 use App\DB\IConnection;
 
@@ -66,7 +67,7 @@ abstract class Base
             $where = ' WHERE id = '.$id;
         }
         if ($p !=0 ){
-            $limit = "LIMIT ".($p*5-5).", 5";
+            $limit = "LIMIT ".($p * (Config::getPageLimit()) - Config::getPageLimit()).", ".Config::getPageLimit();
         }
         else{
             $limit = '';
