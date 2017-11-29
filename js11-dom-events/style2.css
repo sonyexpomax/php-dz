@@ -1,0 +1,67 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+.modal{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    width: 200px;
+    height: 250px;
+    text-align: center;
+    background-color: #ffffff;
+    box-shadow:
+            0 1px 4px rgba(0, 0, 0, .3),
+            -23px 0 20px -23px rgba(0, 0, 0, .8),
+            23px 0 20px -23px rgba(0, 0, 0, .8),
+            0 0 40px rgba(0, 0, 0, .1) inset;
+    border-radius: 10px;
+}
+.modal h2{
+    padding:2%;
+    text-align: left;
+    font-size: 16px;
+    color: #ffffff;
+    width: 96%;
+    background-color: #4267b2;
+    margin:0;
+    border-radius: 10px 10px 0 0;
+    height: 24px;
+}
+.modal h2:hover{
+    cursor: move;
+}
+
+.close {
+    width: 25px;
+    height: 25px;
+    background-color: #bd081c;
+    float: right;
+    position: relative;
+    top:-27px;
+    margin-right: 5px;
+    border-radius:100%;
+
+}
+.close:hover {
+    cursor: pointer;
+}
+.close:before, .close:after {
+    position: absolute;
+    top:3px;
+    left: 11px;
+    content: ' ';
+    height: 20px;
+    width: 4px;
+    background-color: #ffffff;
+}
+.close:before {
+    transform: rotate(45deg);
+}
+.close:after {
+    transform: rotate(-45deg);
+}
