@@ -10,46 +10,36 @@ namespace App\Controllers;
 use App\Core\Config;
 use App\Core\Router;
 use App\Core\Session;
-use \App\Entity\Page;
 use \App\Core\App;
-use App\Entity\Users;
+use App\Entity\User;
 
 class UsersController extends Base
 {
     /** @var Page  */
-    private $usersModel;
+    private $userModel;
 
     public function __construct($params = [])
     {
         parent::__construct($params);
 
-        $this->usersModel = new Users(App::getConnection());
+        $this->userModel = new User(App::getConnection());
     }
 
 
 
     public  function loginAction(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login']) && isset($_POST['password'])){
-
-            $user = $this->usersModel->getByLogin(($_POST['login']));
-
-            $hash = md5(Config::get('salt').$_POST['password']);
-
-            if($user && $hash != $user['password']) {
-                Session::addFlash('login or password incorrect');
-                return false;
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' ) {
+            try {
+                $user = $this->userModel->login($_POST, "user");
+            } catch (\Exception $e) {
+                Session::addFlash($e->getMessage());
+                return;
             }
 
-            if($user['active'] == '0'){
-                Session::addFlash("The login \"{$user['login']}\" has deactivated. Contact your administrator.");
-                return false;
-            }
-
-                Session::set('login', $user['login']);
-                Session::set('role', $user['role']);
-                Router::redirect('/pages/');
+            Session::set('login', $user['login']);
+            Session::set('role', $user['role']);
+            Router::redirect('/pages/');
         }
-
     }
 
     public function logoutAction(){
@@ -58,44 +48,18 @@ class UsersController extends Base
     }
 
     public function registerAction(){
-       // var_dump($_POST);
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['login']) && isset($_POST['password']) && isset($_POST['confirm_password']) && isset($_POST['email'])) {
-
-                if ($_POST['password'] != $_POST['confirm_password']) {
-                    Session::addFlash('Password and confirm password must be same');
-                    return false;
-                }
-
-                if (strlen($_POST['password']) < 7) {
-                    Session::addFlash('You have entered less than 8 characters for password');
-                    return false;
-                }
-                $_POST['role'] = 'user';
-
-                if ($this->usersModel->getByLogin($_POST['login'])){
-                    Session::addFlash("User with this login has already existed!");
-                    return false;
-                }
-
-                $_POST['password'] = md5(Config::get('salt').$_POST['password']);
-
-                $result = $this->usersModel->save($_POST);
-
-                if (($result) == true) {
-                    Session::addFlash("You have registered successfully");
-                    Router::redirect('/users/login/');
-                }
-                else{
-                    Session::addFlash("Error mysql");
-                };
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' ) {
+            $role = 'user';
+            try {
+                $this->userModel->register($_POST);
+            } catch (\Exception $e) {
+                Session::addFlash($e->getMessage());
+                return;
             }
-            else {
-                Session::addFlash('You must fill all of the fields');
-                return false;
-            }
+
+            Session::addFlash("You have registered successfully");
+            Router::redirect('/users/login/');
         }
-
     }
 
 }

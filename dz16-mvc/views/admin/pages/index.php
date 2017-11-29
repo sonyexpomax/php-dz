@@ -22,23 +22,44 @@ $router = \App\Core\App::getRouter();
         </div>
     </div>
 
-    <ul class="list-group">
-        <li class="list-group-item active">Pages List</li>
-        <?php foreach ($data as $page):?>
-            <li class="list-group-item">
-                <?=$page['title']?>
+   <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Published</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
 
-                <a class="btn btn-sm btn-success"
-                   href="<?=$router->buildUri('edit', [$page['id']])?>">Edit</a>
+        <?php
+        foreach ($data as $page):?>
+            <tr>
+                <td><?=$page['id']?></td>
+                <td><?=$page['title']?></td>
+                <td><?php if($page['active'] == 1){ ?>
+                        <h3>
+                            <span class="badge badge-primary">
+                                YES
+                            </span>
+                        </h3>
+                    <?php } else { ?>
+                       <h3>
+                           <span class="badge badge-danger">NO</span>
+                        </h3>
+                    <?php } ?></td>
+                <td>
+                    <a class="btn btn-md btn-success"
+                       href="<?=$router->buildUri('edit', [$page['id']])?>">Edit</a>
 
-                <a class="btn btn-sm btn-warning" onclick="return confirmDelete();"
-                   href="<?=$router->buildUri('delete', [$page['id']])?>">Delete</a>
-
-            </li>
+                    <a class="btn btn-md btn-warning" onclick="return confirmDelete();"
+                       href="<?=$router->buildUri('delete', [$page['id']])?>">Delete</a>
+                </td>
+            </tr>
         <?php endforeach;?>
-    </ul>
-
-
+        </tbody>
+    </table>
 
 
 

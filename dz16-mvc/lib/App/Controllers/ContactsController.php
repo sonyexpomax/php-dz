@@ -8,10 +8,8 @@
 
 namespace App\Controllers;
 
-use App\Core\Router;
 use App\Core\Session;
 use App\Entity\Contacts;
-use \App\Entity\Page;
 use \App\Core\App;
 
 class ContactsController extends Base {

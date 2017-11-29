@@ -23,6 +23,7 @@ $router = \App\Core\App::getRouter();
             <th>Role</th>
             <th>Email</th>
             <th>Active</th>
+            <th>Delete</th>
         </tr>
         </thead>
         <tbody>
@@ -34,6 +35,10 @@ $router = \App\Core\App::getRouter();
                     <td><?=$user['role']?></td>
                     <td><?=$user['email']?></td>
                     <td><input name = "active[<?=$user['id']?>][]" data-reverse type="checkbox" <?php if($user['active']=='1') { ?> checked <?php } ?>></td>
+                    <td>
+                         <a class="btn btn-md btn-warning" onclick="return confirmDelete();"
+                           href="<?=$router->buildUri('delete', [$user['id']])?>">Delete</a>
+                    </td>
                 </tr>
         <?php endforeach;?>
             <tr>

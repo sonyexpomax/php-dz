@@ -15,20 +15,36 @@ $router = \App\Core\App::getRouter();
 </div>
 
 <div class="col-lg-12">
-    <ul class="list-group">
-        <li class="list-group-item active">Messages List</li>
-        <?php  foreach ($data as $message):?>
-            <li class="list-group-item">
-                <p class="font-weight-normal">Name - <?= $message['name'] ?> </p>
-                <p class="font-italic">Email - <?= $message['email'] ?></p>
 
-                <a class="btn btn-sm btn-success"
-                   href="<?=$router->buildUri('edit', [$message['id']])?>">Edit</a>
+    <table class="table table-condensed">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
 
-                <a class="btn btn-sm btn-warning" onclick="return confirmDelete();"
-                   href="<?=$router->buildUri('delete', [$message['id']])?>">Delete</a>
+        <?php
+        foreach ($data as $message):?>
+            <tr>
+                <td><?=$message['id']?></td>
+                <td><?=$message['name']?></td>
+                <td><?=$message['email']?></td>
+                <td>
+                    <a class="btn btn-md btn-success"
+                       href="<?=$router->buildUri('edit', [$message['id']])?>">Edit</a>
 
-            </li>
+                    <a class="btn btn-md btn-warning" onclick="return confirmDelete();"
+                       href="<?=$router->buildUri('delete', [$message['id']])?>"><span class="glyphicon glyphicon-remove"></span> Remove </a>
+                    <span class=""></span>
+                </td>
+            </tr>
         <?php endforeach;?>
-    </ul>
+        </tbody>
+    </table>
+
+
 </div>

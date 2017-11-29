@@ -1,7 +1,7 @@
 <main role="main" class="container">
 
     <div class="starter-template">
-        <h1>Login</h1>
+        <h1>User registration</h1>
         <form action="" method="post">
 
             <div class="form-group">
@@ -24,7 +24,7 @@
                 <input type="email" id="email" name="email" value="" class="form-control">
             </div>
 
-            <input type="submit" class="btn btn-success">
+            <input type="submit" class="btn btn-success" name="submit" value="Ok">
 
         </form>
     </div>

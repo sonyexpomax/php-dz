@@ -11,7 +11,7 @@ $isNew = empty($data) || isset($data['new']);
 ?>
 
 <div class="col-lg-12">
-    <h1><?=($isNew ? 'Create' : 'Edit')?> Page</h1>
+    <h1><?=($isNew ? 'Create' : 'Edit')?> Message</h1>
 </div>
 <div class="col-lg-12">
     <form method="post" action="">

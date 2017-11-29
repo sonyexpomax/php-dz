@@ -14,7 +14,7 @@
                 <input type="password" id="password" name="password" value="" class="form-control" required>
             </div>
 
-            <input type="submit" class="btn btn-success">
+            <input type="submit" class="btn btn-success" value="Enter">
             <a href="/users/register/" type="button" class="btn btn-primary">Register</a>
         </form>
     </div>

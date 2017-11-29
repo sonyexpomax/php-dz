@@ -11,26 +11,24 @@ namespace App\Controllers\Admin;
 use App\Core\Config;
 use App\Core\Router;
 use App\Core\Session;
-use App\Entity\Contacts;
-use \App\Entity\Page;
 use \App\Core\App;
-use App\Entity\Users;
+use App\Entity\User;
 
 class UsersController extends \App\Controllers\Base
 {
     /** @var Page  */
-    private $usersModel;
+    private $userModel;
 
     public function __construct($params = [])
     {
         parent::__construct($params);
 
-        $this->usersModel = new Users(App::getConnection());
+        $this->userModel = new User(App::getConnection());
     }
 
     public function indexAction()
     {
-        $this->data = $this->usersModel->list();
+        $this->data = $this->userModel->list();
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['active'])) {
             $dataActive = "";
@@ -46,7 +44,7 @@ class UsersController extends \App\Controllers\Base
                 if($dataActive != $postActive){
               //      echo "dataActive = $dataActive  -------- postActive = $postActive";
                     if ($postActive == "0"){
-                        $result = $this->deactivate($value['id']);
+                        $result = $this->userModel->deactivate($value['id']);
                         var_dump($result);
                         if ($result){
                             Session::addFlash("User \"{$value['login']}\" has deactivated");
@@ -56,7 +54,7 @@ class UsersController extends \App\Controllers\Base
                         }
                     }
                     elseif ($postActive == "1"){
-                        $result = $this->activate($value['id']);
+                        $result = $this->userModel->activate($value['id']);
                         if ($result){
                             Session::addFlash("User \"{$value['login']}\" has activated");
                         }else{
@@ -71,31 +69,7 @@ class UsersController extends \App\Controllers\Base
 
     }
 
-    public function editAction()
-    {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            try {
-                $id = isset($this->params[0]) ? $this->params[0] : null;
-                $this->data = [
-                    'name' => $_POST['name'],
-                    'email' => $_POST['email'],
-                    'messages' => $_POST['messages'],
-                    'new' => true,
-                ];
-                $this->usersModel->save($this->data, $id);
 
-                Session::addFlash('Message has been saved');
-                Router::redirect(   App::getRouter()->buildUri('index')  );
-
-            } catch (\Exception $e) {
-               Session::addFlash($e->getMessage());
-            }
-        }
-
-        if (isset($this->params[0]) && $this->params[0] > 0) {
-            $this->data = $this->usersModel->getById($this->params[0]);
-        }
-    }
 
     public function deleteAction()
     {
@@ -103,7 +77,7 @@ class UsersController extends \App\Controllers\Base
 
         if (!$id) {
             Session::addFlash('Missing user id');
-        } elseif ($this->usersModel->delete($id)) {
+        } elseif ($this->userModel->delete($id)) {
             Session::addFlash('user has been deleted');
         } else {
             Session::addFlash('Couldn\'t delete user');
@@ -114,42 +88,21 @@ class UsersController extends \App\Controllers\Base
         );
     }
 
-    public function activate($id){
-       return $this->usersModel->save(['active'=> '1'], $id);
-    }
-
-    public function deactivate($id){
-       return $this->usersModel->save(['active'=> '0'], $id);
-    }
-
     public  function loginAction(){
-        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login']) && isset($_POST['password'])){
-
-            $user = $this->usersModel->getByLogin(($_POST['login']));
-
-            $hash = md5(Config::get('salt').$_POST['password']);
-
-            if($user && $hash != $user['password']) {
-                Session::addFlash('login or password incorrect');
-                return false;
-            }
-
-            if($user['active'] == '0'){
-                Session::addFlash("The login \"{$user['login']}\" has deactivated. Contact your administrator.");
-                return false;
-            }
-
-            if($user['role'] != 'admin'){
-                Session::addFlash("The login \"{$user['login']}\" does not have admin rights.");
-                return false;
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' ) {
+            try {
+                $user = $this->userModel->login($_POST, "admin");
+            } catch (\Exception $e) {
+                Session::addFlash($e->getMessage());
+                return;
             }
 
             Session::set('login', $user['login']);
             Session::set('role', $user['role']);
             Router::redirect('/admin/pages/');
         }
-
     }
+
 
     public function logoutAction(){
         Session::destroy();
