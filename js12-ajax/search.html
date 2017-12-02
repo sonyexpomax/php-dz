@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пример живого поиска</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<div class="main">
+
+    <h2>
+        <span style='color: #472bff;'>F</span>
+        <span style='color: #ff072e;'>I</span>
+        <span style='color: #ffc70f; '>N</span>
+        <span style='color: #3d0aff; '>D</span>
+        <span style='color: #09802c; '>E</span>
+        <span style='color: #ff3709; '>R</span>
+    </h2>
+    <input name="search" type="text" id="search" class="search_input"  AUTOCOMPLETE="off">
+    <div class="tips"></div>
+    <div class="search_result"></div>
+</div>
+<script type="text/javascript">
+
+    var timer  =null;
+    document.querySelector(".search_input").onfocus = function () {
+        document.querySelector(".tips").style.display = '';
+    };
+
+    document.querySelector('.search_input').addEventListener('keypress',function (event) {
+
+        clearTimeout(timer);
+
+        timer = setTimeout(function () {
+            requestTip(document.querySelector('.search_input').value);
+        }, 500);
+    });
+
+    function requestTip(searchInput) {
+        var url = 'http://frer.zzz.com.ua/1.php?search=' + searchInput;
+        var request = new XMLHttpRequest();
+
+        request.open('GET', url);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.send();
+        //console.log('запрос ушел');
+
+        request.onreadystatechange = function () {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    var result = request.response.slice(0, request.response.indexOf('<!-- zzz <!--]-->'));
+                    document.querySelector(".tips").innerHTML = result;
+                    document.querySelector(".tips").style.display = '';
+                }
+            }
+        };
+    }
+
+    function getRow(tip) {
+
+        var url = 'http://frer.zzz.com.ua/1.php';
+        var request = new XMLHttpRequest();
+        var body = 'tip=' + encodeURIComponent(tip);
+
+        request.open('POST', url);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        request.send(body);
+
+        request.onreadystatechange = function() {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    var result = request.response.slice(0,request.response.indexOf('<!-- zzz <!--]-->'));
+                    document.querySelector(".search_result").innerHTML = JSON.parse(result);
+                    document.querySelector(".search_input").value = tip;
+                    document.querySelector(".tips").style.display = 'none';
+                }
+            }
+        };
+    }
+
+/*
+    $(function(){
+        $("#search").keyup(function(){
+            var search = $("#search").val();
+            $.ajax({
+                type: "GET",
+                url: "http://frer.zzz.com.ua/1.php",
+                data: {"search": search},
+                cache: false,
+                success: function(response){
+                    document.querySelector(".tips").style.display = '';
+                    var result = response.slice(0,response.indexOf('<!-- zzz <!--]-->'));
+                    $(".tips").html(result);
+                }
+            });
+            return false;
+        });
+    });
+    */
+/*
+    function getRow3(tip) {
+            $.ajax({
+                type: "POST",
+                url: "http://frer.zzz.com.ua/1.php",
+                data: {"tip": tip},
+                cache: false,
+                success: function(response){
+                    //alert(response);
+                    var result = response.slice(0,response.indexOf('<!-- zzz <!--]-->'));
+                    //$(".search_result").html(JSON.parse(result));
+                    document.querySelector(".search_input").value = tip;
+                    document.querySelector(".tips").style.display = 'none';
+                }
+
+            });
+            return false;
+    }
+*/
+
+
+
+
+</script>
+
+<body>
+</body>
+</html>
