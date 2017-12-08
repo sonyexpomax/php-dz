@@ -9,8 +9,9 @@
 <script>
 
 function moveElementToTheCenter(element) {
-   var newElemX = window.innerWidth/2 - parseInt(getComputedStyle(element).width)/2 + 50;
-   var newElemY = window.innerHeight/2 - parseInt(getComputedStyle(element).height)/2 + 50;
+   var newElemX = window.innerWidth/2 - parseInt(getComputedStyle(element).width)/2 ;
+   var newElemY = window.innerHeight/2 - parseInt(getComputedStyle(element).height)/2;
+   console.log(newElemY);
 
    giveCoordToTheElement(element, newElemX, newElemY);
 }
@@ -30,11 +31,11 @@ function giveCoordToTheElement(element, newElemX, newElemY) {
 function moveBodyBackground(shiftCoordsX, shiftCoordsY) {
     var element = document.body;
 
-    var newElemY = element.getBoundingClientRect().top + shiftCoordsY;
-    var newElemX =  element.getBoundingClientRect().left + shiftCoordsX;
+    element.style.backgroundPositionX === '' ? element.style.backgroundPositionX = '0px' : '';
+    element.style.backgroundPositionY === '' ? element.style.backgroundPositionY = '0px' : '';
 
-    element.style.backgroundPositionY = newElemY + 'px';
-    element.style.backgroundPositionX = newElemX + 'px';
+    element.style.backgroundPositionY = (parseFloat(element.style.backgroundPositionY) + shiftCoordsY) + 'px';
+    element.style.backgroundPositionX = (parseFloat(element.style.backgroundPositionX) + shiftCoordsX) + 'px';
 }
 
 document.body.addEventListener('mousemove',function (event) {
@@ -42,15 +43,13 @@ document.body.addEventListener('mousemove',function (event) {
     var shiftCoordsX = 0;
     var shiftCoordsY = 0;
     for(var i = 1; i < 4; i++){
-
         element = document.querySelector('.layer'+i);
-
         if (event.pageX > (window.innerWidth/2 - 30) && event.pageX < (window.innerWidth/2 + 30) &&
             event.pageY > (window.innerHeight/2 - 30) && event.pageY < (window.innerHeight/2 + 30)){
             moveElementToTheCenter(element);
         }else {
-            shiftCoordsX = event.movementX > 0 ? (event.movementX + 3 / i) : (event.movementX - 3 / i);
-            shiftCoordsY = event.movementY > 0 ? (event.movementY + 3 / i) : (event.movementY - 3 / i);
+            shiftCoordsX = event.movementX * 0.9 / i;
+            shiftCoordsY = event.movementY * 0.9 / i;
 
             moveElementWithTheShift(element,shiftCoordsX,shiftCoordsY);
             moveBodyBackground(shiftCoordsX, shiftCoordsY);

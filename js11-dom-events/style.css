@@ -2,10 +2,10 @@
 body {
     background-image: url("bg2.png") ;
     height: 100%;
-
     margin: 0;
     padding: 0;
-    background-color: #FFCC00;
+    background-position-x: 0px;
+    background-position-y: 0px ;
 }
 html {
     height: 100%;
