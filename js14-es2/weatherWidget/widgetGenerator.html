@@ -11,10 +11,10 @@
         .weatherWidget{
             width: 220px;
             height: 160px;
-            background: linear-gradient(#38a4b2, #0c005d);
             border-radius: 20px;
             margin: 5px;
             clear: both;
+
         }
         .location{
             padding-top: 10px;
@@ -43,12 +43,13 @@
             text-shadow:1px 1px 2px #000000;
         }
      </style>
+    <script src=cities.js></script>
 </head>
 <body>
-<script src=cities.js></script>
-<script>
-//    import {cities} from "./cityes";
 
+<script>
+  //  import {cities} from "./cities.js";
+let weatherWidget = document.querySelector('.weatherWidget');
     checkOutReqouest = () => {
         let city = false;
         let theme = false;
@@ -57,6 +58,7 @@
             theme = getQueryVariable('theme');
             requestForecast(city,theme);
         }
+        console.log(weatherWidget);
     };
 
     getQueryVariable = (variable) => {
@@ -70,71 +72,81 @@
     };
 
     requestForecast = (city, theme) => {
+        console.log(weatherWidget);
+        let cookieValue = getCookie(`${city}-${theme}`);
+        if (cookieValue === '') {
 
-        return new Promise(function(resolve, reject) {
+            console.log('no cookie');
+            console.log(weatherWidget);
+            return new Promise(function (resolve, reject) {
 
-            let url = 'http://api.apixu.com/v1/current.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city;
-            let request = new XMLHttpRequest();
+                let url = 'http://api.apixu.com/v1/current.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city;
+                let request = new XMLHttpRequest();
 
-            request.open('GET', url);
-            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-
-                request.onload = function() {
+                request.open('GET', url);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.onload = function () {
                     if (this.status === 200) {
+
                         resolve(this.response);
                         console.log('запрос вернулся успешно');
+
+                        let data = JSON.parse(request.response);
+
+                        console.log('city = ' + data['location']['name']);
+                        console.log('icon = ' + data["current"]["condition"]["icon"]);
+                        console.log('text = ' + data["current"]["condition"]["text"]);
+                        console.log('temp = ' + data["current"]["temp_c"]);
+                        console.log('theme = ' + theme);
+
+                        createWidget(
+                            data['location']['name'],
+                            data["current"]["condition"]["icon"],
+                            data["current"]["condition"]["text"],
+                            data["current"]["temp_c"],
+                            theme
+                        );
+
+                        //set cookie
+                        setCookie(
+                            `${data['location']['name']}-${theme}`,
+                            `${data["current"]["condition"]["icon"]},${data["current"]["condition"]["text"]},${data["current"]["temp_c"]}`
+                        );
                     } else {
                         let error = new Error(this.statusText);
                         error.code = this.status;
                         reject(error);
                     }
                 };
-
-                request.onerror = function() {
+                request.onerror = function () {
                     reject(new Error("Network Error"));
                 };
-
-            request.send();
-            console.log('запрос ушел');
-
-            request.onreadystatechange = function () {
-                if (request.readyState === 4) {
-                    if (request.status === 200) {
-                        let data = JSON.parse(request.response);
-                        createWidget(data['location']['name'], data["current"]["condition"]["icon"], data["current"]["condition"]["text"], data["current"]["temp_c"], theme);
-                    }
-                }
-            };
-
-        });
-
+                request.send();
+                console.log('запрос ушел');
+            });
+        }
+        else{
+            console.log('yes cookie');
+            console.log(weatherWidget);
+            let weatherItems = cookieValue.split(',');
+            console.log('city = ' + city);
+            console.log('icon = ' + weatherItems[0]);
+            console.log('text = ' + weatherItems[1]);
+            console.log('temp = ' + weatherItems[2]);
+            console.log('theme = ' + theme);
+            createWidget(city, weatherItems[0], weatherItems[1], weatherItems[2], theme);
+        }
 
     };
 
+
     createWidget = (location, icon, text, temp, theme) => {
-
-        let divWeatherWidget = document.createElement("div");
-        let divlocation = document.createElement("div");
-        let img = document.createElement("img");
-        let divtemp = document.createElement("div");
-        let divtext = document.createElement("div");
-
-        divWeatherWidget.className = 'weatherWidget';
-        divWeatherWidget.style.background = generateTheme(theme);
-        divlocation.textContent = cities.get(location);
-        divlocation.className = 'location';
-        img.src = icon;
-        img.className = 'img';
-        divtemp.textContent = temp + `\u2103`;
-        divtemp.className = 'temp';
-        divtext.textContent = text ;
-        divtext.className = 'text';
-
-        divWeatherWidget.appendChild(divlocation);
-        divWeatherWidget.appendChild(img);
-        divWeatherWidget.appendChild(divtemp);
-        divWeatherWidget.appendChild(divtext);
-        document.body.appendChild(divWeatherWidget);
+     document.querySelector('.weatherWidget').style.display ='block';
+     document.querySelector('.weatherWidget').style.background = generateTheme(theme);
+     document.querySelector('.location').textContent = location;
+     document.querySelector('.temp').textContent = temp + `\u2103`;
+     document.querySelector('.text').textContent = text;
+     document.querySelector('.img').src = icon;
 
     };
 
@@ -160,8 +172,37 @@
         return `linear-gradient(${color1}, ${color2})`;
     };
 
+    setCookie = (cname, cvalue) => {
+        let d = new Date();
+        d.setTime(d.getTime() + (10* 60 * 1000));
+        let expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    };
+
+    getCookie = (cname) => {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return '';
+    };
+
     checkOutReqouest();
 </script>
+
+<div class="weatherWidget">
+    <div class="location"></div>
+    <img src="" class="img" alt="">
+    <div class="temp"></div>
+    <div class="text"></div>
+</div>
 
 </body>
 </html>

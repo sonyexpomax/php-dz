@@ -7,41 +7,6 @@
         body{
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
-        .weatherWidget{
-            width: 220px;
-            height: 160px;
-            background: linear-gradient(#38a4b2, #0c005d);
-            border-radius: 20px;
-            margin: 5px;
-            display: none;
-            clear: both;
-        }
-        .location{
-            padding-top: 10px;
-            width: 100%;
-            text-align: center;
-            font-size: 20px;
-        }
-        .img{
-            width: 64px;
-            height: 64px;
-            margin: 5px;
-            float: left;
-        }
-        .temp{
-            font-size: 40px;
-            float: right;
-            margin:15px 10px 5px 5px;
-         }
-        .text{
-            clear: both;
-            font-size: 16px;
-            margin: 15px;
-         }
-        .text, .temp, .location{
-            color: #ffffff;
-            text-shadow:1px 1px 2px #000000;
-        }
         select{
             width: 220px;
             font-size: 20px;
@@ -107,7 +72,7 @@
     let isFirstPreview = true;
 
     fillSelect = () => {
-        cities.forEach(function (ruValue, enValue, arr) {
+        cities.forEach(function (ruValue, enValue) {
             let newOption = document.createElement('option');
             newOption.value = enValue;
             let text = document.createTextNode(ruValue);
@@ -122,7 +87,7 @@
         let city = document.querySelector('.city_list').value;
         let theme = document.querySelector('.theme').value;
         document.querySelector('.html_code').children[1].textContent =
-            `<iframe src=\'widgetGenerator.html?city=${city}&theme=${theme}\'></iframe>`;
+            `<iframe src=\'http://widgetGenerator.html?city=${city}&theme=${theme}\'></iframe>`;
 
         //make preview;
         if(!isFirstPreview){

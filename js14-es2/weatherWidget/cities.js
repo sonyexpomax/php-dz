@@ -14,3 +14,4 @@ let cities = new Map([
     ["Houston", "Хьюстон"],
     ["Madrid", "Мадрид"],
 ]);
+export {cities};
