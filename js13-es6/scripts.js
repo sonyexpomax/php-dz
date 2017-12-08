@@ -61,7 +61,7 @@ xo.startGame = (isReplay) => {
         let elementWithClick = event.target || event.srcElement;
         if (elementWithClick.className === 'field'){
             let id = elementWithClick.id.substr(elementWithClick.id.length-1,1);
-            if(xo.freeFields[id] !== undefined) {
+            if(xo.freeFields[id] !== undefined && !xo.computerCalculation) {
                 xo.userMove(elementWithClick.id);
             }
         }
@@ -233,11 +233,12 @@ setComputerMove = (id) => {
     setTimeout(function () {
         document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
         document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
+        xo.computerCalculation = false;
     },300);
 
     xo.computerMoves.push(id);
     xo.checkWinning(xo.computerMoves, 'computer');
-    xo.computerCalculation = false;
+
 };
 
 /**
