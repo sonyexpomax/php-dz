@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<script>
+    "use strict";
+
+    //********************** задание 1 **********************
+    console.log('***************** задание 1 ****************');
+
+    let obj = {
+        one: "1",
+        two: "2"
+    };
+
+    let {one, two} = obj;
+
+    obj['one'] = two;
+    obj['two'] = one;
+
+    console.log(obj); // cap
+
+
+    //********************** задание 2 **********************
+    console.log('******************* задание 2 **************');
+
+    let o1 = { a: 1, d: 34287 };
+    let o2 = { b: 2, c: 'adadfs' };
+    let o3 = { c: 3, a: 'sdf,ljhsk' };
+    let g = 'gg';
+
+    let objectAssign = (...args) => {
+        let newObject = {};
+        for(let i = 0; i < args.length; i++ ){
+            for (let key in args[i]) {
+                newObject[key] = args[i][key];
+            }
+        }
+        return newObject;
+    };
+
+    console.log('Вывод встроенным Object.assign');
+    console.log(Object.assign(o1, o2, o3, g));
+    console.log('Вывод собственным objectAssign');
+    console.log(objectAssign(o1, o2, o3, g));
+
+
+    //********************** задание 3 **********************
+    console.log('******************* задание 3 **************');
+
+    function showBasket(price = 0,count = 0) {
+        if (count !== 0) {
+            let shower = '';
+            let lastSymvolOfCount = count.toString().substr(count.length-1,1);
+            switch(lastSymvolOfCount) {
+                case '1':
+                    shower = 'товар';
+                    break;
+                case '2':
+                case '3':
+                case '4':
+                    shower = 'товара';
+                    break;
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                case '0':
+                    shower = 'товаров';
+                    break;
+            }
+             console.log(`В корзине ${count} ${shower} на сумму ${price * count} грн.`);
+        }
+        else{
+            console.log('В корзине нет товаров');
+        }
+    }
+    showBasket(20,4);
+    showBasket(0,4);
+    showBasket(20,0);
+
+</script>
+<body>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

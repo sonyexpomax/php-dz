@@ -1,0 +1,186 @@
+body,html {
+    height: 100%;
+    width: 670px;
+    margin: 0 auto;
+    padding: 0;
+    background-color: #f2ffae;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.main, .buttons{
+    margin: 0 auto;
+    width:330px;
+
+}
+
+.main{
+    box-shadow: 7px 7px 36px -2px rgba(0,0,0,0.75);
+    background-color: #ffffff;
+    height: 400px;
+    width:330px;
+    float: left;
+    margin-top: 10px;
+    margin-left:20px ;
+    display: none;
+}
+.field{
+    width: 100px;
+    height: 80px;
+    padding-top: 20px;
+    background:linear-gradient(#f66a1b 5%, #d0b891 100% );
+    background-color:#d0b891;
+    margin: 5px;
+    float: left;
+    font-size: 50px;
+    text-align: center;
+    border-radius: 30%;
+    font-weight: 800;
+    cursor: pointer;
+}
+.won{
+    background-color: #c9db14;
+    animation: myanimation 2s infinite;
+}
+.draw{
+    background:-moz-linear-gradient( center top, #756d75 5%, #cabac9 100% );
+    background:-ms-linear-gradient( top, #756d75 5%, #cabac9 100% );
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #756d75), color-stop(100%, #cabac9) );
+    background-color:#cabac9;
+}
+
+header{
+    width: 100%;
+}
+header h1{
+    color: #0c005d;
+    font-size: 36px;
+    text-align: center;
+}
+
+header p, .buttons p{
+    font-size: 20px;
+    padding: 0;
+    text-align: center;
+}
+.buttons input, .info input{
+    width: 48%;
+    margin: 0.5%;
+    font-size:16px;
+    border-radius:8px;
+    border:1px solid #337fed;
+    padding:9px 18px;
+    text-decoration:none;
+
+    background:-moz-linear-gradient( center top, #3d94f6 5%, #1e62d0 100% );
+    background:-ms-linear-gradient( top, #3d94f6 5%, #1e62d0 100% );
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #3d94f6), color-stop(100%, #1e62d0) );
+    background-color:#3d94f6;
+
+    color:#ffffff;
+    text-shadow:1px 1px 0px #1570cd;
+    box-shadow:inset 1px 1px 0px 0px #97c4fe;
+}
+.buttons input:hover, .info input:hover {
+    background:-moz-linear-gradient( center top, #1e62d0 5%, #3d94f6 100% );
+    background:-ms-linear-gradient( top, #1e62d0 5%, #3d94f6 100% );
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #1e62d0), color-stop(100%, #3d94f6) );
+    background-color:#1e62d0;
+    cursor: pointer;
+}
+.buttons input:active {
+    position:relative;
+    top:1px;
+}
+
+.info input{
+    width: 48%;
+    margin: 0.5%;
+    font-size:20px;
+    font-weight: 600;
+    border-radius:8px;
+    border:1px solid #d00e15;
+    padding:9px 18px;
+    text-decoration:none;
+
+    background:-moz-linear-gradient( center top, #f6974b 5%, #d00e15 100% );
+    background:-ms-linear-gradient( top, #f6974b 5%, #d00e15 100% );
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #f6974b), color-stop(100%, #d00e15) );
+    background-color:#f6974b;
+
+    color:#ffffff;
+    text-shadow:1px 1px 0px #d00e15;
+    box-shadow:inset 1px 1px 0px 0px #97c4fe;
+}
+.info input:hover {
+    background:-moz-linear-gradient( center top, #d00e15 5%, #f6974b 100% );
+    background:-ms-linear-gradient( top, #d00e15 5%, #f6974b 100% );
+    background:-webkit-gradient( linear, left top, left bottom, color-stop(5%, #d00e15), color-stop(100%, #f6974b) );
+    background-color:#f6974b;
+    cursor: pointer;
+}
+
+.info{
+    margin-left: 5px;
+    width: 300px;
+    float: left;
+    box-shadow: 7px 7px 36px -2px rgba(0,0,0,0.75);
+    background-color: #ffffff;
+    margin-top: 10px;
+    display: none;
+}
+
+.info input{
+    width: 90%;
+    margin-left: 5%;
+}
+
+.info h2, .main h2{
+    padding:10px 0  10px 0;
+    margin-top: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    background:linear-gradient(#d0a455 5%, #d0700b 100% );
+    background-color:#f6974b;
+
+    color:#ffffff;
+    text-shadow:1px 1px 6px #000000;
+}
+
+.info h3{
+    width: 100%;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 600;
+    color: #bd081c;
+    padding: 5px 0 5px 0;
+    margin: 5px 0  5px 0;
+}
+
+.info h4{
+    font-size: 16px;
+    width: 100%;
+    padding:1px 10px 1px 10px;
+    color: #bd0e00;
+}
+
+.info p {
+    padding:1px 10px 1px 10px;
+    font-size: 14px;
+}
+.info table{
+    width: 90%;
+    margin: 0 auto;
+    font-weight: 600;
+}
+.info table tr{
+    text-align: center;
+}
+@keyframes myanimation {
+    50% {
+        background:linear-gradient(#f66a1b 5%, #f66a1b 100% );
+    }
+    100% {
+        background:linear-gradient(#f66a1b 5%, #d0b891 100% );
+    }
+
+}

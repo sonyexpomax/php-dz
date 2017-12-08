@@ -57,6 +57,7 @@ $session = \App\Core\App::getSession();
             <?php }?>
             <?=$data['content']?>
         </div>
+ooooooooooo
     </main>
 </body>
 </html>

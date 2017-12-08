@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <style>
+        body{
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+        .weatherWidget{
+            width: 220px;
+            height: 160px;
+            background: linear-gradient(#38a4b2, #0c005d);
+            border-radius: 20px;
+            margin: 5px;
+            clear: both;
+        }
+        .location{
+            padding-top: 10px;
+            width: 100%;
+            text-align: center;
+            font-size: 20px;
+        }
+        .img{
+            width: 64px;
+            height: 64px;
+            margin: 5px;
+            float: left;
+        }
+        .temp{
+            font-size: 40px;
+            float: right;
+            margin:15px 10px 5px 5px;
+        }
+        .text{
+            clear: both;
+            font-size: 16px;
+            margin: 15px;
+        }
+        .text, .temp, .location{
+            color: #ffffff;
+            text-shadow:1px 1px 2px #000000;
+        }
+     </style>
+</head>
+<body>
+<script src=cities.js></script>
+<script>
+//    import {cities} from "./cityes";
+
+    checkOutReqouest = () => {
+        let city = false;
+        let theme = false;
+        if(getQueryVariable('city') && getQueryVariable('theme')){
+            city = getQueryVariable('city');
+            theme = getQueryVariable('theme');
+            requestForecast(city,theme);
+        }
+    };
+
+    getQueryVariable = (variable) => {
+        let query = window.location.search.substring(1);
+        let vars = query.split("&");
+        for (let i=0;i<vars.length;i++) {
+            let pair = vars[i].split("=");
+            if(pair[0] === variable){return pair[1];}
+        }
+        return(false);
+    };
+
+    requestForecast = (city, theme) => {
+
+        return new Promise(function(resolve, reject) {
+
+            let url = 'http://api.apixu.com/v1/current.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city;
+            let request = new XMLHttpRequest();
+
+            request.open('GET', url);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+                request.onload = function() {
+                    if (this.status === 200) {
+                        resolve(this.response);
+                        console.log('запрос вернулся успешно');
+                    } else {
+                        let error = new Error(this.statusText);
+                        error.code = this.status;
+                        reject(error);
+                    }
+                };
+
+                request.onerror = function() {
+                    reject(new Error("Network Error"));
+                };
+
+            request.send();
+            console.log('запрос ушел');
+
+            request.onreadystatechange = function () {
+                if (request.readyState === 4) {
+                    if (request.status === 200) {
+                        let data = JSON.parse(request.response);
+                        createWidget(data['location']['name'], data["current"]["condition"]["icon"], data["current"]["condition"]["text"], data["current"]["temp_c"], theme);
+                    }
+                }
+            };
+
+        });
+
+
+    };
+
+    createWidget = (location, icon, text, temp, theme) => {
+
+        let divWeatherWidget = document.createElement("div");
+        let divlocation = document.createElement("div");
+        let img = document.createElement("img");
+        let divtemp = document.createElement("div");
+        let divtext = document.createElement("div");
+
+        divWeatherWidget.className = 'weatherWidget';
+        divWeatherWidget.style.background = generateTheme(theme);
+        divlocation.textContent = cities.get(location);
+        divlocation.className = 'location';
+        img.src = icon;
+        img.className = 'img';
+        divtemp.textContent = temp + `\u2103`;
+        divtemp.className = 'temp';
+        divtext.textContent = text ;
+        divtext.className = 'text';
+
+        divWeatherWidget.appendChild(divlocation);
+        divWeatherWidget.appendChild(img);
+        divWeatherWidget.appendChild(divtemp);
+        divWeatherWidget.appendChild(divtext);
+        document.body.appendChild(divWeatherWidget);
+
+    };
+
+    generateTheme = (theme) => {
+        let color1, color2;
+        switch(theme) {
+            case 'blue':
+                color1 = '#38a4b2';
+                color2 = '#0c005d';
+                break;
+            case 'red':
+                color1 = '#b27084';
+                color2 = '#7e1c0b';
+                break;
+            case 'green':
+                color1 = '#8db26b';
+                color2 = '#0a5d09';
+                break;
+            default:
+                color1 = '#38a4b2';
+                color2 = '#0c005d';
+        }
+        return `linear-gradient(${color1}, ${color2})`;
+    };
+
+    checkOutReqouest();
+</script>
+
+</body>
+</html>
