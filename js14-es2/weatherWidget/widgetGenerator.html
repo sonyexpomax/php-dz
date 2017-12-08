@@ -49,7 +49,6 @@
 
 <script>
   //  import {cities} from "./cities.js";
-let weatherWidget = document.querySelector('.weatherWidget');
     checkOutReqouest = () => {
         let city = false;
         let theme = false;
@@ -58,7 +57,6 @@ let weatherWidget = document.querySelector('.weatherWidget');
             theme = getQueryVariable('theme');
             requestForecast(city,theme);
         }
-        console.log(weatherWidget);
     };
 
     getQueryVariable = (variable) => {
@@ -72,12 +70,11 @@ let weatherWidget = document.querySelector('.weatherWidget');
     };
 
     requestForecast = (city, theme) => {
-        console.log(weatherWidget);
         let cookieValue = getCookie(`${city}-${theme}`);
         if (cookieValue === '') {
 
             console.log('no cookie');
-            console.log(weatherWidget);
+
             return new Promise(function (resolve, reject) {
 
                 let url = 'http://api.apixu.com/v1/current.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city;
@@ -127,7 +124,6 @@ let weatherWidget = document.querySelector('.weatherWidget');
         }
         else{
             console.log('yes cookie');
-            console.log(weatherWidget);
             let weatherItems = cookieValue.split(',');
             console.log('city = ' + city);
             console.log('icon = ' + weatherItems[0]);
