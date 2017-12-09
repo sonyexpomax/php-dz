@@ -43,12 +43,18 @@
             text-shadow:1px 1px 2px #000000;
         }
      </style>
-    <script src=cities.js></script>
+ <script src=cities.js></script>
 </head>
 <body>
+<div class="weatherWidget">
+    <div class="location"></div>
+    <img src="" class="img" alt="">
+    <div class="temp"></div>
+    <div class="text"></div>
+</div>
 
 <script>
-  //  import {cities} from "./cities.js";
+
     checkOutReqouest = () => {
         let city = false;
         let theme = false;
@@ -119,7 +125,8 @@
                     reject(new Error("Network Error"));
                 };
                 request.send();
-                console.log('запрос ушел');
+                document.querySelector('.location').textContent = 'Идет загрузка';
+                console.log('запрос ушел на ' + url);
             });
         }
         else{

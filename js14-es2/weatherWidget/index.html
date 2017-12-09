@@ -87,7 +87,7 @@
         let city = document.querySelector('.city_list').value;
         let theme = document.querySelector('.theme').value;
         document.querySelector('.html_code').children[1].textContent =
-            `<iframe src=\'http://widgetGenerator.html?city=${city}&theme=${theme}\'></iframe>`;
+            `<iframe src=\'http://frer.zzz.com.ua/widgetGenerator.html?city=${city}&theme=${theme}\'></iframe>`;
 
         //make preview;
         if(!isFirstPreview){
@@ -95,7 +95,7 @@
             elem.parentElement.removeChild(elem);
         }
         let iframe = document.createElement("iframe");
-        iframe.src = `widgetGenerator.html?city=${city}&theme=${theme}`;
+        iframe.src = `http://frer.zzz.com.ua/widgetGenerator.html?city=${city}&theme=${theme}`;
         document.querySelector('.preview').appendChild(iframe);
         isFirstPreview = false;
     };

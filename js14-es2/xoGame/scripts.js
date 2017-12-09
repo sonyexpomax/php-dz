@@ -1,3 +1,5 @@
+import {xoComputer} from "./computer_scripts";
+
 let xo = {
     userSymbol: 'O',
     computerSymbol: 'X',
@@ -24,11 +26,11 @@ xo.checkGameMode = (type) => {
     let mainHeader = document.createElement('h2');
     if(type === 'stupid'){
         mainHeader.textContent = 'Глупый режим';
-        xo.computerMove = xo.stupidComputerMove;
+        xo.computerMove = xoComputer.stupidComputerMove;
     }
     else{
         mainHeader.textContent = 'Умный режим';
-        xo.computerMove = xo.smartComputerMove;
+        xo.computerMove = xoComputer.smartComputerMove;
     }
 
     document.querySelector('.main').style.display = 'block';
@@ -61,7 +63,7 @@ xo.startGame = (isReplay) => {
         let elementWithClick = event.target || event.srcElement;
         if (elementWithClick.className === 'field'){
             let id = elementWithClick.id.substr(elementWithClick.id.length-1,1);
-            if(xo.freeFields[id] !== undefined) {
+            if(xo.freeFields[id] !== undefined && !xo.computerCalculation) {
                 xo.userMove(elementWithClick.id);
             }
         }
@@ -152,6 +154,7 @@ xo.clearFields = () => {
 };
 
 xo.userMove = (id) => {
+
     let numberId = parseFloat(id.substr(id.length-1,1));
     document.body.querySelector('#' + id).textContent = xo.userSymbol;
     document.body.querySelector('#' + id).style.cursor = 'not-allowed';
@@ -164,109 +167,6 @@ xo.userMove = (id) => {
     }
 
     xo.computerMove();
-};
-
-xo.stupidComputerMove = () => {
-    let id = null;
-    xo.computerCalculation = true;
-    if(xo.countOfEmptyFields()[0] === 1){
-        id = xo.countOfEmptyFields()[1];
-    }
-    else {
-        id = xo.stupidGetId();
-    }
-    setComputerMove(id);
-};
-
-xo.smartComputerMove = () => {
-    let id = null;
-    xo.computerCalculation = true;
-    //last move
-    if(xo.countOfEmptyFields()[0] === 1){
-        id = xo.countOfEmptyFields()[1];
-    }
-    else {
-        //first move
-        if (xo.computerMoves.length === 0) {
-
-            // check central field
-            id = (xo.freeFields[5] !== undefined) ? 5 : xo.stupidGetId();
-
-            // make list of computer possible combinations
-            for (let i = 0; i < xo.possibleCombination.length; i++) {
-                if (xo.possibleCombination[i][0] === id || xo.possibleCombination[i][1] === id || xo.possibleCombination[i][2] === id) {
-                    if (xo.possibleCombination[i][0] !== xo.userMoves[0] && xo.possibleCombination[i][1] !== xo.userMoves[0] && xo.possibleCombination[i][2] !== xo.userMoves[0]) {
-                        xo.computerPossibleCombination.push(xo.possibleCombination[i]);
-                    }
-                }
-            }
-        }
-
-        // next moves
-        else {
-            let previousId = xo.userMoves[xo.userMoves.length - 1];
-            let computerPossibleCombinationToDel = [];
-
-            // make list of computer Unpossible combinations
-            for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
-                for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
-                    if (previousId === xo.computerPossibleCombination[i][j]) {
-                        computerPossibleCombinationToDel.push(i);
-                    }
-                }
-            }
-
-            // delete computer Unpossible combinations
-            for (let i = 0; i < computerPossibleCombinationToDel.length; i++) {
-                xo.computerPossibleCombination.splice(computerPossibleCombinationToDel[i], 1);
-            }
-
-            id = xo.smartGetId();
-            console.log('id = ' + id);
-        }
-    }
-    setComputerMove(id);
-};
-
-setComputerMove = (id) => {
-    delete xo.freeFields[id];
-    setTimeout(function () {
-        document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
-        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
-    },300);
-
-    xo.computerMoves.push(id);
-    xo.checkWinning(xo.computerMoves, 'computer');
-    xo.computerCalculation = false;
-};
-
-/**
- *
- * @returns id
- */
-xo.stupidGetId = () => {
-    let i = 0;
-    let id = null;
-    while (i < 1) {
-        id = Math.floor(Math.random() * 9);
-        xo.freeFields[id] === undefined ? i = 0 : i++;
-    }
-    return id;
-};
-
-/**
- *
- * @returns id
- */
-xo.smartGetId = () => {
-    for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
-        for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
-            if(xo.freeFields.indexOf(xo.computerPossibleCombination[i][j]) !== -1){
-                return xo.computerPossibleCombination[i][j];
-            }
-        }
-    }
-    console.log('id = ' + id);
 };
 
 /**
