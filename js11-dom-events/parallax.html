@@ -11,7 +11,6 @@
 function moveElementToTheCenter(element) {
    var newElemX = window.innerWidth/2 - parseInt(getComputedStyle(element).width)/2 ;
    var newElemY = window.innerHeight/2 - parseInt(getComputedStyle(element).height)/2;
-   console.log(newElemY);
 
    giveCoordToTheElement(element, newElemX, newElemY);
 }
@@ -31,8 +30,12 @@ function giveCoordToTheElement(element, newElemX, newElemY) {
 function moveBodyBackground(shiftCoordsX, shiftCoordsY) {
     var element = document.body;
 
-    element.style.backgroundPositionX === '' ? element.style.backgroundPositionX = '0px' : '';
-    element.style.backgroundPositionY === '' ? element.style.backgroundPositionY = '0px' : '';
+    if(element.style.backgroundPositionX === ''){
+        element.style.backgroundPositionX = '0px';
+    }
+    if(element.style.backgroundPositionY === '') {
+        element.style.backgroundPositionY = '0px';
+    }
 
     element.style.backgroundPositionY = (parseFloat(element.style.backgroundPositionY) + shiftCoordsY) + 'px';
     element.style.backgroundPositionX = (parseFloat(element.style.backgroundPositionX) + shiftCoordsX) + 'px';
