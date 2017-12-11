@@ -18,8 +18,10 @@
 
     let {one, two} = obj;
 
-    obj['one'] = two;
-    obj['two'] = one;
+    obj = {
+        [one]:two,
+        [two]:one
+    };
 
     console.log(obj); // cap
 
