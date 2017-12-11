@@ -53,35 +53,38 @@
 
     function showBasket(price = 0,count = 0) {
         if (count !== 0) {
+
             let shower = '';
-            let lastSymvolOfCount = count.toString().substr(count.length-1,1);
-            switch(lastSymvolOfCount) {
-                case '1':
-                    shower = 'товар';
-                    break;
-                case '2':
-                case '3':
-                case '4':
-                    shower = 'товара';
-                    break;
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                case '0':
-                    shower = 'товаров';
-                    break;
+            let lastSymvolOfCount = count.toString()[count.toString().length-1];
+
+            if (count >= 11 && count <= 19) {
+                shower = 'товаров';
             }
-             console.log(`В корзине ${count} ${shower} на сумму ${price * count} грн.`);
+            else {
+                if (lastSymvolOfCount == 1) {
+                    shower = 'товар';
+                }
+                if (lastSymvolOfCount > 1 && lastSymvolOfCount < 5) {
+                    shower = 'товара';
+                }
+                if ((lastSymvolOfCount > 4 && lastSymvolOfCount < 9) || lastSymvolOfCount == 0)
+                {
+                    shower = 'товаров';
+                }
+            }
+            console.log(`В корзине ${count} ${shower} на сумму ${price * count} грн.`);
         }
         else{
             console.log('В корзине нет товаров');
         }
     }
+
     showBasket(20,4);
-    showBasket(0,4);
+    showBasket(0,40);
     showBasket(20,0);
+    showBasket(10,12);
+    showBasket(20,11);
+    showBasket(20,21);
 
 </script>
 <body>

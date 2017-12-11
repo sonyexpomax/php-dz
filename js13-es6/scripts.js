@@ -4,6 +4,7 @@ let xo = {
     userMoves: [],
     computerMoves: [],
     computerPossibleCombination: [],
+    userPossibleCombination: [],
     freeFields: [, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     possibleCombination: [
         [1, 2, 3],
@@ -50,6 +51,7 @@ xo.startGame = (isReplay) => {
         xo.userMoves = [];
         xo.computerMoves = [];
         xo.computerPossibleCombination = [];
+        xo.userPossibleCombination = [];
         xo.freeFields = [,1,2,3,4,5,6,7,8,9];
     }else{
         document.querySelector('header').children[1].style.display='none';
@@ -151,12 +153,21 @@ xo.clearFields = () => {
     }
 };
 
+/**
+ *
+ * @param id
+ */
 xo.userMove = (id) => {
     let numberId = parseFloat(id.substr(id.length-1,1));
     document.body.querySelector('#' + id).textContent = xo.userSymbol;
     document.body.querySelector('#' + id).style.cursor = 'not-allowed';
     xo.userMoves.push(numberId);
 
+    xo.makeListOfPossibleCombinations(numberId, xo.userMoves, xo.computerMoves, xo.userPossibleCombination );
+
+    if (xo.userMoves.length !== 1) {
+        xo.deleteUnpossibleCombinations(xo.computerMoves, xo.userPossibleCombination);
+    }
     delete xo.freeFields[numberId];
 
     if(xo.checkWinning(xo.userMoves, 'user')){
@@ -175,12 +186,14 @@ xo.stupidComputerMove = () => {
     else {
         id = xo.stupidGetId();
     }
-    setComputerMove(id);
+    xo.setComputerMove(id);
 };
+
 
 xo.smartComputerMove = () => {
     let id = null;
     xo.computerCalculation = true;
+
     //last move
     if(xo.countOfEmptyFields()[0] === 1){
         id = xo.countOfEmptyFields()[1];
@@ -188,47 +201,74 @@ xo.smartComputerMove = () => {
     else {
         //first move
         if (xo.computerMoves.length === 0) {
-
             // check central field
             id = (xo.freeFields[5] !== undefined) ? 5 : xo.stupidGetId();
-
-            // make list of computer possible combinations
-            for (let i = 0; i < xo.possibleCombination.length; i++) {
-                if (xo.possibleCombination[i][0] === id || xo.possibleCombination[i][1] === id || xo.possibleCombination[i][2] === id) {
-                    if (xo.possibleCombination[i][0] !== xo.userMoves[0] && xo.possibleCombination[i][1] !== xo.userMoves[0] && xo.possibleCombination[i][2] !== xo.userMoves[0]) {
-                        xo.computerPossibleCombination.push(xo.possibleCombination[i]);
-                    }
-                }
-            }
         }
-
-        // next moves
-        else {
-            let previousId = xo.userMoves[xo.userMoves.length - 1];
-            let computerPossibleCombinationToDel = [];
-
-            // make list of computer Unpossible combinations
-            for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
-                for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
-                    if (previousId === xo.computerPossibleCombination[i][j]) {
-                        computerPossibleCombinationToDel.push(i);
-                    }
-                }
-            }
-
-            // delete computer Unpossible combinations
-            for (let i = 0; i < computerPossibleCombinationToDel.length; i++) {
-                xo.computerPossibleCombination.splice(computerPossibleCombinationToDel[i], 1);
-            }
-
+        else {  // next moves
+            xo.deleteUnpossibleCombinations(xo.userMoves, xo.computerPossibleCombination);
             id = xo.smartGetId();
-            console.log('id = ' + id);
         }
+        xo.makeListOfPossibleCombinations(id, xo.computerMoves, xo.userMoves, xo.computerPossibleCombination);
     }
-    setComputerMove(id);
+    xo.setComputerMove(id);
 };
 
-setComputerMove = (id) => {
+/**
+ *
+ * @param id
+ * @param nativeMoves
+ * @param againstMoves
+ * @param typePossibleCombination
+ */
+xo.makeListOfPossibleCombinations = (id, nativeMoves, againstMoves, typePossibleCombination ) => {
+    for (let i = 0; i < xo.possibleCombination.length; i++) {
+        if (xo.possibleCombination[i][0] === id || xo.possibleCombination[i][1] === id || xo.possibleCombination[i][2] === id) {
+            if (xo.possibleCombination[i][0] !== againstMoves[0] && xo.possibleCombination[i][1] !== againstMoves[0] && xo.possibleCombination[i][2] !== againstMoves[0]) {
+                if(nativeMoves.length > 1) {
+                    let k = 0;
+                    for (let j = 0; j < typePossibleCombination.length; j++) {
+                        if (xo.possibleCombination[i] === typePossibleCombination[j]) {
+                            k++;
+                        }
+                    }
+                    (k === 0) ? typePossibleCombination.push(xo.possibleCombination[i]) : '';
+                }
+                else {
+                    typePossibleCombination.push(xo.possibleCombination[i]);
+                }
+            }
+        }
+    }
+};
+
+/**
+ *
+ * @param typeMoves
+ * @param typePossibleCombination
+ */
+xo.deleteUnpossibleCombinations = (typeMoves, typePossibleCombination) => {
+    let previousId = typeMoves[typeMoves.length - 1];
+    let possibleCombinationToDel = [];
+
+    for (let i = 0; i < typePossibleCombination.length; i++) {
+        for (let j = 0; j < typePossibleCombination[i].length; j++) {
+            if (previousId === typePossibleCombination[i][j]) {
+                possibleCombinationToDel.push(i);
+            }
+        }
+    }
+
+    for (let i = 0; i < possibleCombinationToDel.length; i++) {
+        typePossibleCombination.splice(possibleCombinationToDel[i], 1);
+    }
+};
+
+/**
+ *
+ * @param id
+ */
+xo.setComputerMove = (id) => {
+    console.log('setComputerMove id = ' + id);
     delete xo.freeFields[id];
     setTimeout(function () {
         document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
@@ -260,14 +300,35 @@ xo.stupidGetId = () => {
  * @returns id
  */
 xo.smartGetId = () => {
+    //attack
     for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
         for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
             if(xo.freeFields.indexOf(xo.computerPossibleCombination[i][j]) !== -1){
+                console.log('attack');
                 return xo.computerPossibleCombination[i][j];
             }
         }
     }
-    console.log('id = ' + id);
+
+    //defence
+
+    for (let i = 0; i < xo.userPossibleCombination.length; i++) {
+        console.log('defence');
+        let k = 0;
+        for (let j = 0; j < xo.userMoves.length; j++) {
+            if (xo.userMoves[j] === xo.userPossibleCombination[i][0] || xo.userMoves[j] === xo.userPossibleCombination[i][1] || xo.userMoves[j] === xo.userPossibleCombination[i][2]){
+                k++;
+            }
+        }
+        if(k === 2){
+            for (let y = 0; y < xo.userPossibleCombination[i].length; y++) {
+                if (xo.freeFields.indexOf(xo.userPossibleCombination[i][y]) !== -1) {
+                    return xo.userPossibleCombination[i][y];
+                }
+            }
+        }
+    }
+    return xo.stupidGetId();
 };
 
 /**
@@ -312,8 +373,6 @@ xo.checkWinning = (checkArray, who) => {
                 return true;
             }
         }
-        console.log('empty = ' + xo.countOfEmptyFields()[0]);
-
         // check for draw
         if(xo.countOfEmptyFields()[0] === 0){
             setTimeout(function () {
@@ -333,7 +392,6 @@ xo.checkWinning = (checkArray, who) => {
             },300);
             xo.finish();
         }
-        console.log('empty = ' + xo.countOfEmptyFields()[0]);
     }
     return false;
 };
