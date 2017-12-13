@@ -19,7 +19,31 @@ let xo = {
     computerMove: null,
     score : [0, 0],
     computerCalculation : false,
+    isFinish : false,
 };
+
+document.body.onclick = function(event) {
+    console.log('click');
+    let elementWithClick = event.target || event.srcElement;
+    if(!xo.isFinish) {
+        if (elementWithClick.className === 'field') {
+            let id = elementWithClick.id.substr(elementWithClick.id.length - 1, 1);
+            if (xo.freeFields[id] !== undefined && !xo.computerCalculation) {
+                xo.userMove(elementWithClick.id);
+            }
+        }
+        if (elementWithClick.id === 'stupidTypeOfGame') {
+            xo.checkGameMode('stupid');
+        }
+        if (elementWithClick.id === 'smartTypeOfGame') {
+            xo.checkGameMode('smart');
+        }
+    }
+    if (elementWithClick.id === 'newGame'){
+        xo.startGame(true);
+    }
+};
+
 
 xo.checkGameMode = (type) => {
     let mainHeader = document.createElement('h2');
@@ -53,30 +77,24 @@ xo.startGame = (isReplay) => {
         xo.computerPossibleCombination = [];
         xo.userPossibleCombination = [];
         xo.freeFields = [,1,2,3,4,5,6,7,8,9];
+        xo.isFinish = false;
     }else{
         document.querySelector('header').children[1].style.display='none';
         xo.createFields();
     }
 
     xo.createInfo();
-    document.body.onclick = function(event) {
-        let elementWithClick = event.target || event.srcElement;
-        if (elementWithClick.className === 'field'){
-            let id = elementWithClick.id.substr(elementWithClick.id.length-1,1);
-            if(xo.freeFields[id] !== undefined && !xo.computerCalculation) {
-                xo.userMove(elementWithClick.id);
-            }
-        }
-    };
+
     if(xo.computerSymbol === 'X'){
         xo.computerMove();
     }
 };
 
 xo.finish = () => {
-    document.body.onclick = null;
+    //document.body.onclick = null;
     document.querySelector('.info').children['NewGame'].style.display = 'block';
     console.log('finish');
+    xo.isFinish = true;
 };
 
 xo.createInfo = () => {
@@ -103,11 +121,11 @@ xo.createScore = () => {
     let row = document.createElement("tr");
     let cell = document.createElement("td");
 
-    cell.textContent = 'Компьютер';
+    cell.textContent = 'Пользователь';
     row.appendChild(cell);
 
     cell = document.createElement("td");
-    cell.textContent = 'Пользователь';
+    cell.textContent = 'Компьютер';
     row.appendChild(cell);
 
     tbl.appendChild(row);

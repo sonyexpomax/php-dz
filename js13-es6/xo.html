@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
-    <title>Title</title>
+    <title>Game X-O</title>
 </head>
 <body>
-<script type="text/javascript" src="scripts.js"></script>
     <header>
         <h1>Игра крестики - нолики</h1>
         <p>Выбор режима</p>
     </header>
     <div class="buttons">
-        <input type="button" name="stupidTypeOfGame" value="Глупый режим" onclick="xo.checkGameMode('stupid')">
-        <input type="button" name="smartTypeOfGame" value="Умный Режим" onclick="xo.checkGameMode('smart')">
+        <input type="button" name="stupidTypeOfGame" value="Глупый режим" id = "stupidTypeOfGame">
+        <input type="button" name="smartTypeOfGame" value="Умный Режим" id = 'smartTypeOfGame'>
     </div>
     <div class="info">
         <h2>Информация об игре</h2>
-        <input type="button" name="NewGame" value="Начать новую игру?" onclick="xo.startGame(true)" style="display: none;">
+        <input type="button" name="NewGame" value="Начать новую игру?" id="newGame" style="display: none;">
     </div>
     <div class="main"></div>
+    <script type="text/javascript" src="scripts.js"></script>
 </body>
 </html>

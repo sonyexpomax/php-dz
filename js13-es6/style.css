@@ -51,9 +51,11 @@ header{
     width: 100%;
 }
 header h1{
-    color: #0c005d;
+    color: #a76516;
     font-size: 36px;
     text-align: center;
+    font-weight: 800;
+    text-shadow:1px 1px 2px #5d0f04;
 }
 
 header p, .buttons p{
