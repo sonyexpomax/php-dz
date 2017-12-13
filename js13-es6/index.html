@@ -16,12 +16,9 @@
         two: "2"
     };
 
-    let {one, two} = obj;
+    let {one: two, two: one} = obj;
 
-    obj = {
-        [one]:two,
-        [two]:one
-    };
+    obj = {one,two};
 
     console.log(obj); // cap
 
