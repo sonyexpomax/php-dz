@@ -2,9 +2,42 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>VideoPlayer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./font-awesome-4.7.0/css/font-awesome.min.css">
 </head>
 <body>
-$END$
+
+
+<div class="library">
+    <h2>Library</h2>
+</div>
+
+<div class="player">
+    <video src="" id = 'videoPlayer' style="width: 620px; height: 350px">
+    </video>
+    <div class="controlBar">
+        <input type="range" min="0" max="100" value="0" id = 'progressBar' onchange="changeVideo()"/>
+        <i class="fa fa-step-backward fa-lg" aria-hidden="true" id="previousVideoButton" title="Previous video"></i>
+        <i class="fa fa-play fa-lg" aria-hidden="true"  id = 'playerPlayPause' title="Play / Pause"></i>
+        <i class="fa fa-stop fa-lg" aria-hidden="true"  id = 'playerStop' title="Stop"></i>
+        <i class="fa fa-step-forward fa-lg" aria-hidden="true" id="nextVideoButton" title="Next video"></i>
+        <i class="fa fa-volume-up fa-lg" aria-hidden="true" id = 'playerVolume'>
+            <input type="range" min="0" max="1" step="0.1" value="0" id = 'volumeBar' on="changeVolume()" onchange="changeVolume()"/>
+        </i>
+        <span id = 'timeInfo'></span>
+        <i class="fa fa-arrows-alt fa-lg" aria-hidden="true" id = 'playerFullscreen' title="Full screen"></i>
+    </div>
+    <span id = 'videoName'></span>
+</div>
+<div class="playlist">
+    <h2>Playlist</h2>
+    <ul></ul>
+</div>
+
+<i class="fa fa-refresh fa-lg" id = 'playerMode' title="Change player mode"></i>
+<i class="fa fa-times fa-lg" aria-hidden="true" id = 'cleanPlaylist' title="Clear playlist"></i>
+
+<script src="scripts.js"></script>
 </body>
 </html>
