@@ -11,9 +11,11 @@ let nameField = document.querySelector('#nameDraft');
 let textField = document.querySelector('#textarea');
 
 txtEditor.draftListLoad = () => {
+    txtEditor.isNewDraft = false;
     for (let i = 0; i < localStorage.length; i++) {
         txtEditor.createDraftItem(localStorage.key(i));
     }
+    txtEditor.isNewDraft = true;
 };
 
 txtEditor.clearField = () => {
@@ -155,7 +157,7 @@ txtEditor.savingToStorage = () => {
     localStorage.setItem(txtEditor.currentName,  dataDraft);
 };
 
-document.addEventListener("DOMContentLoaded", txtEditor.draftListLoad());
+
 
 txtEditor.autoSaveStart = () => {
     setTimeout(function () {
@@ -194,3 +196,5 @@ document.body.onclick = function(event) {
         txtEditor.deleteDraft(elementWithClick.id);
     }
 };
+
+document.addEventListener("DOMContentLoaded", txtEditor.draftListLoad());
