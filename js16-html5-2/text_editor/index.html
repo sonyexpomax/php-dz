@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Text Editor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="draftList">
+    <h2>Список черновиков</h2>
+    <div class="list">
+        <ul id = 'ulList'></ul>
+    </div>
+    <button class="createDraft">Создать черновик</button>
+</div>
+<div class="textField">
+    <h2>Поле редактирования</h2>
+    <span>Название черновика</span><input type="text" id="nameDraft" />
+        <textarea id="textarea" placeholder="Разместите здесь текст вашего черновика"></textarea>
+    <button class="saveDraft">Сохранить</button>
+    <button class="clearField">Очистить поле</button>
+</div>
+
+<script src="scripts.js"></script>
+</body>
+</html>
