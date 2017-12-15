@@ -1,7 +1,17 @@
-let xoComputer = {};
+
+
+let xoComputer = {
+    computerMoves: [],
+    computerPossibleCombination: [],
+    computerMove: null,
+    computerCalculation : false,
+
+
+};
+
 xoComputer.stupidComputerMove = () => {
     let id = null;
-    xo.computerCalculation = true;
+    xoComputer.computerCalculation = true;
     if(xo.countOfEmptyFields()[0] === 1){
         id = xo.countOfEmptyFields()[1];
     }
@@ -11,83 +21,63 @@ xoComputer.stupidComputerMove = () => {
     xoComputer.setComputerMove(id);
 };
 
+
 xoComputer.smartComputerMove = () => {
     let id = null;
-    xo.computerCalculation = true;
+    xoComputer.computerCalculation = true;
+
     //last move
     if(xo.countOfEmptyFields()[0] === 1){
         id = xo.countOfEmptyFields()[1];
     }
     else {
         //first move
-        if (xo.computerMoves.length === 0) {
-
+        if (xoComputer.computerMoves.length === 0) {
             // check central field
-            id = (xo.freeFields[5] !== undefined) ? 5 : xoComputer.stupidGetId();
-
-            // make list of computer possible combinations
-            for (let i = 0; i < xo.possibleCombination.length; i++) {
-                if (xo.possibleCombination[i][0] === id || xo.possibleCombination[i][1] === id || xo.possibleCombination[i][2] === id) {
-                    if (xo.possibleCombination[i][0] !== xo.userMoves[0] && xo.possibleCombination[i][1] !== xo.userMoves[0] && xo.possibleCombination[i][2] !== xo.userMoves[0]) {
-                        xo.computerPossibleCombination.push(xo.possibleCombination[i]);
-                    }
-                }
-            }
+            id = (xo.freeFields[5] !== undefined) ? 5 : xo.stupidGetId();
         }
-
-        // next moves
-        else {
-            let previousId = xo.userMoves[xo.userMoves.length - 1];
-            let computerPossibleCombinationToDel = [];
-
-            // make list of computer Unpossible combinations
-            for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
-                for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
-                    if (previousId === xo.computerPossibleCombination[i][j]) {
-                        computerPossibleCombinationToDel.push(i);
-                    }
-                }
-            }
-
-            // delete computer Unpossible combinations
-            for (let i = 0; i < computerPossibleCombinationToDel.length; i++) {
-                xo.computerPossibleCombination.splice(computerPossibleCombinationToDel[i], 1);
-            }
-
+        else {  // next moves
+            xo.deleteUnpossibleCombinations(xo.userMoves, xoComputer.computerPossibleCombination);
             id = xoComputer.smartGetId();
-            console.log('id = ' + id);
         }
+        xo.makeListOfPossibleCombinations(id, xoComputer.computerMoves, xo.userMoves, xoComputer.computerPossibleCombination);
     }
     xoComputer.setComputerMove(id);
 };
 
-xoComputer.setComputerMove = (id) => {
 
-    let promise = new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve("result");
-        }, 1000);
-    });
+xo.deleteUnpossibleCombinations = (typeMoves, typePossibleCombination) => {
+    let previousId = typeMoves[typeMoves.length - 1];
+    let possibleCombinationToDel = [];
 
-    promise.then(
-            result => {
-                delete xo.freeFields[id];
-                document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
-                document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
-                xo.computerMoves.push(id);
-                xo.checkWinning(xo.computerMoves, 'computer');
-                xo.computerCalculation = false;
-            },
-            error => {
-                alert("Rejected: " + error); // error - аргумент reject
+    for (let i = 0; i < typePossibleCombination.length; i++) {
+        for (let j = 0; j < typePossibleCombination[i].length; j++) {
+            if (previousId === typePossibleCombination[i][j]) {
+                possibleCombinationToDel.push(i);
             }
-    );
+        }
+    }
+
+    for (let i = 0; i < possibleCombinationToDel.length; i++) {
+        typePossibleCombination.splice(possibleCombinationToDel[i], 1);
+    }
 };
 
-/**
- *
- * @returns id
- */
+
+xoComputer.setComputerMove = (id) => {
+    console.log('setComputerMove id = ' + id);
+    delete xo.freeFields[id];
+    setTimeout(function () {
+        document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
+        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
+        xoComputer.computerCalculation = false;
+    },300);
+
+    xoComputer.computerMoves.push(id);
+    xo.checkWinning(xoComputer.computerMoves, 'computer');
+};
+
+
 xoComputer.stupidGetId = () => {
     let i = 0;
     let id = null;
@@ -98,18 +88,35 @@ xoComputer.stupidGetId = () => {
     return id;
 };
 
-/**
- *
- * @returns id
- */
 xoComputer.smartGetId = () => {
-    for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
-        for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
-            if(xo.freeFields.indexOf(xo.computerPossibleCombination[i][j]) !== -1){
-                return xo.computerPossibleCombination[i][j];
+    //attack
+    for (let i = 0; i < xoComputer.computerPossibleCombination.length; i++) {
+        for (let j = 0; j < xoComputer.computerPossibleCombination[i].length; j++) {
+            if(xo.freeFields.indexOf(xoComputer.computerPossibleCombination[i][j]) !== -1){
+                console.log('attack');
+                return xoComputer.computerPossibleCombination[i][j];
             }
         }
     }
-    console.log('id = ' + id);
+
+    //defence
+
+    for (let i = 0; i < xo.userPossibleCombination.length; i++) {
+        console.log('defence');
+        let k = 0;
+        for (let j = 0; j < xo.userMoves.length; j++) {
+            if (xo.userMoves[j] === xo.userPossibleCombination[i][0] || xo.userMoves[j] === xo.userPossibleCombination[i][1] || xo.userMoves[j] === xo.userPossibleCombination[i][2]){
+                k++;
+            }
+        }
+        if(k === 2){
+            for (let y = 0; y < xo.userPossibleCombination[i].length; y++) {
+                if (xo.freeFields.indexOf(xo.userPossibleCombination[i][y]) !== -1) {
+                    return xo.userPossibleCombination[i][y];
+                }
+            }
+        }
+    }
+    return xoComputer.stupidGetId();
 };
 export {xoComputer};

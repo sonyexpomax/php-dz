@@ -1,9 +1,9 @@
+import {xoComputer} from "./computer_scripts";
+
 let xo = {
     userSymbol: 'O',
     computerSymbol: 'X',
     userMoves: [],
-    computerMoves: [],
-    computerPossibleCombination: [],
     userPossibleCombination: [],
     freeFields: [, 1, 2, 3, 4, 5, 6, 7, 8, 9],
     possibleCombination: [
@@ -16,9 +16,7 @@ let xo = {
         [4, 5, 6],
         [7, 8, 9],
     ],
-    computerMove: null,
     score : [0, 0],
-    computerCalculation : false,
     isFinish : false,
 };
 
@@ -28,7 +26,7 @@ document.body.onclick = function(event) {
     if(!xo.isFinish) {
         if (elementWithClick.className === 'field') {
             let id = elementWithClick.id.substr(elementWithClick.id.length - 1, 1);
-            if (xo.freeFields[id] !== undefined && !xo.computerCalculation) {
+            if (xo.freeFields[id] !== undefined && !xoComputer.computerCalculation) {
                 xo.userMove(elementWithClick.id);
             }
         }
@@ -49,11 +47,11 @@ xo.checkGameMode = (type) => {
     let mainHeader = document.createElement('h2');
     if(type === 'stupid'){
         mainHeader.textContent = 'Глупый режим';
-        xo.computerMove = xo.stupidComputerMove;
+        xoComputer.computerMove = xo.stupidComputerMove;
     }
     else{
         mainHeader.textContent = 'Умный режим';
-        xo.computerMove = xo.smartComputerMove;
+        xoComputer.computerMove = xo.smartComputerMove;
     }
 
     document.querySelector('.main').style.display = 'block';
@@ -69,12 +67,12 @@ xo.startGame = (isReplay) => {
     if(isReplay){
         xo.clearFields();
         xo.clearInfo();
-        let temp = xo.computerSymbol;
-        xo.computerSymbol = xo.userSymbol;
+        let temp = xoComputer.computerSymbol;
+        xoComputer.computerSymbol = xo.userSymbol;
         xo.userSymbol = temp;
         xo.userMoves = [];
-        xo.computerMoves = [];
-        xo.computerPossibleCombination = [];
+        xoComputer.computerMoves = [];
+        xoComputer.computerPossibleCombination = [];
         xo.userPossibleCombination = [];
         xo.freeFields = [,1,2,3,4,5,6,7,8,9];
         xo.isFinish = false;
@@ -85,8 +83,8 @@ xo.startGame = (isReplay) => {
 
     xo.createInfo();
 
-    if(xo.computerSymbol === 'X'){
-        xo.computerMove();
+    if(xoComputer.computerSymbol === 'X'){
+        xoComputer.computerMove();
     }
 };
 
@@ -181,10 +179,10 @@ xo.userMove = (id) => {
     document.body.querySelector('#' + id).style.cursor = 'not-allowed';
     xo.userMoves.push(numberId);
 
-    xo.makeListOfPossibleCombinations(numberId, xo.userMoves, xo.computerMoves, xo.userPossibleCombination );
+    xo.makeListOfPossibleCombinations(numberId, xo.userMoves, xoComputer.computerMoves, xo.userPossibleCombination );
 
     if (xo.userMoves.length !== 1) {
-        xo.deleteUnpossibleCombinations(xo.computerMoves, xo.userPossibleCombination);
+        xo.deleteUnpossibleCombinations(xoComputer.computerMoves, xo.userPossibleCombination);
     }
     delete xo.freeFields[numberId];
 
@@ -192,43 +190,7 @@ xo.userMove = (id) => {
         return;
     }
 
-    xo.computerMove();
-};
-
-xo.stupidComputerMove = () => {
-    let id = null;
-    xo.computerCalculation = true;
-    if(xo.countOfEmptyFields()[0] === 1){
-        id = xo.countOfEmptyFields()[1];
-    }
-    else {
-        id = xo.stupidGetId();
-    }
-    xo.setComputerMove(id);
-};
-
-
-xo.smartComputerMove = () => {
-    let id = null;
-    xo.computerCalculation = true;
-
-    //last move
-    if(xo.countOfEmptyFields()[0] === 1){
-        id = xo.countOfEmptyFields()[1];
-    }
-    else {
-        //first move
-        if (xo.computerMoves.length === 0) {
-            // check central field
-            id = (xo.freeFields[5] !== undefined) ? 5 : xo.stupidGetId();
-        }
-        else {  // next moves
-            xo.deleteUnpossibleCombinations(xo.userMoves, xo.computerPossibleCombination);
-            id = xo.smartGetId();
-        }
-        xo.makeListOfPossibleCombinations(id, xo.computerMoves, xo.userMoves, xo.computerPossibleCombination);
-    }
-    xo.setComputerMove(id);
+    xoComputer.computerMove();
 };
 
 /**
@@ -285,69 +247,6 @@ xo.deleteUnpossibleCombinations = (typeMoves, typePossibleCombination) => {
  *
  * @param id
  */
-xo.setComputerMove = (id) => {
-    console.log('setComputerMove id = ' + id);
-    delete xo.freeFields[id];
-    setTimeout(function () {
-        document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
-        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
-        xo.computerCalculation = false;
-    },300);
-
-    xo.computerMoves.push(id);
-    xo.checkWinning(xo.computerMoves, 'computer');
-
-};
-
-/**
- *
- * @returns id
- */
-xo.stupidGetId = () => {
-    let i = 0;
-    let id = null;
-    while (i < 1) {
-        id = Math.floor(Math.random() * 9);
-        xo.freeFields[id] === undefined ? i = 0 : i++;
-    }
-    return id;
-};
-
-/**
- *
- * @returns id
- */
-xo.smartGetId = () => {
-    //attack
-    for (let i = 0; i < xo.computerPossibleCombination.length; i++) {
-        for (let j = 0; j < xo.computerPossibleCombination[i].length; j++) {
-            if(xo.freeFields.indexOf(xo.computerPossibleCombination[i][j]) !== -1){
-                console.log('attack');
-                return xo.computerPossibleCombination[i][j];
-            }
-        }
-    }
-
-    //defence
-
-    for (let i = 0; i < xo.userPossibleCombination.length; i++) {
-        console.log('defence');
-        let k = 0;
-        for (let j = 0; j < xo.userMoves.length; j++) {
-            if (xo.userMoves[j] === xo.userPossibleCombination[i][0] || xo.userMoves[j] === xo.userPossibleCombination[i][1] || xo.userMoves[j] === xo.userPossibleCombination[i][2]){
-                k++;
-            }
-        }
-        if(k === 2){
-            for (let y = 0; y < xo.userPossibleCombination[i].length; y++) {
-                if (xo.freeFields.indexOf(xo.userPossibleCombination[i][y]) !== -1) {
-                    return xo.userPossibleCombination[i][y];
-                }
-            }
-        }
-    }
-    return xo.stupidGetId();
-};
 
 /**
  *
