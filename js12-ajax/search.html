@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Пример живого поиска</title>
+    <title>SEARCH</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <link rel="stylesheet" href="style.css">
 </head>
-
+<style>
+    #rr{
+        margin-top: 10px;
+    }
+</style>
 <div class="main">
-
     <h2>
         <span style='color: #472bff;'>F</span>
         <span style='color: #ff072e;'>I</span>
@@ -20,6 +23,7 @@
     <div class="tips"></div>
     <div class="search_result"></div>
 </div>
+
 <script type="text/javascript">
 
     var timer  =null;
@@ -37,13 +41,13 @@
     });
 
     function requestTip(searchInput) {
-        var url = 'http://frer.zzz.com.ua/1.php?search=' + searchInput;
+        var url = 'http://frer.zzz.com.ua/search.php?search=' + searchInput;
         var request = new XMLHttpRequest();
 
         request.open('GET', url);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         request.send();
-        //console.log('запрос ушел');
+        console.log('запрос ушел');
 
         request.onreadystatechange = function () {
             if (request.readyState === 4) {
@@ -58,7 +62,7 @@
 
     function getRow(tip) {
 
-        var url = 'http://frer.zzz.com.ua/1.php';
+        var url = 'http://frer.zzz.com.ua/search.php';
         var request = new XMLHttpRequest();
         var body = 'tip=' + encodeURIComponent(tip);
 
@@ -77,48 +81,6 @@
             }
         };
     }
-
-/*
-    $(function(){
-        $("#search").keyup(function(){
-            var search = $("#search").val();
-            $.ajax({
-                type: "GET",
-                url: "http://frer.zzz.com.ua/1.php",
-                data: {"search": search},
-                cache: false,
-                success: function(response){
-                    document.querySelector(".tips").style.display = '';
-                    var result = response.slice(0,response.indexOf('<!-- zzz <!--]-->'));
-                    $(".tips").html(result);
-                }
-            });
-            return false;
-        });
-    });
-    */
-/*
-    function getRow3(tip) {
-            $.ajax({
-                type: "POST",
-                url: "http://frer.zzz.com.ua/1.php",
-                data: {"tip": tip},
-                cache: false,
-                success: function(response){
-                    //alert(response);
-                    var result = response.slice(0,response.indexOf('<!-- zzz <!--]-->'));
-                    //$(".search_result").html(JSON.parse(result));
-                    document.querySelector(".search_input").value = tip;
-                    document.querySelector(".tips").style.display = 'none';
-                }
-
-            });
-            return false;
-    }
-*/
-
-
-
 
 </script>
 

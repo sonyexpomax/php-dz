@@ -1,10 +1,118 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE HTML>
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <meta charset = "utf-8" />
+    <title>SCROLL</title>
+    <style>
+        body{
+            margin: 0;
+        }
+
+        .ff{
+            width: 300px;
+            height: 180px;
+            border-radius: 20px;
+            margin: 10px auto;
+            text-align: center;
+            padding-top: 120px;
+            font-size: 30px;
+        }
+        .days{
+            margin: 0 auto;
+        }
+    </style>
+
+    <script>
+        var startFrom = 0;
+        var limit = 0;
+
+        document.addEventListener('DOMContentLoaded', function() {
+            sendRequest();
+            var inProgress = false;
+            window.addEventListener('scroll', function () {
+                if(window.innerHeight + document.documentElement.scrollTop >= (document.body.offsetHeight +20) && !inProgress) {
+                    console.log('sen request');
+                    sendRequest();
+                }
+            });
+
+        }, false);
+
+
+        function createDiv(id,content){
+            var newDiv = document.createElement('div');
+            newDiv.id = id;
+            newDiv.textContent = content;
+            newDiv.className = 'ff';
+            var r = id*7  + 100;
+            var g = id*7 + 5;
+            var b = 255 - id*7;
+            newDiv.style.background = 'rgb(' + r + ',' + g  + ',' + b  + ')';
+            document.body.appendChild(newDiv);
+        }
+
+        function addScript(src) {
+            var elem = document.createElement("script");
+            elem.src = src;
+            document.head.appendChild(elem);
+            inProgress = false;
+        }
+
+        function sendRequest() {
+            console.log('startFrom = ' + startFrom);
+            startFrom !== 0 ? limit = 5 : limit = 3;
+            console.log('подгружем ' + limit + ' элем.');
+
+            var url = 'http://frer.zzz.com.ua/days.php?startFrom=' + startFrom + '&limit=' + limit;
+
+            startFrom !== 0 ? startFrom += 5 : startFrom += 3;
+
+            inProgress = true;
+
+            addScript(url);
+        }
+
+
+        /*
+        request.onreadystatechange = function() {
+            if (request.readyState === 4) {
+                if (request.status === 200) {
+                    var  result =  JSON.parse(request.response);
+                    if (result.length > 0) {
+
+                        console.log('startFrom = '+startFrom);
+                        console.log('result = '+result);
+                        console.log('result.length = '+result.length);
+
+                        startFrom !== 0 ? startFrom += 5 : startFrom += 3;
+
+                        for(var i = 0; i < result.length; i++){
+
+                            var newId = 'Day-' + countLoadedDivs;
+                            var newDiv = "<div class=\"ff\" id = '" + newId + "'>" + result[i] + "</div>";
+
+                            document.querySelector(".days").innerHTML += newDiv;
+
+                            var r = countLoadedDivs*7  + 100;
+                            var g = countLoadedDivs*7 + 5;
+                            var b = 255 - countLoadedDivs*7;
+
+                            document.getElementById(newId).style.background = 'rgb(' + r + ',' + g  + ',' + b  + ')';
+                            countLoadedDivs ++;
+                        }
+                        console.log('add div . countLoadedDivs = ' + countLoadedDivs);
+                        inProgress = false;
+                    }
+                }
+            }
+        }
+        */
+
+    </script>
+
 </head>
 <body>
-$END$
+<div style="width: 200px;" class="days"></div>
 </body>
 </html>
