@@ -48,7 +48,7 @@
 <body>
 <main>
     <p>Выбор темы виджета</p>
-    <select class="theme">
+    <select class="theme"  onchange="generateHTML()">
         <option value="blue">Синяя</option>
         <option value="red">Красная</option>
         <option value="green">Зеленая</option>
@@ -102,7 +102,7 @@
 
 
     fillSelect();
-    document.querySelector('.city_list').selectedIndex = -1;
+    //document.querySelector('.city_list').selectedIndex = -1;
 
 
 </script>

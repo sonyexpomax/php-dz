@@ -76,11 +76,9 @@
     };
 
     requestForecast = (city, theme) => {
-        let cookieValue = getCookie(`${city}-${theme}`);
+        let cookieValue = getCookie(`${city}`);
         if (cookieValue === '') {
-
-            console.log('no cookie');
-
+            console.log('%c NO Cookie', 'background: red; color: white');
             return new Promise(function (resolve, reject) {
 
                 let url = 'http://api.apixu.com/v1/current.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city;
@@ -90,18 +88,9 @@
                 request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 request.onload = function () {
                     if (this.status === 200) {
-
                         resolve(this.response);
                         console.log('запрос вернулся успешно');
-
                         let data = JSON.parse(request.response);
-
-                        console.log('city = ' + data['location']['name']);
-                        console.log('icon = ' + data["current"]["condition"]["icon"]);
-                        console.log('text = ' + data["current"]["condition"]["text"]);
-                        console.log('temp = ' + data["current"]["temp_c"]);
-                        console.log('theme = ' + theme);
-
                         createWidget(
                             data['location']['name'],
                             data["current"]["condition"]["icon"],
@@ -111,9 +100,10 @@
                         );
 
                         //set cookie
+                        console.log('set cookie');
                         setCookie(
-                            `${data['location']['name']}-${theme}`,
-                            `${data["current"]["condition"]["icon"]},${data["current"]["condition"]["text"]},${data["current"]["temp_c"]}`
+                            `${data['location']['name']}`,
+                            JSON.stringify(`${data["current"]["condition"]["icon"]},${data["current"]["condition"]["text"]},${data["current"]["temp_c"]}`)
                         );
                     } else {
                         let error = new Error(this.statusText);
@@ -130,13 +120,9 @@
             });
         }
         else{
-            console.log('yes cookie');
-            let weatherItems = cookieValue.split(',');
-            console.log('city = ' + city);
-            console.log('icon = ' + weatherItems[0]);
-            console.log('text = ' + weatherItems[1]);
-            console.log('temp = ' + weatherItems[2]);
-            console.log('theme = ' + theme);
+            console.log('%c YES Cookie', 'background: green; color: white');
+            console.log(JSON.parse(cookieValue));
+            let weatherItems = JSON.parse(cookieValue).split(',');
             createWidget(city, weatherItems[0], weatherItems[1], weatherItems[2], theme);
         }
 
