@@ -60,8 +60,8 @@ vp.startPlayNewVideo = (id,dataId,text) => {
     if (vp.previousVideoId != vp.currentVideoId) {
 
         console.log('start play with id=' + id + '  ----  dataId=' + dataId + '  ---  text='+ text);
-        vp.videoPlayer.src = `http://frer.zzz.com.ua/video/${vp.videoList[dataId][1]}.mp4`;
-        //vp.videoPlayer.src = `video/${vp.videoList[dataId][1]}.mp4`;
+        //vp.videoPlayer.src = `http://frer.zzz.com.ua/video/${vp.videoList[dataId][1]}.mp4`;
+        vp.videoPlayer.src = `video/${vp.videoList[dataId][1]}.mp4`;
 
         document.querySelector('#playerPlayPause').className = 'fa fa-pause fa-lg';
         vp.videoPlayer.play();
@@ -89,6 +89,8 @@ vp.startPlayNewVideo = (id,dataId,text) => {
         vp.videoPlayer.currentTime = 0;
         vp.videoPlayer.play();
     }
+
+    document.querySelector('#volumeBar').value = vp.videoPlayer.volume;
 };
 
 vp.playerPause = () => {
@@ -118,14 +120,16 @@ vp.playerFullscreen = () => {
 
 vp.playerVolume  = () => {
     if(!vp.videoPlayer.muted){
+        vp.videoPlayer.volume = 0;
         vp.videoPlayer.muted = true;
         document.querySelector('#playerVolume').className = 'fa fa-volume-off fa-lg';
-        document.querySelector('#volumeBar').value = '0';
+        document.querySelector('#volumeBar').value = 0;
     }
     else {
+        vp.videoPlayer.volume = 1;
         vp.videoPlayer.muted = false;
         document.querySelector('#playerVolume').className = 'fa fa-volume-up fa-lg';
-        document.querySelector('#volumeBar').value = '1';
+        document.querySelector('#volumeBar').value = 1;
 
     }
 
@@ -143,8 +147,10 @@ vp.cleanPlaylist = () => {
 };
 
 vp.changeVolume = () => {
+    vp.videoPlayer.muted = false;
+    console.log('change volume');
     vp.videoPlayer.volume = document.querySelector('#volumeBar').value;
-    document.querySelector('#progressBar').value = vp.videoPlayer.currentTime;
+    //document.querySelector('#progressBar').value = vp.videoPlayer.volume;
     if(vp.videoPlayer.volume > 0.5){
         document.querySelector('#playerVolume').className = 'fa fa-volume-up fa-lg';
     }
@@ -156,7 +162,7 @@ vp.changeVolume = () => {
     }
 };
 
-changeVideo = () => {
+vp.changeVideo = () => {
     vp.videoPlayer.currentTime = document.querySelector('#progressBar').value;
 };
 
@@ -169,45 +175,6 @@ vp.videoPlayer.addEventListener('loadedmetadata', function() {
 vp.videoPlayer.addEventListener('ended', function() {
     vp.selectNextVideo();
 });
-
-
-vp.selectNextVideo3 = (isPrevious = false) => {
-    console.log(vp.previousVideoId);
-    let nextVideo;
-    if(isPrevious){
-        if(vp.previousVideoId > 0) {
-            nextVideo = document.querySelector('#pl' + vp.previousVideoId);
-            console.log('nextVideo.textContent = ' +  nextVideo.textContent);
-            vp.startPlayNewVideo(nextVideo.id, nextVideo.textContent);
-        }
-    }
-    else {
-        if (document.querySelector('.playlist').lastElementChild.children.length > 0) {
-            console.log('randomPlay = ' + vp.randomPlay);
-            let nextVideo;
-            if (vp.randomPlay) {
-                let numRandom = Math.round(Math.random() * (vp.playlistId - 1));
-                nextVideo = document.querySelector('#pl' + numRandom);
-            }
-            else {
-                if (document.querySelector('#pl' + (vp.currentVideoId + 1))) {
-                    nextVideo = document.querySelector('#pl' + (vp.currentVideoId + 1));
-                }
-                else {
-                    nextVideo = document.querySelector('#pl0');
-                }
-            }
-            console.log('nextVideo.textContent 2 = ' +  nextVideo.textContent);
-            vp.startPlayNewVideo(nextVideo.id, nextVideo.textContent.slice(0,-1));
-        }
-        else {
-            vp.previousVideoId = -1;
-        }
-    }
-
-};
-
-
 
 vp.selectNextVideo = (isPrevious = false) => {
     console.log(vp.previousVideoId);
@@ -296,19 +263,30 @@ console.log('IsEmptyPlaylist = ' + IsEmptyPlaylist);
             nextVideo = document.querySelector('#pl' + nextVideoId);
             vp.startPlayNewVideo(nextVideo.id, nextVideo.getAttribute('data-id'), nextVideo.textContent.slice(0,-1));
         }
-
     }
-
 };
 
+SecondsTohhmmss = (sec) => {
+    let hours   = Math.floor(sec / 3600);
+    let minutes = Math.floor((sec - (hours * 3600)) / 60);
+    let seconds = sec - (hours * 3600) - (minutes * 60);
 
+    seconds = Math.round(seconds * 100) / 100;
+
+    let result ='';
+    if(hours !== 0){
+        result += (hours < 10 ? "0" + hours : hours) + ':';
+    }
+    result += (minutes < 10 ? "0" + minutes : minutes) + ':';
+    result += (seconds  < 10 ? "0" + seconds : seconds);
+    return result;
+};
 
 document.body.onclick = function(event) {
     let elementWithClick = event.target || event.srcElement;
     if (elementWithClick.className === 'videoItem'){
         vp.addVideoToPlaylist(elementWithClick.id, elementWithClick.textContent);
     }
-
     if (elementWithClick.id === 'playerPlayPause'){
        if(elementWithClick.className === 'fa fa-play fa-lg'){
            vp.playerPlay();
@@ -324,6 +302,7 @@ document.body.onclick = function(event) {
         vp.selectNextVideo(true);
     }
     if (elementWithClick.id === 'playerStop'){
+        vp.playPauseButton.className = 'fa fa-play fa-lg';
         vp.playerStop();
     }
     if (elementWithClick.id === 'playerFullscreen') {
@@ -370,19 +349,16 @@ document.body.ondblclick = function(event) {
 };
 
 vp.videoPlayer.addEventListener('timeupdate', function() {
-    let duration = vp.videoPlayer.duration.toFixed(1);
+    let duration = vp.videoPlayer.duration.toFixed(0);
     if(isNaN(vp.videoPlayer.duration )){
         duration = 0;
     }
-    document.querySelector('#timeInfo').textContent = `${vp.videoPlayer.currentTime.toFixed(1)} / ${duration}`;
+    document.querySelector('#timeInfo').textContent = `${SecondsTohhmmss(vp.videoPlayer.currentTime.toFixed(0))} / ${SecondsTohhmmss(duration)}`;
     document.querySelector('#progressBar').value = vp.videoPlayer.currentTime;
 });
 
 vp.deleteVideo = (name) => {
     let dellName = name.slice(7);
-    console.log('delete ' + dellName);
     document.querySelector("#pl" + dellName).parentElement.removeChild(document.querySelector("#pl" + dellName));
-
-    //vp.playloadArr.splice((+dellName), 1);
     delete vp.playloadArr[(+dellName)];
 };
