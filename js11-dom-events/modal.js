@@ -4,7 +4,7 @@ let countOfNewWindows = 0;
  *  Creating New window
  * @param text
  */
-function CreateNewWindow(text) {
+function createNewWindow(text) {
 
     let newWindow = document.createElement('div');
     addNewWindowToDom(newWindow,text);
@@ -52,6 +52,10 @@ function CreateNewWindow(text) {
     }
 }
 
+deleteWindow = (id) => {
+    document.querySelector('#' + id).parentElement.removeChild(document.querySelector('#' + id));
+};
+
 function addNewWindowToDom(newWindow, text) {
 
     //create div.modal
@@ -78,7 +82,6 @@ function addNewWindowToDom(newWindow, text) {
     //create closetab
     let newWindowCloseTab = document.createElement('a');
     newWindowCloseTab.className = 'close';
-    newWindowCloseTab.onclick = function () {document.body.removeChild(parentElement);};
     newWindow.appendChild(newWindowCloseTab);
 
     document.body.appendChild(newWindow);
@@ -91,5 +94,12 @@ document.body.addEventListener('keydown',function (event) {
     //console.log(event.keyCode);
     let windowText = event.key;
     //    console.log(event.key);
-    CreateNewWindow(windowText);
+    createNewWindow(windowText);
+});
+
+document.body.addEventListener('click',function (event) {
+    var elementWithClick = event.target || event.srcElement;
+    if (elementWithClick.className === 'close') {
+       deleteWindow(elementWithClick.parentElement.id);
+    }
 });
