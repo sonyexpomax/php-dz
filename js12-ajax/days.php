@@ -27,10 +27,3 @@ foreach ($result as $key => $day){
     echo "createDiv($id,'$day');";
 
 }
-echo "
-<script>ddsds/*
-for(var i=0; i <6 ; i++){
-document.body.removeChild(document.body.lastChild);
-}*/
-</script>
-";
