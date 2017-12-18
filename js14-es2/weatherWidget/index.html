@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Generater weather widget</title>
     <style>
         body{
             font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -48,19 +48,19 @@
 <body>
 <main>
     <p>Выбор темы виджета</p>
-    <select class="theme"  onchange="generateHTML()">
+    <select class="theme" >
         <option value="blue">Синяя</option>
         <option value="red">Красная</option>
         <option value="green">Зеленая</option>
     </select><br />
 
-    <p>Выбор города</p>
-    <select class="city_list" onchange="generateHTML()"></select><br />
-</main>
+        <p>Выбор города</p>
+        <select class="city_list"></select><br />
+    </main>
 
 <div class="html_code">
     <p>Код сгенерированного вами виджета</p>
-    <textarea name="html_code"  cols="30" rows="7"></textarea>
+    <textarea name="html_code"  cols="30" rows="7" id="textForHTML"></textarea>
 </div>
 
 <div class="preview">
@@ -86,7 +86,7 @@
         //adding to textarea
         let city = document.querySelector('.city_list').value;
         let theme = document.querySelector('.theme').value;
-        document.querySelector('.html_code').children[1].textContent =
+        document.querySelector('#textForHTML').textContent =
             `<iframe src=\'http://frer.zzz.com.ua/widgetGenerator.html?city=${city}&theme=${theme}\'></iframe>`;
 
         //make preview;
@@ -100,10 +100,12 @@
         isFirstPreview = false;
     };
 
-
     fillSelect();
-    //document.querySelector('.city_list').selectedIndex = -1;
 
+    document.addEventListener('DOMContentLoaded',function() {
+        document.querySelector('.city_list').onchange = generateHTML;
+        document.querySelector('.theme').onchange = generateHTML;
+    },false);
 
 </script>
 
