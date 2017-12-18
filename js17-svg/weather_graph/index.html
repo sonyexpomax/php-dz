@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Graph</title>
+
+    <style>
+        body{
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        .week_num{
+            display: none;
+        }
+        .unit, .week_num{
+            float: left;
+            width: 275px;
+
+            background-color: #eebea6;
+            margin: 5px;
+
+        }
+        .unit h3, .week_num h3 {
+            width: 100%;
+            margin: 0;
+            font-size: 18px;
+            background-color: #7c2d2d;
+            color: #FFFFFF;
+            text-align: center;
+            padding: 5px 0  ;
+        }
+        .unit select, .week_num select {
+            width: 100%;
+            border: none;
+            font-size: 16px;
+            background: transparent;
+            height: 26px;
+        }
+    </style>
+    <!-- <script src=cities.js></script> -->
+</head>
+<body>
+<h1>Прогноз погоды</h1>
+<main>
+    <div class="unit">
+        <h3>Выбор города</h3>
+        <select class="city_list"></select><br />
+    </div>
+
+    <div class="unit">
+        <h3>Количество недель</h3>
+        <select class="count_of_weeks">
+            <option value="1">одна неделя</option>
+            <option value="2">две недели</option>
+        </select><br />
+    </div>
+
+    <div class="week_num">
+        <h3>На какую неделю</h3>
+        <select class="week_number">
+            <option value="1">на первую неделю</option>
+            <option value="2">на вторую неделю</option>
+        </select>
+    </div>
+
+    <div id="drawing">
+        <svg id = 'temp_svg' height='450' width='850' id = 'svg' version="1.1" style='border:1px solid black'>
+        </svg>
+    </div>
+</main>
+
+<script src=cities.js></script>
+<script>
+    let newdata = [];
+    let svgns = "http://www.w3.org/2000/svg";
+    let svg = document.getElementById('temp_svg');
+
+
+
+
+    fillSelect = () => {
+        cities.forEach(function (ruValue, enValue) {
+            let newOption = document.createElement('option');
+            newOption.value = enValue;
+            let text = document.createTextNode(ruValue);
+            newOption.appendChild(text);
+            document.querySelector('.city_list').appendChild(newOption);
+        });
+    };
+
+    requestForecast = () => {
+
+        //т.к /api.apixu.com отдает инфорацию о погоде максимум на 10 дней, то вторую неделю сгенерируем.
+
+        let countOfWeeks = parseInt(document.querySelector('.week_number').value);
+
+        let city = document.querySelector('.city_list').value;
+        console.log('city = ' +     city);
+        let cookieValue = getCookie(`${city}`);
+        if (cookieValue === '') {
+            console.log('%c NO Cookie', 'background: red; color: white');
+            return new Promise(function (resolve, reject) {
+                let url = 'http://api.apixu.com/v1/forecast.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city + '&days=7';
+                let request = new XMLHttpRequest();
+                request.open('GET', url);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.onload = function () {
+                    if (this.status === 200) {
+                        resolve(this.response);
+                        console.log('запрос вернулся успешно');
+                        let data = JSON.parse(request.response);
+                        for(let i = 0; i < 7; i++){
+
+                            let rand = 0;
+                            if(countOfWeeks == 2){
+                                rand = Math.floor(Math.random() * 4) ;
+                            }
+
+                            getDays(data.forecast.forecastday[i].date);
+                            newdata[i] = [getDays(data.forecast.forecastday[i].date), (data.forecast.forecastday[i].day.avgtemp_c + rand)];
+                        }
+
+                        console.log('newdata = ');
+                        console.log(newdata);
+
+                        createGraph(city);
+                        //set cookie
+                        //  console.log('set cookie');
+                        //  setCookie(
+                        //      `${data['location']['name']}`,
+                        //      JSON.stringify(`${data["current"]["condition"]["icon"]},${data["current"]["condition"]["text"]},${data["current"]["temp_c"]}`)
+                        //  );
+                    } else {
+                        let error = new Error(this.statusText);
+                        error.code = this.status;
+                        reject(error);
+                    }
+                };
+                request.onerror = function () {
+                    reject(new Error("Network Error"));
+                };
+                request.send();
+                //document.querySelector('.location').textContent = 'Идет загрузка';
+                console.log('запрос ушел на ' + url);
+            });
+        }
+        else{
+         //   console.log('%c YES Cookie', 'background: green; color: white');
+         //   console.log(JSON.parse(cookieValue));
+         //   let weatherItems = JSON.parse(cookieValue).split(',');
+         //   createWidget(city, weatherItems[0], weatherItems[1], weatherItems[2], theme);
+        }
+    };
+
+    createGraph = (city) => {
+        svg.innerHTML = '';
+        let temp = [];
+        newdata.forEach(function(val) {
+            temp.push(val[1]);
+        });
+
+        if(Math.min(...temp) > 0){
+            svg.setAttributeNS(null, 'height', '450');
+        }
+        else {
+            svg.setAttributeNS(null, 'height', '800');
+        }
+
+        console.log(newdata);
+        let pointX = 150;
+        let id = 0;
+
+        createNet();
+        createLegend();
+        createTitle(city);
+
+        //add polyline
+        let points = '';
+        newdata.forEach(function(val) {
+            let pointY = 400 - val[1] * 10 ;
+            points += `${pointX},${pointY} `;
+            pointX += 100;
+        });
+
+        let polyline = document.createElementNS(svgns, "polyline");
+        polyline.setAttributeNS(null,'points', points);
+        polyline.setAttributeNS(null,'stroke', 'blue');
+        polyline.style.fill = 'transparent';
+        polyline.setAttributeNS(null,'stroke-width', '3');
+        svg.appendChild(polyline);
+
+        //add dayPoints
+        pointX = 150;
+        newdata.forEach(function(val) {
+            let pointY = 400 - val[1] * 10;
+            let dayPoint = document.createElementNS(svgns, "circle");
+
+            dayPoint.setAttributeNS(null,'cx', pointX);
+            dayPoint.setAttributeNS(null,'cy', pointY);
+            dayPoint.setAttributeNS(null,'r', '6');
+            dayPoint.setAttributeNS(null,'stroke-width', '4');
+            dayPoint.setAttributeNS(null,'stroke', 'red');
+            dayPoint.setAttributeNS(null,'fill', 'yellow');
+            dayPoint.setAttributeNS(null,'id', 'day-' + id);
+            svg.appendChild(dayPoint);
+
+            pointX += 100;
+            id++;
+
+            // move
+            dayPoint.addEventListener('mouseover', function(event) {
+                let point = event.target;
+                    point.setAttributeNS(null, 'r', '7');
+
+                //show text
+                let textPoint = document.createElementNS(svgns, "text");
+                textPoint.setAttributeNS(null, 'x', parseFloat(point.getAttributeNS(null, 'cx')));
+                textPoint.setAttributeNS(null, 'y', parseFloat(point.getAttributeNS(null, 'cy'))-20);
+                textPoint.setAttributeNS(null, 'fill', 'black');
+                textPoint.textContent = newdata[point.getAttributeNS(null, 'id').slice(4)][0] + ': ' + newdata[point.getAttributeNS(null, 'id').slice(4)][1]  + `\u2103`;
+                textPoint.style.fontSize = '15px';
+                textPoint.style.fontFamily = 'Arial';
+                textPoint.style.textAnchor = 'middle';
+                textPoint.style.fontWeight = '600';
+                textPoint.id = 'hint';
+                svg.appendChild(textPoint);
+            }, false);
+
+            // leave
+            dayPoint.addEventListener('mouseout', function(event) {
+                event.target.setAttributeNS(null, 'r', '5');
+                document.querySelector('#hint').parentElement.removeChild(document.querySelector('#hint'));
+            }, false);
+        });
+    };
+
+    createNet = () => {
+
+        // add horizontal net
+        for(let i = 0; i < 20; i++){
+            let num = i * 40;
+            let netLine = document.createElementNS(svgns, "line");
+            netLine.setAttributeNS(null,'x1', '50');
+            netLine.setAttributeNS(null,'x2','100%');
+            netLine.setAttributeNS(null,'y1', num.toString());
+            netLine.setAttributeNS(null,'y2', num.toString());
+            netLine.setAttributeNS(null,'stroke', 'black');
+            if(i === 10){
+                netLine.setAttributeNS(null,'stroke-width', '2');
+
+            }
+            else {
+                netLine.setAttributeNS(null,'stroke-width', '0.5');
+                netLine.setAttributeNS(null,'stroke-dasharray', '20 10 5 10');
+            }
+
+            svg.appendChild(netLine);
+        }
+
+        // add vertical net
+        for(let i = 0; i < 8; i++){
+            let num = i * 100 + 50;
+            let netLine = document.createElementNS(svgns, "line");
+            netLine.setAttributeNS(null,'x1', num.toString());
+            netLine.setAttributeNS(null,'x2', num.toString());
+            netLine.setAttributeNS(null,'y1', '0');
+            netLine.setAttributeNS(null,'y2', '100%');
+            netLine.setAttributeNS(null,'stroke', 'black');
+
+            if(i === 0){
+                netLine.setAttributeNS(null,'stroke-width', '2');
+            }
+            else{
+                netLine.setAttributeNS(null,'stroke-width', '0.5');
+                netLine.setAttributeNS(null,'stroke-dasharray', '20 10 5 10');
+            }
+
+            svg.appendChild(netLine);
+        }
+    };
+
+    createLegend = () => {
+
+        //add horizontal legend
+        for(let i = 0; i < 7; i++) {
+            let num = i * 100 + 150;
+
+            let dayPoint = document.createElementNS(svgns, "circle");
+            dayPoint.setAttributeNS(null,'cx', num.toString());
+            dayPoint.setAttributeNS(null,'cy', '400');
+            dayPoint.setAttributeNS(null,'r', '3');
+            dayPoint.setAttributeNS(null,'stroke-width', '1');
+            dayPoint.setAttributeNS(null,'stroke', 'black');
+            dayPoint.setAttributeNS(null,'fill', 'black');
+            svg.appendChild(dayPoint);
+
+            let textPoint = document.createElementNS(svgns, "text");
+            textPoint.setAttributeNS(null, 'x', (num).toString());
+            textPoint.setAttributeNS(null, 'y', '430');
+            textPoint.setAttributeNS(null, 'fill', 'red');
+            textPoint.textContent = newdata[i][0];
+            textPoint.style.fontSize = '12px';
+            textPoint.style.fontFamily = 'Arial';
+            textPoint.style.textAnchor = 'middle';
+            svg.appendChild(textPoint);
+        }
+
+        //add vertical legend
+        let textNum = 40;
+        for(let i = 0; i < 20; i++){
+
+            let num = i * 40;
+
+            let dayPoint = document.createElementNS(svgns, "circle");
+            dayPoint.setAttributeNS(null,'cx', '50');
+            dayPoint.setAttributeNS(null,'cy', num.toString());
+            dayPoint.setAttributeNS(null,'r', '3');
+            dayPoint.setAttributeNS(null,'stroke-width', '1');
+            dayPoint.setAttributeNS(null,'stroke', 'black');
+            dayPoint.setAttributeNS(null,'fill', 'black');
+            svg.appendChild(dayPoint);
+
+            let textPoint = document.createElementNS(svgns, "text");
+            textPoint.setAttributeNS(null,'x', '40');
+            textPoint.setAttributeNS(null,'y', num.toString());
+            textPoint.setAttributeNS(null, 'fill', 'red');
+            textPoint.textContent = textNum;
+            textPoint.style.fontSize = '12px';
+            textPoint.style.fontFamily = 'Arial';
+            textPoint.style.textAnchor = 'end';
+            svg.appendChild(textPoint);
+            textNum -= 4;
+        }
+    };
+
+    createTitle = (city) => {
+        let helpText;
+        if(document.querySelector('.week_number').value == '1'){
+            helpText = 'nearest';
+        }
+        else {
+            helpText = 'next';
+        }
+        let textPoint = document.createElementNS(svgns, "text");
+        textPoint.setAttributeNS(null, 'x', '50%');
+        textPoint.setAttributeNS(null, 'y', '30');
+        textPoint.setAttributeNS(null, 'fill', 'blue');
+        textPoint.textContent = 'Average temperature in ' + city + ' for ' + helpText + ' 7 days';
+        textPoint.style.fontSize = '24px';
+        textPoint.style.fontFamily = 'Arial';
+        textPoint.style.textAnchor = 'middle';
+        svg.appendChild(textPoint);
+    };
+
+    getDays = (dateIn) => {
+        let dateSearch = new Date(dateIn);
+        let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        return days[dateSearch.getDay()];
+    };
+
+    setCookie = (cname, cvalue) => {
+        let d = new Date();
+        d.setTime(d.getTime() + (10* 60 * 1000));
+        let expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    };
+
+    getCookie = (cname) => {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return '';
+    };
+
+    fillSelect();
+
+    document.addEventListener('DOMContentLoaded',function() {
+        document.querySelector('.city_list').onchange = requestForecast;
+        document.querySelector('.count_of_weeks').onchange = function () {
+            console.log(document.querySelector('.count_of_weeks').value);
+            if(document.querySelector('.count_of_weeks').value === '2'){
+                document.querySelector('.week_num').style.display = 'block';
+            }
+            else {
+                document.querySelector('.week_number').value = '1';
+                document.querySelector('.week_num').style.display = 'none';
+            }
+            requestForecast();
+        };
+        document.querySelector('.week_number').onchange = requestForecast;
+    },false);
+
+
+</script>
+
+
+</body>
+</html>
