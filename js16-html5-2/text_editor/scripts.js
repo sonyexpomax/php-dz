@@ -5,6 +5,8 @@ let txtEditor = {
     currentText : '',
     currentName : '',
     generateTempName : 0,
+    listOfDrafts : [],
+    nextValidId : 0,
 };
 
 let nameField = document.querySelector('#nameDraft');
@@ -34,26 +36,35 @@ txtEditor.createDraft = () => {
 };
 
 txtEditor.loadDraft = (id) => {
-    let objFromLocalStorage = JSON.parse(localStorage.getItem(id));
+    let  loadName;
+    for (let i = 0; i < txtEditor.listOfDrafts.length; i++) {
+        if (txtEditor.listOfDrafts[i][0] === id) {
+            loadName = txtEditor.listOfDrafts[i];
+            break;
+        }
+    }
+
+    let objFromLocalStorage = JSON.parse(localStorage.getItem(loadName[1]));
     txtEditor.currentDateCreation = objFromLocalStorage.dateCreation;
     txtEditor.currentDateModify = objFromLocalStorage.dateModify;
     txtEditor.currentText = objFromLocalStorage.text;
-    txtEditor.currentName = id;
+    txtEditor.currentName = loadName[1];
     textField.value = txtEditor.currentText;
-    nameField.value = id;
+    nameField.value = loadName[1];
 
 };
 
 txtEditor.createDraftItem = (name = txtEditor.currentName) => {
 
     let newli = document.createElement('li');
-    newli.id = name ;
+    newli.id = 'draft-' + txtEditor.nextValidId ;
+    txtEditor.listOfDrafts.push([newli.id, name]);
     newli.className = 'listItem' ;
     newli.title = 'Загрузить черновик в редактор';
     newli.textContent = name;
 
     let newCloser = document.createElement('strong');
-    newCloser.id = 'closer-' + name;
+    newCloser.id = 'closer-' + newli.id;
     newCloser.className = 'closer';
     newCloser.title = 'Удалить';
     newCloser.innerHTML = `&times;`;
@@ -74,13 +85,22 @@ txtEditor.createDraftItem = (name = txtEditor.currentName) => {
     newli.appendChild(newSpan);
 
     document.body.querySelector('#ulList').appendChild(newli);
+    txtEditor.nextValidId++;
 };
 
-txtEditor.deleteDraft = (name) => {
-    let dellName = name.slice(7);
-    console.log('delete ' + dellName);
-    localStorage.removeItem(dellName);
-    document.querySelector("#" + dellName).parentElement.removeChild(document.querySelector("#" + dellName));
+txtEditor.deleteDraft = (id) => {
+    let dellName;
+    id = id.slice(7);
+    for (let i = 0; i < txtEditor.listOfDrafts.length; i++) {
+        if (txtEditor.listOfDrafts[i][0] === id) {
+            dellName = txtEditor.listOfDrafts[i];
+            txtEditor.listOfDrafts.splice(i,1);
+            break;
+        }
+    }
+
+    localStorage.removeItem(dellName[1]);
+    document.querySelector("#" + dellName[0]).parentElement.removeChild(document.querySelector("#" + dellName[0]));
 };
 
 txtEditor.saveDraft = () => {
@@ -105,12 +125,15 @@ txtEditor.saveDraft = () => {
             txtEditor.currentDateCreation = new Date();
             txtEditor.currentDateModify = txtEditor.currentDateCreation;
             txtEditor.createDraftItem();
+            txtEditor.listOfDrafts.push(['draft-' + txtEditor.nextValidId, txtEditor.currentName]);
+            txtEditor.nextValidId++;
         }
         else{
             txtEditor.currentDateModify = new Date();
         }
 
         txtEditor.savingToStorage();
+
     }
     else {
         alert('Укажите название черновика!')
@@ -147,8 +170,11 @@ let isNeedNewDraftItem = false;
     console.log('auto save');
 
     txtEditor.savingToStorage();
-    isNeedNewDraftItem ? txtEditor.createDraftItem() : '';
-
+    if(isNeedNewDraftItem){
+        txtEditor.createDraftItem() ;
+        txtEditor.listOfDrafts.push(['draft-' + txtEditor.nextValidId, txtEditor.currentName]);
+        txtEditor.nextValidId++;
+    }
 };
 
 txtEditor.savingToStorage = () => {
@@ -157,13 +183,12 @@ txtEditor.savingToStorage = () => {
     localStorage.setItem(txtEditor.currentName,  dataDraft);
 };
 
-
-
 txtEditor.autoSaveStart = () => {
     setTimeout(function () {
         txtEditor.timerAutosave = setInterval(function () {
             txtEditor.autoSaveDraft();
-        }, 10000);
+            console.log('save');
+        }, 5000);
     },5000);
 };
 
@@ -177,23 +202,25 @@ document.body.onclick = function(event) {
     txtEditor.autoSaveStop();
     let elementWithClick = event.target || event.srcElement;
 
-    if (elementWithClick.className === 'saveDraft') {
-        txtEditor.saveDraft();
-    }
-    if (elementWithClick.className === 'clearField') {
-        txtEditor.clearField();
-    }
-    if (elementWithClick.className === 'createDraft') {
-        txtEditor.createDraft();
-    }
-    if (elementWithClick.className === 'listItem') {
-        txtEditor.loadDraft(elementWithClick.id);
-    }
-    if (elementWithClick.className === 'lastModify') {
-        txtEditor.loadDraft(elementWithClick.parentElement.id);
-    }
-    if (elementWithClick.className === 'closer') {
-        txtEditor.deleteDraft(elementWithClick.id);
+    switch(elementWithClick.className) {
+        case 'saveDraft':
+            txtEditor.saveDraft();
+            break;
+        case 'clearField':
+            txtEditor.clearField();
+            break;
+        case 'createDraft':
+            txtEditor.createDraft();
+            break;
+        case 'listItem':
+            txtEditor.loadDraft(elementWithClick.id);
+            break;
+        case 'lastModify':
+            txtEditor.loadDraft(elementWithClick.parentElement.id);
+            break;
+        case 'closer':
+            txtEditor.deleteDraft(elementWithClick.id);
+            break;
     }
 };
 
