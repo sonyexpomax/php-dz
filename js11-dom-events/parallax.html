@@ -11,7 +11,6 @@
 function moveElementToTheCenter(element) {
    var newElemX = window.innerWidth/2 - parseInt(getComputedStyle(element).width)/2 ;
    var newElemY = window.innerHeight/2 - parseInt(getComputedStyle(element).height)/2;
-
    giveCoordToTheElement(element, newElemX, newElemY);
 }
 
@@ -47,8 +46,8 @@ document.body.addEventListener('mousemove',function (event) {
     var shiftCoordsY = 0;
     for(var i = 1; i < 4; i++){
         element = document.querySelector('.layer'+i);
-        if (event.pageX > (window.innerWidth/2 - 30) && event.pageX < (window.innerWidth/2 + 30) &&
-            event.pageY > (window.innerHeight/2 - 30) && event.pageY < (window.innerHeight/2 + 30)){
+        if (event.pageX > (window.innerWidth/2 - 10) && event.pageX < (window.innerWidth/2 + 10) &&
+            event.pageY > (window.innerHeight/2 - 10) && event.pageY < (window.innerHeight/2 + 10)){
             moveElementToTheCenter(element);
         }else {
             shiftCoordsX = event.movementX * 0.9 / i;
