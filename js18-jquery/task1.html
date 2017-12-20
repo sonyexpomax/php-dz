@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .dividend, .non-dividend{
+            width: 600px;
+            height: 100px;
+            margin: 10px;
+            background-color: #00FF00;
+            border-radius: 20px;
+        }
+        .non-dividend{
+            background-color: #ff0082;
+        }
+        .non-dividend:hover{
+            cursor: not-allowed;
+        }
+        .dividend:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="dividend" id = '0'></div>
+<script src="jquery-3.2.1.min.js"></script>
+<script>
+    let ids = 1;
+
+    $( "body" ).click(function( event ) {
+        let clickElem = $( event.target );
+        if ( clickElem.is( ".dividend" ) ) {
+            clickElem.width(clickElem.width()/2);
+
+            //clone new elem
+            newElem = clickElem.clone( true );
+            newElem.attr('id', ids);
+            ids++;
+            clickElem.after( newElem );
+
+            // check of non-dividend
+            let ran = Math.floor(Math.random() * 3) + 1;
+            if(ran === 1){
+                console.log('non-dividend');
+                newElem.removeClass( "dividend" ).addClass( "non-dividend" );
+            }
+        }
+
+    });
+</script>
+</body>
+</html>
