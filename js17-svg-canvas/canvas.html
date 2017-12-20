@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather Graph</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Прогноз погоды</h1>
+<main>
+    <div class="unit">
+        <h3>Выбор города</h3>
+        <select class="city_list"></select><br />
+    </div>
+
+    <div class="unit">
+        <h3>Количество недель</h3>
+        <select class="count_of_weeks">
+            <option value="1">одна неделя</option>
+            <option value="2">две недели</option>
+        </select><br />
+    </div>
+
+    <div class="week_num">
+        <h3>На какую неделю</h3>
+        <select class="week_number">
+            <option value="1">на первую неделю</option>
+            <option value="2">на вторую неделю</option>
+        </select>
+    </div>
+</main>
+<div class="drawing">
+    <canvas id="myCanvas" width="800" height="200" style="border:1px solid black"></canvas>
+</div>
+
+<script src=cities.js></script>
+<script>
+    let forecastData = [];
+    let tempNumArr = [];
+    let rects = [];
+    let heightGraph;
+    let widthGraph = 800;
+    let zeroLine;
+
+    fillSelect = () => {
+        cities.forEach(function (ruValue, enValue) {
+            let newOption = document.createElement('option');
+            newOption.value = enValue;
+            let text = document.createTextNode(ruValue);
+            newOption.appendChild(text);
+            document.querySelector('.city_list').appendChild(newOption);
+        });
+    };
+
+    requestForecast = () => {
+
+        //т.к /api.apixu.com отдает инфорацию о погоде максимум на 10 дней, то вторую неделю сгенерируем.
+        let countOfWeeks = parseInt(document.querySelector('.week_number').value);
+
+        let city = document.querySelector('.city_list').value;
+        let cookieValue = getCookie(`${city}-${countOfWeeks}`);
+        if (cookieValue === '') {
+            console.log('%c NO Cookie', 'background: red; color: white');
+            return new Promise(function (resolve, reject) {
+                let url = 'http://api.apixu.com/v1/forecast.json?key=dc9e7f1f5fa84d4aa80193340162710&q=' + city + '&days=7';
+                let request = new XMLHttpRequest();
+                request.open('GET', url);
+                request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                request.onload = function () {
+                    if (this.status === 200) {
+                        resolve(this.response);
+                        console.log('запрос вернулся успешно');
+                        let data = JSON.parse(request.response);
+                        for(let i = 0; i < 7; i++){
+
+                            let rand = 0;
+                            if(countOfWeeks == 2){
+                                rand = Math.floor(Math.random() * 4) ;
+                            }
+
+                            getDays(data.forecast.forecastday[i].date);
+                            forecastData[i] = [getDays(data.forecast.forecastday[i].date), (data.forecast.forecastday[i].day.avgtemp_c + rand)];
+                        }
+
+                        createGraph(city);
+                        //set cookie
+                        setCookie(
+                              `${data['location']['name']}-${countOfWeeks}`,
+                              JSON.stringify(forecastData)
+                          );
+                    } else {
+                        let error = new Error(this.statusText);
+                        error.code = this.status;
+                        reject(error);
+                    }
+                };
+                request.onerror = function () {
+                    reject(new Error("Network Error"));
+                };
+                request.send();
+                //document.querySelector('.location').textContent = 'Идет загрузка';
+                console.log('запрос ушел на ' + url);
+            });
+        }
+        else{
+            console.log('%c YES Cookie', 'background: green; color: white');
+            console.log(JSON.parse(cookieValue));
+            forecastData = JSON.parse(cookieValue);
+            createGraph(city);
+        }
+    };
+
+    let canvas = document.getElementById('myCanvas');
+    let ctx = canvas.getContext('2d');
+
+    let grad_hover = ctx.createLinearGradient(0, 0, 0, 500);
+    grad_hover.addColorStop(0, '#15d60f');
+    grad_hover.addColorStop(1, '#095721');
+
+    colorOfTemperature = (temp) => {
+        let grad = ctx.createLinearGradient(0, 0, 0, 500);
+        if(temp > 0){
+            grad.addColorStop(0, '#ff000b');
+            grad.addColorStop(0.5, '#ff5b5b');
+            grad.addColorStop(1, '#9dfffd');
+        }
+        else{
+            grad.addColorStop(1, '#0e34ff');
+            grad.addColorStop(0.5, '#5199ff');
+            grad.addColorStop(0, '#89ecff');
+        }
+        return grad;
+    };
+
+    addPoint = (x,y) => {
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, 2 * Math.PI, false);
+        ctx.fillStyle = '#000';
+        ctx.fill();
+    };
+    createGrid = () => {
+        //add horizontal lines upper
+        let y=0;
+        for(let i = zeroLine; i > 0; i -= 40, y += 4){
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(widthGraph, i);
+            ctx.lineWidth = 0.2;
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+
+            addPoint(0,i);
+
+
+            if (i !== zeroLine){
+                ctx.font = '12px Arial';
+                ctx.textAlign="start";
+                ctx.fillText('+' + y, 5 , i - 5);
+            }
+         }
+
+        //add horizontal lines lower
+        y = 0;
+        for(let i = zeroLine; i < heightGraph; i+=40, y-=4){
+            ctx.beginPath();
+            ctx.moveTo(0, i);
+            ctx.lineTo(widthGraph, i);
+            ctx.lineWidth = 0.2;
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+
+            addPoint(0,i);
+
+            ctx.font = '12px Arial';
+            ctx.textAlign="start";
+            ctx.fillText(y, 5, i - 5);
+        }
+
+        // add vertical lines
+        for(let i = 50; i < widthGraph; i+=100){
+            ctx.beginPath();
+            ctx.moveTo(i, 0);
+            ctx.lineTo(i, widthGraph);
+            ctx.lineWidth = 0.2;
+            ctx.strokeStyle = '#000';
+            ctx.stroke();
+        }
+
+        // add main zeroLine line
+        ctx.beginPath();
+        ctx.moveTo(0, zeroLine);
+        ctx.lineTo(800, zeroLine);
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = '#000';
+        ctx.stroke();
+    };
+
+    createDaysLegend = () =>{
+
+         // add week days
+        let j=0;
+        for(let i = 50; i < widthGraph; i+=100, j++){
+            ctx.font = '13px Arial';
+            ctx.textAlign="center";
+            ctx.fillStyle = "#1b1b1b";
+            if (j < 7){
+                let offset1 = forecastData[j][1] < 0 ? -20 : 20;
+                ctx.fillText(forecastData[j][0], i + 50, zeroLine + offset1, 300);
+            }
+            addPoint(i,zeroLine);
+        }
+
+    };
+
+    createRects = () => {
+        //add rects
+        let pointX = 50;
+        rects = [];
+        forecastData.forEach(function(val) {
+            ctx.lineWidth = 1;
+            let pointY = zeroLine - val[1] * 10 ;
+            if (val[1] > -1 && val[1] < 1){
+                ctx.fillStyle = colorOfTemperature(0);
+                ctx.fillRect(pointX, zeroLine-5, 100, 10);
+                ctx.strokeRect(pointX, zeroLine-5, 100, 10);
+            }
+            else {
+                ctx.fillStyle = colorOfTemperature(val[1]);
+                ctx.fillRect(pointX, pointY, 100, val[1] * 10 );
+                ctx.strokeRect(pointX, pointY, 100, val[1] * 10 );
+            }
+
+            pointX += 100;
+            rects.push({x:pointX, y:pointY, w:100, h:val[1] * 10 });
+        });
+    };
+
+    clearCanvas = () => {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    };
+
+    createHint = (x, y, textId) => {
+        let offset1;
+        let text;
+        ctx.font="30px Verdana";
+        ctx.textAlign="center";
+        ctx.fillStyle = "#9f0000";
+        if(forecastData[textId][1] > 0){
+            offset1 = -20;
+            text = '+' + forecastData[textId][1];
+        }
+        else {
+            offset1 = 40;
+            text = forecastData[textId][1];
+        }
+        ctx.fillText(text, x-50, y+offset1);
+
+    };
+
+    createTitle = (city) => {
+        let helpText;
+        let text;
+        if(document.querySelector('.week_number').value == '1'){
+            helpText = 'nearest';
+        }
+        else {
+            helpText = 'next';
+        }
+        ctx.font="25px Verdana";
+        ctx.textAlign="center";
+        ctx.fillStyle = '#1b1b1b';
+        text = 'Average temperature in ' + city + ' for ' + helpText + ' 7 days';
+
+        ctx.fillText(text, 400, 25);
+    };
+    
+    findScale = () => {
+       let minTemperature = Math.min(...tempNumArr);
+       let maxTemperature = Math.max(...tempNumArr);
+       let amplitude = Math.abs(maxTemperature) +  Math.abs(minTemperature);
+
+       if(minTemperature <= 0 && maxTemperature <= 0){
+           zeroLine = 100;
+           heightGraph = Math.abs(minTemperature) * 10 + 200;
+       }
+
+       if(minTemperature >= 0 && maxTemperature >= 0){
+           zeroLine = maxTemperature * 10 + 100;
+           heightGraph = zeroLine + 100;
+       }
+
+       if(minTemperature <= 0 && maxTemperature > 0){
+           zeroLine = maxTemperature * 10 + 100;
+           heightGraph = amplitude * 10 + 200;
+       }
+       console.log('heightGraph = ' + heightGraph);
+       console.log('zeroLine = ' + zeroLine);
+    };
+
+    createGraph = (city) => {
+        tempNumArr = [];
+        for(let i = 0; i < forecastData.length; i++) {
+            tempNumArr.push(forecastData[i][1]);
+        }
+
+        findScale();
+        canvas.height = heightGraph;
+        clearCanvas();
+
+        createGrid();
+        createRects();
+        createDaysLegend();
+        createTitle(city);
+
+        canvas.onmousemove = function (e) {
+            let rect = this.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            let y = e.clientY - rect.top;
+            let i = 0;
+            let r;
+
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowBlur = 0;
+
+            clearCanvas();
+            createGrid();
+
+            while (r = rects[i]) {
+                let ax,ay,aw,ah;
+                ax = r.x - 100;
+                ay = r.y;
+                aw = r.w;
+                ah = r.h;
+                ctx.beginPath();
+                if (forecastData[i][1] > -1 && forecastData[i][1] < 1){
+                    ctx.fillStyle = colorOfTemperature(0);
+                    ay = zeroLine-5;
+                    aw = 100;
+                    ah = 10;
+                    ctx.rect(ax, ay, aw, ah);
+                }
+                else {
+                    ctx.fillStyle = colorOfTemperature(forecastData[i][1]);
+                    ctx.rect(ax, ay, aw, ah);
+                }
+
+                if(ctx.isPointInPath(x, y)){
+                    ctx.fillStyle = grad_hover;
+                    ctx.rect(ax, ay, aw, ah);
+                }
+
+                ctx.fillRect(ax, ay, aw, ah);
+                ctx.lineWidth = 1;
+                ctx.strokeRect(ax, ay, aw, ah);
+
+                if(ctx.isPointInPath(x, y)){
+                    createHint(ax+100, ay, i);
+                }
+
+                i++;
+            }
+            createDaysLegend();
+            createTitle(city);
+        };
+    };
+    getDays = (dateIn) => {
+            let dateSearch = new Date(dateIn);
+            let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            return days[dateSearch.getDay()];
+    };
+
+    setCookie = (cname, cvalue) => {
+        let d = new Date();
+        d.setTime(d.getTime() + (10* 60 * 1000));
+        let expires = "expires="+d.toUTCString();
+        document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    };
+
+    getCookie = (cname) => {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) === 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return '';
+    };
+
+    fillSelect();
+
+    document.addEventListener('DOMContentLoaded',function() {
+        document.querySelector('.city_list').onchange = requestForecast;
+        document.querySelector('.count_of_weeks').onchange = function () {
+            if(document.querySelector('.count_of_weeks').value === '2'){
+                document.querySelector('.week_num').style.display = 'block';
+            }
+            else {
+                document.querySelector('.week_number').value = '1';
+                document.querySelector('.week_num').style.display = 'none';
+            }
+            requestForecast();
+        };
+        document.querySelector('.week_number').onchange = requestForecast;
+    },false);
+
+
+</script>
+
+
+</body>
+</html>

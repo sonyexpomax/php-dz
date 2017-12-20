@@ -3,41 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Weather Graph</title>
-
-    <style>
-        body{
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-        }
-
-        .week_num{
-            display: none;
-        }
-        .unit, .week_num{
-            float: left;
-            width: 275px;
-
-            background-color: #eebea6;
-            margin: 5px;
-
-        }
-        .unit h3, .week_num h3 {
-            width: 100%;
-            margin: 0;
-            font-size: 18px;
-            background-color: #7c2d2d;
-            color: #FFFFFF;
-            text-align: center;
-            padding: 5px 0  ;
-        }
-        .unit select, .week_num select {
-            width: 100%;
-            border: none;
-            font-size: 16px;
-            background: transparent;
-            height: 26px;
-        }
-    </style>
-    <!-- <script src=cities.js></script> -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <h1>Прогноз погоды</h1>
@@ -62,21 +28,21 @@
             <option value="2">на вторую неделю</option>
         </select>
     </div>
+ </main>
 
-    <div id="drawing">
-        <svg id = 'temp_svg' height='450' width='850' id = 'svg' version="1.1" style='border:1px solid black'>
-        </svg>
-    </div>
-</main>
+<div class="drawing">
+    <svg id = 'temp_svg' height='450' width='850' id = 'svg' version="1.1" style='border:1px solid black'></svg>
+</div>
 
 <script src=cities.js></script>
 <script>
-    let newdata = [];
+    let forecastData = [];
     let svgns = "http://www.w3.org/2000/svg";
     let svg = document.getElementById('temp_svg');
-
-
-
+    let temp = [];
+    let heightGraph;
+    let widthGraph = 850;
+    let zeroLine;
 
     fillSelect = () => {
         cities.forEach(function (ruValue, enValue) {
@@ -96,7 +62,7 @@
 
         let city = document.querySelector('.city_list').value;
         console.log('city = ' +     city);
-        let cookieValue = getCookie(`${city}`);
+        let cookieValue = getCookie(`${city}-${countOfWeeks}`);
         if (cookieValue === '') {
             console.log('%c NO Cookie', 'background: red; color: white');
             return new Promise(function (resolve, reject) {
@@ -117,19 +83,17 @@
                             }
 
                             getDays(data.forecast.forecastday[i].date);
-                            newdata[i] = [getDays(data.forecast.forecastday[i].date), (data.forecast.forecastday[i].day.avgtemp_c + rand)];
+                            forecastData[i] = [getDays(data.forecast.forecastday[i].date), (data.forecast.forecastday[i].day.avgtemp_c + rand)];
                         }
 
-                        console.log('newdata = ');
-                        console.log(newdata);
+                        console.log('forecastData = ');
+                        console.log(forecastData);
 
                         createGraph(city);
-                        //set cookie
-                        //  console.log('set cookie');
-                        //  setCookie(
-                        //      `${data['location']['name']}`,
-                        //      JSON.stringify(`${data["current"]["condition"]["icon"]},${data["current"]["condition"]["text"]},${data["current"]["temp_c"]}`)
-                        //  );
+                        setCookie(
+                            `${data['location']['name']}-${countOfWeeks}`,
+                            JSON.stringify(forecastData)
+                        );
                     } else {
                         let error = new Error(this.statusText);
                         error.code = this.status;
@@ -145,28 +109,45 @@
             });
         }
         else{
-         //   console.log('%c YES Cookie', 'background: green; color: white');
-         //   console.log(JSON.parse(cookieValue));
-         //   let weatherItems = JSON.parse(cookieValue).split(',');
-         //   createWidget(city, weatherItems[0], weatherItems[1], weatherItems[2], theme);
+            console.log('%c YES Cookie', 'background: green; color: white');
+            console.log(JSON.parse(cookieValue));
+            forecastData = JSON.parse(cookieValue);
+            createGraph(city);
+        }
+    };
+
+    findScale = () => {
+        let minTemperature = Math.min(...temp);
+        let maxTemperature = Math.max(...temp);
+        let amplitude = Math.abs(maxTemperature) +  Math.abs(minTemperature);
+
+        if(minTemperature <= 0 && maxTemperature <= 0){
+            zeroLine = 100;
+            heightGraph = Math.abs(minTemperature) * 10 + 200;
+        }
+
+        if(minTemperature >= 0 && maxTemperature >= 0){
+            zeroLine = maxTemperature * 10 + 100;
+            heightGraph = zeroLine + 50;
+        }
+
+        if(minTemperature <= 0 && maxTemperature > 0){
+            zeroLine = maxTemperature * 10 + 100;
+            heightGraph = amplitude * 10 + 200;
         }
     };
 
     createGraph = (city) => {
-        svg.innerHTML = '';
-        let temp = [];
-        newdata.forEach(function(val) {
+
+        temp = [];
+        forecastData.forEach(function(val) {
             temp.push(val[1]);
         });
+        findScale();
 
-        if(Math.min(...temp) > 0){
-            svg.setAttributeNS(null, 'height', '450');
-        }
-        else {
-            svg.setAttributeNS(null, 'height', '800');
-        }
+        svg.innerHTML = '';
+        svg.setAttributeNS(null, 'height', heightGraph);
 
-        console.log(newdata);
         let pointX = 150;
         let id = 0;
 
@@ -176,8 +157,8 @@
 
         //add polyline
         let points = '';
-        newdata.forEach(function(val) {
-            let pointY = 400 - val[1] * 10 ;
+        forecastData.forEach(function(val) {
+            let pointY = zeroLine - val[1] * 10 ;
             points += `${pointX},${pointY} `;
             pointX += 100;
         });
@@ -191,8 +172,8 @@
 
         //add dayPoints
         pointX = 150;
-        newdata.forEach(function(val) {
-            let pointY = 400 - val[1] * 10;
+        forecastData.forEach(function(val) {
+            let pointY = zeroLine - val[1] * 10;
             let dayPoint = document.createElementNS(svgns, "circle");
 
             dayPoint.setAttributeNS(null,'cx', pointX);
@@ -217,7 +198,7 @@
                 textPoint.setAttributeNS(null, 'x', parseFloat(point.getAttributeNS(null, 'cx')));
                 textPoint.setAttributeNS(null, 'y', parseFloat(point.getAttributeNS(null, 'cy'))-20);
                 textPoint.setAttributeNS(null, 'fill', 'black');
-                textPoint.textContent = newdata[point.getAttributeNS(null, 'id').slice(4)][0] + ': ' + newdata[point.getAttributeNS(null, 'id').slice(4)][1]  + `\u2103`;
+                textPoint.textContent = forecastData[point.getAttributeNS(null, 'id').slice(4)][0] + ': ' + forecastData[point.getAttributeNS(null, 'id').slice(4)][1]  + `\u2103`;
                 textPoint.style.fontSize = '15px';
                 textPoint.style.fontFamily = 'Arial';
                 textPoint.style.textAnchor = 'middle';
@@ -234,20 +215,46 @@
         });
     };
 
+    addPoints = (x, y) => {
+        //points
+        let dayPoint = document.createElementNS(svgns, "circle");
+        dayPoint.setAttributeNS(null,'cx', x);
+        dayPoint.setAttributeNS(null,'cy', y);
+        dayPoint.setAttributeNS(null,'r', '3');
+        dayPoint.setAttributeNS(null,'stroke-width', '1');
+        dayPoint.setAttributeNS(null,'stroke', 'black');
+        dayPoint.setAttributeNS(null,'fill', 'black');
+        svg.appendChild(dayPoint);
+    };
+
+    addTempNumbers = (y, txt) => {
+        let textPoint = document.createElementNS(svgns, "text");
+        textPoint.setAttributeNS(null,'x', '40');
+        textPoint.setAttributeNS(null,'y', y);
+        textPoint.setAttributeNS(null, 'fill', 'red');
+        textPoint.textContent = txt;
+        textPoint.style.fontSize = '12px';
+        textPoint.style.fontFamily = 'Arial';
+        textPoint.style.textAnchor = 'end';
+        svg.appendChild(textPoint);
+    };
+
+
     createNet = () => {
 
-        // add horizontal net
-        for(let i = 0; i < 20; i++){
-            let num = i * 40;
+        // add horizontal net lower
+        let txt = 0;
+        for(let i = zeroLine; i < heightGraph; i += 40, txt -= 4){
+
             let netLine = document.createElementNS(svgns, "line");
             netLine.setAttributeNS(null,'x1', '50');
             netLine.setAttributeNS(null,'x2','100%');
-            netLine.setAttributeNS(null,'y1', num.toString());
-            netLine.setAttributeNS(null,'y2', num.toString());
+            netLine.setAttributeNS(null,'y1', i);
+            netLine.setAttributeNS(null,'y2', i);
             netLine.setAttributeNS(null,'stroke', 'black');
-            if(i === 10){
-                netLine.setAttributeNS(null,'stroke-width', '2');
 
+            if(i === zeroLine){
+                netLine.setAttributeNS(null,'stroke-width', '2');
             }
             else {
                 netLine.setAttributeNS(null,'stroke-width', '0.5');
@@ -255,14 +262,36 @@
             }
 
             svg.appendChild(netLine);
+            addPoints(50, i);
+            addTempNumbers(i, txt);
+
+        }
+
+        // add horizontal net upper
+        txt = 0;
+        for(let i = zeroLine; i > 0; i -= 40,txt += 4){
+
+            let netLine = document.createElementNS(svgns, "line");
+            netLine.setAttributeNS(null,'x1', '50');
+            netLine.setAttributeNS(null,'x2','100%');
+            netLine.setAttributeNS(null,'y1', i);
+            netLine.setAttributeNS(null,'y2', i);
+            netLine.setAttributeNS(null,'stroke', 'black');
+            netLine.setAttributeNS(null,'stroke-width', '0.5');
+            netLine.setAttributeNS(null,'stroke-dasharray', '20 10 5 10');
+            svg.appendChild(netLine);
+
+            addPoints(50, i);
+            addTempNumbers(i, txt);
         }
 
         // add vertical net
-        for(let i = 0; i < 8; i++){
-            let num = i * 100 + 50;
+
+        for(let i = 50; i < 800; i +=100){
+
             let netLine = document.createElementNS(svgns, "line");
-            netLine.setAttributeNS(null,'x1', num.toString());
-            netLine.setAttributeNS(null,'x2', num.toString());
+            netLine.setAttributeNS(null,'x1', i);
+            netLine.setAttributeNS(null,'x2', i);
             netLine.setAttributeNS(null,'y1', '0');
             netLine.setAttributeNS(null,'y2', '100%');
             netLine.setAttributeNS(null,'stroke', 'black');
@@ -276,6 +305,7 @@
             }
 
             svg.appendChild(netLine);
+            addPoints(i, zeroLine);
         }
     };
 
@@ -285,52 +315,21 @@
         for(let i = 0; i < 7; i++) {
             let num = i * 100 + 150;
 
-            let dayPoint = document.createElementNS(svgns, "circle");
-            dayPoint.setAttributeNS(null,'cx', num.toString());
-            dayPoint.setAttributeNS(null,'cy', '400');
-            dayPoint.setAttributeNS(null,'r', '3');
-            dayPoint.setAttributeNS(null,'stroke-width', '1');
-            dayPoint.setAttributeNS(null,'stroke', 'black');
-            dayPoint.setAttributeNS(null,'fill', 'black');
-            svg.appendChild(dayPoint);
+            let offset1;
+            offset1 = forecastData[i][1] < 0 ? -20 : 25;
 
             let textPoint = document.createElementNS(svgns, "text");
-            textPoint.setAttributeNS(null, 'x', (num).toString());
-            textPoint.setAttributeNS(null, 'y', '430');
+            textPoint.setAttributeNS(null, 'x', num);
+            textPoint.setAttributeNS(null, 'y', zeroLine + offset1);
             textPoint.setAttributeNS(null, 'fill', 'red');
-            textPoint.textContent = newdata[i][0];
+            textPoint.textContent = forecastData[i][0];
             textPoint.style.fontSize = '12px';
             textPoint.style.fontFamily = 'Arial';
             textPoint.style.textAnchor = 'middle';
             svg.appendChild(textPoint);
         }
 
-        //add vertical legend
-        let textNum = 40;
-        for(let i = 0; i < 20; i++){
 
-            let num = i * 40;
-
-            let dayPoint = document.createElementNS(svgns, "circle");
-            dayPoint.setAttributeNS(null,'cx', '50');
-            dayPoint.setAttributeNS(null,'cy', num.toString());
-            dayPoint.setAttributeNS(null,'r', '3');
-            dayPoint.setAttributeNS(null,'stroke-width', '1');
-            dayPoint.setAttributeNS(null,'stroke', 'black');
-            dayPoint.setAttributeNS(null,'fill', 'black');
-            svg.appendChild(dayPoint);
-
-            let textPoint = document.createElementNS(svgns, "text");
-            textPoint.setAttributeNS(null,'x', '40');
-            textPoint.setAttributeNS(null,'y', num.toString());
-            textPoint.setAttributeNS(null, 'fill', 'red');
-            textPoint.textContent = textNum;
-            textPoint.style.fontSize = '12px';
-            textPoint.style.fontFamily = 'Arial';
-            textPoint.style.textAnchor = 'end';
-            svg.appendChild(textPoint);
-            textNum -= 4;
-        }
     };
 
     createTitle = (city) => {

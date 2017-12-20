@@ -1,5 +1,7 @@
 let cities = new Map([
     ["Dnipropetrovsk", 'Днепропетровск'],
+    ['Murmansk', 'Мурманск'],
+    ['Dudinka', 'Дубинка'],
     ["Moscow", "Москва"],
     ["Canberra", "Канберра"],
     ["Harare", "Хараре"],
@@ -13,4 +15,5 @@ let cities = new Map([
     ["Dallas", "Даллас"],
     ["Houston", "Хьюстон"],
     ["Madrid", "Мадрид"],
+    ["Khartoum", "Хартум"],
 ]);

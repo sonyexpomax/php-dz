@@ -1,0 +1,37 @@
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+main{
+    width: 300px;
+    float: left;
+}
+.week_num{
+    display: none;
+}
+.unit, .week_num{
+    float: left;
+    width: 290px;
+    border: solid 1px black;
+    background-color: #eebea6;
+    margin: 5px 0;
+}
+.unit h3, .week_num h3 {
+    width: 100%;
+    margin: 0;
+    font-size: 18px;
+    background-color: #7c2d2d;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 5px 0  ;
+}
+.unit select, .week_num select {
+    width: 100%;
+    border: none;
+    font-size: 16px;
+    background: transparent;
+    height: 26px;
+}
+.drawing{
+    float: left;
+    width: 900px;
+}
