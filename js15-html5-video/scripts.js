@@ -60,8 +60,8 @@ vp.startPlayNewVideo = (id,dataId,text) => {
     if (vp.previousVideoId != vp.currentVideoId) {
 
         console.log('start play with id=' + id + '  ----  dataId=' + dataId + '  ---  text='+ text);
-        //vp.videoPlayer.src = `http://frer.zzz.com.ua/video/${vp.videoList[dataId][1]}.mp4`;
-        vp.videoPlayer.src = `video/${vp.videoList[dataId][1]}.mp4`;
+        vp.videoPlayer.src = `http://frer.zzz.com.ua/video/${vp.videoList[dataId][1]}.mp4`;
+        //vp.videoPlayer.src = `video/${vp.videoList[dataId][1]}.mp4`;
 
         document.querySelector('#playerPlayPause').className = 'fa fa-pause fa-lg';
         vp.videoPlayer.play();
