@@ -326,3 +326,16 @@ xo.countOfEmptyFields = () => {
     }
     return [emptyFields, lastEmptyField];
 };
+
+xo.setComputerMove = (id) => {
+    console.log('setComputerMove id = ' + id);
+    delete xo.freeFields[id];
+    setTimeout(function () {
+        document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
+        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
+        xoComputer.computerCalculation = false;
+    },300);
+
+    xoComputer.computerMoves.push(id);
+    xo.checkWinning(xoComputer.computerMoves, 'computer');
+};

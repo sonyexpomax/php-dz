@@ -1,12 +1,8 @@
-
-
 let xoComputer = {
     computerMoves: [],
     computerPossibleCombination: [],
     computerMove: null,
     computerCalculation : false,
-
-
 };
 
 xoComputer.stupidComputerMove = () => {
@@ -18,9 +14,8 @@ xoComputer.stupidComputerMove = () => {
     else {
         id = xoComputer.stupidGetId();
     }
-    xoComputer.setComputerMove(id);
+    xo.setComputerMove(id);
 };
-
 
 xoComputer.smartComputerMove = () => {
     let id = null;
@@ -42,41 +37,8 @@ xoComputer.smartComputerMove = () => {
         }
         xo.makeListOfPossibleCombinations(id, xoComputer.computerMoves, xo.userMoves, xoComputer.computerPossibleCombination);
     }
-    xoComputer.setComputerMove(id);
+    xo.setComputerMove(id);
 };
-
-
-xo.deleteUnpossibleCombinations = (typeMoves, typePossibleCombination) => {
-    let previousId = typeMoves[typeMoves.length - 1];
-    let possibleCombinationToDel = [];
-
-    for (let i = 0; i < typePossibleCombination.length; i++) {
-        for (let j = 0; j < typePossibleCombination[i].length; j++) {
-            if (previousId === typePossibleCombination[i][j]) {
-                possibleCombinationToDel.push(i);
-            }
-        }
-    }
-
-    for (let i = 0; i < possibleCombinationToDel.length; i++) {
-        typePossibleCombination.splice(possibleCombinationToDel[i], 1);
-    }
-};
-
-
-xoComputer.setComputerMove = (id) => {
-    console.log('setComputerMove id = ' + id);
-    delete xo.freeFields[id];
-    setTimeout(function () {
-        document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
-        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
-        xoComputer.computerCalculation = false;
-    },300);
-
-    xoComputer.computerMoves.push(id);
-    xo.checkWinning(xoComputer.computerMoves, 'computer');
-};
-
 
 xoComputer.stupidGetId = () => {
     let i = 0;
@@ -89,7 +51,8 @@ xoComputer.stupidGetId = () => {
 };
 
 xoComputer.smartGetId = () => {
-    //attack
+
+    //attack move
     for (let i = 0; i < xoComputer.computerPossibleCombination.length; i++) {
         for (let j = 0; j < xoComputer.computerPossibleCombination[i].length; j++) {
             if(xo.freeFields.indexOf(xoComputer.computerPossibleCombination[i][j]) !== -1){
@@ -99,8 +62,7 @@ xoComputer.smartGetId = () => {
         }
     }
 
-    //defence
-
+    //defence move
     for (let i = 0; i < xo.userPossibleCombination.length; i++) {
         console.log('defence');
         let k = 0;
@@ -117,6 +79,8 @@ xoComputer.smartGetId = () => {
             }
         }
     }
+
+    //random move
     return xoComputer.stupidGetId();
 };
 export {xoComputer};
