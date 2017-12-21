@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Creation new div</title>
+    <style>
+        .someDiv{
+            width: 500px;
+            background-color: #99cb84;
+            padding: 20px;
+            margin: 10px;
+            border-radius: 5px;
+            border: solid 1px black;
+        }
+        .someDiv p{
+            text-align: center;
+            padding: 0;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        button{
+            background: #cceef6;
+            background-image: -webkit-linear-gradient(top, #cceef6, #aaa4d0);
+            background-image: -moz-linear-gradient(top, #cceef6, #aaa4d0);
+            background-image: -ms-linear-gradient(top, #cceef6, #aaa4d0);
+            background-image: -o-linear-gradient(top, #cceef6, #aaa4d0);
+            background-image: linear-gradient(to bottom, #cceef6, #aaa4d0);
+            -webkit-border-radius: 20px;
+            -moz-border-radius: 20px;
+            border-radius: 5px;
+            color: #060606;
+            font-size: 16px;
+            width: 470px;
+            padding: 3px 0;
+            margin: 5px 0 5px 15px;
+            box-shadow: 1px 1px 1px 0px #000000;
+            -webkit-box-shadow: 1px 1px 1px 0px #000000;
+            -moz-box-shadow: 1px 1px 1px 0px #000000;
+            border: solid #393939 1px;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #aaa4d0;
+            background-image: -webkit-linear-gradient(top, #aaa4d0, #cceef6);
+            background-image: -moz-linear-gradient(top, #aaa4d0, #cceef6);
+            background-image: -ms-linear-gradient(top, #aaa4d0, #cceef6);
+            background-image: -o-linear-gradient(top, #aaa4d0, #cceef6);
+            background-image: linear-gradient(to bottom, #aaa4d0, #cceef6);
+            text-decoration: none;
+            cursor: pointer;
+        }
+        button:disabled{
+            color: #474747;
+            background: #8681a4;
+        }
+        .createElem{
+            width: 490px;
+        }
+    </style>
+</head>
+<body>
+<button class="createElem">Добавить новый элемент</button>
+
+<script src="jquery-3.2.1.min.js"></script>
+<script>
+    ids = 0;
+    createNewDiv = () => {
+        let newDiv = $("<div class=\"someDiv\" id ='" + ids +"' ></div>");
+        let textDiv = $("<p>DIV № " + ids + "</p>");
+        let butSetBefore = $("<button class='setBefore'></button>").text("Переместиться перед предыдущим блоком");
+        let butSetAfter = $("<button class='setAfter'></button>").text("Переместиться после следующего блока");
+        let butSetInside = $("<button class='setInside'></button>").text("Переместиться внутрь предыдущего блока");
+        let butSetOutside = $("<button class='setOutside'></button>").text("Переместиться из родительского блока и стать после него");
+
+        newDiv.append(textDiv, butSetBefore, butSetAfter, butSetInside, butSetOutside);
+
+        let newColor = '#' + (Math.floor(Math.random()*16777216)&0xFFFFFF).toString(16);
+        newDiv.css('background-color', newColor);
+        $('body').append(newDiv);
+        ids++;
+        checkButtons();
+    };
+
+    $(document).ready(function() {
+        createNewDiv();
+        createNewDiv();
+        createNewDiv();
+        createNewDiv();
+    });
+
+    $( "body" ).click(function( event ) {
+        let clickElem = $( event.target );
+
+        if ( clickElem.is( ".createElem" ) ) {
+            createNewDiv(clickElem.parent());
+        }
+        if ( clickElem.is( ".setBefore" ) ) {
+             clickElem.parent().after(clickElem.parent().prev('div'));
+            checkButtons();
+        }
+        if ( clickElem.is( ".setAfter" ) ) {
+            console.log(clickElem.parent());
+            console.log(clickElem.parent().prev());
+            clickElem.parent().next().after(clickElem.parent());
+            checkButtons();
+        }
+        if ( clickElem.is( ".setInside" ) ) {
+            console.log(clickElem.parent());
+            console.log(clickElem.parent().prev());
+            clickElem.parent().appendTo(clickElem.parent().prev());
+            checkButtons();
+        }
+        if ( clickElem.is( ".setOutside" ) ) {
+            console.log(clickElem.parent());
+            console.log(clickElem.parent().prev());
+            clickElem.parent().parent().after(clickElem.parent());
+            checkButtons();
+        }
+    });
+
+    checkButtons = () => {
+
+        $('div').each(function () {
+
+            //check setBefore
+            if($( this ).prev().is('div')){
+                $( this ).find('.setBefore').prop('disabled',false);
+                $( this ).find('.setInside').prop('disabled',false);
+            }
+            else {
+                $( this ).find('.setBefore').prop('disabled',true);
+                $( this ).find('.setInside').prop('disabled',true);
+            }
+
+            //check setAfter
+            if($( this ).next().is('div')){
+                $( this ).find('.setAfter').prop('disabled',false);
+            }
+            else {
+                $( this ).find('.setAfter').prop('disabled',true);
+            }
+
+            //check outInside
+            if($( this ).parent().is('div')){
+                $( this ).find('.setOutside').prop('disabled',false);
+            }
+            else {
+                $( this ).find('.setOutside').prop('disabled',true);
+            }
+        });
+    }
+</script>
+
+
+</body>
+</html>
