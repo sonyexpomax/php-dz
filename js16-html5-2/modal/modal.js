@@ -1,5 +1,7 @@
 let countOfNewWindows = 0;
-
+let dragEl;
+let maxZindex = 20;
+let isHeadOfWindow;
 /**
  *  Creating New window
  * @param text
@@ -9,47 +11,29 @@ function createNewWindow(text) {
     let newWindow = document.createElement('div');
     addNewWindowToDom(newWindow,text);
     countOfNewWindows ++;
-    let newWindowHeader = document.body.querySelector('#' + newWindow.id).firstChild;
 
     //drag n drop
-    newWindowHeader.onmousedown = function(e) {
+    dragEl = document.querySelectorAll('.modal');
 
-        let coords = getCoords(newWindow);
-        let shiftX = e.pageX - coords.left;
-        let shiftY = e.pageY - coords.top;
-
-        newWindow.style.position = 'absolute';
-        document.body.appendChild(newWindow);
-        moveAt(e);
-
-        newWindow.style.zIndex = 1000; // над другими элементами
-
-        function moveAt(e) {
-            newWindow.style.left = e.pageX - shiftX + 'px';
-            newWindow.style.top = e.pageY - shiftY + 'px';
-        }
-
-        document.onmousemove = function(e) {
-            moveAt(e);
+    dragEl.forEach(function(el) {
+        el.ondragstart = function (e) {
+            if(isHeadOfWindow) {
+                setZIndex(el);
+                el.style.opacity = 0.9;
+                drg = el;
+                diffX = e.pageX - getCoords(el).left;
+                diffY = e.pageY - getCoords(el).top;
+            }
         };
-
-        newWindow.onmouseup = function() {
-            document.onmousemove = null;
-            newWindow.onmouseup = null;
+        el.ondragend = function (e) {
+            if(isHeadOfWindow) {
+                el.style.opacity = 1;
+                drg.style.left = (e.pageX - diffX) + 'px';
+                drg.style.top = (e.pageY - diffY) + 'px';
+                drg = null;
+            }
         };
-    };
-
-    newWindow.ondragstart = function() {
-        return false;
-    };
-
-    function getCoords(elem) {
-        let box = elem.getBoundingClientRect();
-        return {
-            top: box.top + pageYOffset,
-            left: box.left + pageXOffset
-        };
-    }
+    });
 }
 
 deleteWindow = (id) => {
@@ -61,18 +45,22 @@ function addNewWindowToDom(newWindow, text) {
     //create div.modal
     newWindow.id = 'modal-' + (countOfNewWindows + 1);
     newWindow.className = 'modal';
+    newWindow.setAttributeNS(null, 'style', 'z-index:20');
     newWindow.style.top = (countOfNewWindows * 50) + "px";
     newWindow.style.left = (countOfNewWindows * 50) + "px";
-    
+    newWindow.setAttributeNS(null, 'draggable', true);
+
+
     //create header
     let newWindowHeader = document.createElement('h2');
     newWindowHeader.textContent = 'Attention';
+    newWindowHeader.className = 'modal-head';
     newWindow.appendChild(newWindowHeader);
 
     //create p
     let NewWindowParagraph = document.createElement('p');
     NewWindowParagraph.textContent = 'You have pressed:';
-    
+
     //create b
     let NewWindowText = document.createElement('b');
     NewWindowText.textContent = " '" + text + "'";
@@ -91,15 +79,39 @@ function addNewWindowToDom(newWindow, text) {
  * trace the keyboard
  */
 document.body.addEventListener('keydown',function (event) {
-    //console.log(event.keyCode);
     let windowText = event.key;
-    //    console.log(event.key);
     createNewWindow(windowText);
 });
 
 document.body.addEventListener('click',function (event) {
     var elementWithClick = event.target || event.srcElement;
     if (elementWithClick.className === 'close') {
-       deleteWindow(elementWithClick.parentElement.id);
+        deleteWindow(elementWithClick.parentElement.id);
+    }
+    if (elementWithClick.className === 'modal-head') {
+        setZIndex(elementWithClick.parentElement);
     }
 });
+
+document.body.addEventListener('mousedown',function (event) {
+    var elementWithClick = event.target || event.srcElement;
+    if (elementWithClick.className === 'modal-head') {
+        isHeadOfWindow = true;
+    }
+    else {
+        isHeadOfWindow = false;
+    }
+});
+
+function getCoords(elem) {
+    let box = elem.getBoundingClientRect();
+    return {
+        top: box.top + pageYOffset,
+        left: box.left + pageXOffset
+    };
+}
+
+function setZIndex(elem) {
+    elem.style.zIndex = maxZindex + 5;
+    maxZindex +=5;
+}

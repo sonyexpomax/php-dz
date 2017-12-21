@@ -9,7 +9,7 @@ body {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 999;
+
     width: 200px;
     height: 250px;
     text-align: center;
@@ -20,7 +20,7 @@ body {
             23px 0 20px -23px rgba(0, 0, 0, .8),
             0 0 40px rgba(0, 0, 0, .1) inset;
     border-radius: 10px;
-}
+ }
 .modal h2{
     padding:2%;
     text-align: left;
