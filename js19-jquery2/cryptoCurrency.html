@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    select{
+        width: 300px;
+        height: 30px;
+        margin: 5px;
+        font-size: 18px;
+        background-color: #99cb84;
+    }
+    .result{
+        margin: 5px;
+        width: 610px;
+    }
+    #result_p{
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
+        font-weight: 600;
+    }
+</style>
+<body>
+<h1>Сompare exchange rates</h1>
+<div class="currency">
+    <select name="select_currency1" id="select_currency1"></select>
+    <select name="select_currency2" id="select_currency2"></select>
+</div>
+<div class="result">
+    <p id="result_p"></p>
+</div>
+
+<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+<script type="text/javascript">
+
+    var currencyArr = new Map();
+    currencyArr.set('USD', "US Dollars");
+    currencyArr.set('BTC', "Bitcoin");
+    currencyArr.set('ETH', "Ethereum");
+    currencyArr.set('LTC', "Litecoin");
+    currencyArr.set('DOGE', "Dogecoin");
+
+    $('select').on('change', function(e) {
+        let currency1 = $('#select_currency1').val();
+        let currency2 = $('#select_currency2').val();
+
+        if(currency1 !== null && currency2 !== null){
+            let data1 = $.getJSON( `https://min-api.cryptocompare.com/data/price?fsym=${currency1}&tsyms=${currency2}`, {},
+
+                function(data) {
+                    let res = data[Object.keys(data)[0]];
+                    $('#result_p').text(`1 ${currencyArr.get(currency1)} = ${res} ${currencyArr.get(currency2)}`);
+                    console.log(data);
+
+                }).fail(function(data1, status, error) {
+                console.log( "error :" + error );
+
+            }).always(function() {
+                console.log( "complete" );
+            });
+        }
+    });
+
+fillSelect = (id) => {
+    let sel = $('#' + id);
+    let newOption = $(`<option value = '0' disabled selected='selected'>Select currency</option>`);
+    sel.append(newOption);
+
+    for (let [key, value] of currencyArr) {
+        let newOption = $(`<option value = '${key}'>${value}</option>`);
+        sel.append(newOption);
+    }
+};
+
+$(document).ready(function() {
+    fillSelect('select_currency1');
+    fillSelect('select_currency2');
+});
+
+</script>
+</body>
+</html>
