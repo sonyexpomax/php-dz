@@ -26,17 +26,17 @@
     <script>
         var startFrom = 0;
         var limit = 0;
+        var inProgress = false;
 
         document.addEventListener('DOMContentLoaded', function() {
             sendRequest();
-            var inProgress = false;
+            inProgress = false;
             window.addEventListener('scroll', function () {
                 if(window.innerHeight + document.documentElement.scrollTop >= (document.body.offsetHeight +20) && !inProgress) {
                     console.log('sen request');
                     sendRequest();
                 }
             });
-
         }, false);
 
 
@@ -60,26 +60,32 @@
         }
 
         function sendRequest() {
-            console.log('startFrom = ' + startFrom);
-            startFrom !== 0 ? limit = 5 : limit = 3;
-            console.log('подгружем ' + limit + ' элем.');
+            if (!inProgress){
+                inProgress = true;
 
-            //var url = 'http://frer.zzz.com.ua/days.php?startFrom=' + startFrom + '&limit=' + limit;
-            var url = 'http://localhost/test1/js12-ajax/days.php?startFrom=' + startFrom + '&limit=' + limit;
+                console.log('startFrom = ' + startFrom);
+                limit = (startFrom !== 0) ? 5 : 3;
+                console.log('подгружем ' + limit + ' элем.');
 
-            startFrom !== 0 ? startFrom += 5 : startFrom += 3;
+                //var url = 'http://frer.zzz.com.ua/days.php?startFrom=' + startFrom + '&limit=' + limit;
+                var url = 'http://localhost/test1/js12-ajax/days.php?startFrom=' + startFrom + '&limit=' + limit;
 
-            inProgress = true;
+                if (startFrom !== 0){
+                    startFrom += 5
+                }
+                else {
+                    startFrom += 3
+                }
+                addScript(url);
+            }
 
-            addScript(url);
         }
 
 
         /*
         request.onreadystatechange = function() {
             if (request.readyState === 4) {
-                if (request.status === 200) {
-                    var  result =  JSON.parse(request.response);
+?                    var  result =  JSON.parse(request.response);
                     if (result.length > 0) {
 
                         console.log('startFrom = '+startFrom);
