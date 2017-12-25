@@ -59,6 +59,12 @@ document.body.addEventListener('mousemove',function (event) {
     }
 });
 
+document.addEventListener("DOMContentLoaded", function () {
+    for(var i = 1; i < 4; i++){
+        element = document.querySelector('.layer'+i);
+        moveElementToTheCenter(element);
+    }
+});
 
 
 </script>
