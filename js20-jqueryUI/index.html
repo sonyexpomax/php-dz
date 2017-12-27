@@ -1,10 +1,261 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="us">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+	<meta charset="utf-8">
+	<title>jQuery UI Example Page</title>
+	<link href="jquery-ui.css" rel="stylesheet">
+	<style>
+	body{
+		font-family: "Trebuchet MS", sans-serif;
+		margin: 50px;
+	}
+	.demoHeaders {
+		margin-top: 2em;
+	}
+	#dialog-link {
+		padding: .4em 1em .4em 20px;
+		text-decoration: none;
+		position: relative;
+	}
+	#dialog-link span.ui-icon {
+		margin: 0 5px 0 0;
+		position: absolute;
+		left: .2em;
+		top: 50%;
+		margin-top: -8px;
+	}
+	#icons {
+		margin: 0;
+		padding: 0;
+	}
+	#icons li {
+		margin: 2px;
+		position: relative;
+		padding: 4px 0;
+		cursor: pointer;
+		float: left;
+		list-style: none;
+	}
+	#icons span.ui-icon {
+		float: left;
+		margin: 0 4px;
+	}
+	.fakewindowcontain .ui-widget1-overlay {
+		position: absolute;
+	}
+	#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+	#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+	select {
+		width: 200px;
+	}
+	.ui-widget1{
+		width: 95%;
+		margin: 10px 0;
+		padding: 10px 2%	;
+	}
+		main{
+			margin: 0 auto	;
+			width: 900px;
+		}
+	</style>
 </head>
 <body>
-$END$
+<main>
+
+	<div id="tabs">
+		<ul>
+			<li><a href="#tabs-1">Send resume</a></li>
+			<li><a href="#tabs-2">About company</a></li>
+			<li><a href="#tabs-3">About vacancy</a></li>
+		</ul>
+		<div id="tabs-1">
+			<h2>Send resume for Receptionist</h2>
+
+			<input type="text" name = 'name' placeholder="Enter your name and surname" class="ui-widget1"/>
+			<input type="email" name="email" placeholder="Enter you email address" class="ui-widget1" />
+			<input type="tel" name="telephone" placeholder="Enter your telephone number" class="ui-widget1" />
+			<input id="autocomplete" title="type &quot;a&quot;" placeholder="Enter programming language" class="ui-widget1" />
+			<input type="text" id="datepicker" placeholder="Select your birthday" class="ui-widget1">
+
+			<!-- Spinner -->
+			<h2 class="demoHeaders">Spinner</h2>
+			<input id="spinner">
+
+			<ul id="sortable">
+				<li class="ui-state-default">Item 1</li>
+				<li class="ui-state-default">Item 2</li>
+				<li class="ui-state-default">Item 3</li>
+				<li class="ui-state-default">Item 4</li>
+				<li class="ui-state-default">Item 5</li>
+				<li class="ui-state-default">Item 6</li>
+				<li class="ui-state-default">Item 7</li>
+			</ul>
+
+			<!-- Slider -->
+			<p>
+				<label for="amount">Select range of expected salary:</label>
+				<input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">
+			</p>
+			<div id="slider-range" style="border:solid 1px #939393; border-radius: 0"></div>
+		</div>
+		<div id="tabs-2">
+			<h2>About H&R Block</h2>
+			<p>H&R Block began with 2 brothers rolling up their sleeves and helping people with their tax returns. Despite our tremendous growth, we've never lost sight of the key factors that led to our success, including superior customer service, a commitment to stand behind our associates and work, and a promise to always charge a fair price for the value provided.
+			<p>Build your career and your future at H&R Block. Over the years, H&R Block has grown to become much more than a place to have your taxes prepared. As a growing company, we need bright, creative thinkers to grow with us. We're looking for people from diverse backgrounds who can help us reach our goals.
+			<p>In return, we offer our associates, both full-time and seasonal, an atmosphere where unique perspectives flourish, where partnership is encouraged and a healthy work/life balance is a goal.
+
+		</div>
+		<div id="tabs-3">
+			<h2>Receptionist</h2>
+			<p>Seeking talented individuals to join our network of professionals, serving clients with diverse tax needs.
+			We offer competitive pay, flexible schedules available, and career advancement opportunities.
+			H&R Block is the industry’s largest consumer tax services provider¹ and we have been focused on client service for over 60 years.
+				Apply today using any device at www.hrblock.com/careers > Tax Office Jobs</p>
+			<h2>Receptionist Duties Include</h2>
+			<ul>
+				<li>Greeting clients in a personalized, friendly, and inviting manner</li>
+				<li>Matching clients with the best-suited tax professional for their needs</li>
+				<li>Scheduling clients how they would like to be scheduled</li>
+				<li>Handling client exits by ensuring all current and future needs are met</li>
+				<li>Maintaining office cleanliness and organization of resources with team members
+				<li>Other duties as assigned</li>
+			</ul>
+		</div>
+	</div>
+
+
+
+
+
+</main>
+<script src="external/jquery/jquery.js"></script>
+<script src="jquery-ui.js"></script>
+<script>
+	var d = new Date();
+    var lowerBoundYear = d.getFullYear() - 16;
+	var availableTags = [
+		"ActionScript",
+		"AppleScript",
+		"Asp",
+		"BASIC",
+		"C",
+		"C++",
+		"Clojure",
+		"COBOL",
+		"ColdFusion",
+		"Erlang",
+		"Fortran",
+		"Groovy",
+		"Haskell",
+		"Java",
+		"JavaScript",
+		"Lisp",
+		"Perl",
+		"PHP",
+		"Python",
+		"Ruby",
+		"Scala",
+		"Scheme"
+	];
+$( "#autocomplete" ).autocomplete({
+	source: availableTags
+});
+
+
+
+$( "#button" ).button();
+$( "#button-icon" ).button({
+	icon: "ui-icon-gear",
+	showLabel: false
+});
+
+$( "#tabs" ).tabs();
+
+
+
+$( "#dialog" ).dialog({
+	autoOpen: false,
+	width: 400,
+	buttons: [
+		{
+			text: "Ok",
+			click: function() {
+				$( this ).dialog( "close" );
+			}
+		},
+		{
+			text: "Cancel",
+			click: function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	]
+});
+
+// Link to open the dialog
+$( "#dialog-link" ).click(function( event ) {
+	$( "#dialog" ).dialog( "open" );
+	event.preventDefault();
+});
+
+
+
+$( "#datepicker" ).datepicker({
+	inline: true,
+    changeYear:true,
+    yearRange: `1920:${lowerBoundYear}`
+});
+
+
+	$( "#slider-range" ).slider({
+		range: true,
+		min: 500,
+		max: 5000,
+		values: [ 600, 2000 ],
+		slide: function( event, ui ) {
+			$( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+		}
+	});
+	$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) +
+		" - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+
+$( "#progressbar" ).progressbar({
+	value: 20
+});
+
+
+
+$( "#spinner" ).spinner();
+
+
+
+$( "#menu" ).menu();
+
+
+
+$( "#tooltip" ).tooltip();
+
+
+
+$( "#selectmenu" ).selectmenu();
+
+
+// Hover states on the static widgets
+$( "#dialog-link, #icons li" ).hover(
+	function() {
+		$( this ).addClass( "ui-state-hover" );
+	},
+	function() {
+		$( this ).removeClass( "ui-state-hover" );
+	}
+);
+
+$( "#sortable" ).sortable({
+        placeholder: "ui-state-highlight"
+    });
+$( "#sortable" ).disableSelection();
+
+</script>
 </body>
 </html>
