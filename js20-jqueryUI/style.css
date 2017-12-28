@@ -1,0 +1,110 @@
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    margin: 50px;
+}
+.demoHeaders {
+    margin-top: 2em;
+}
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#sortable li { margin: 0 5px 5px 5px; padding: 5px; font-size: 1.2em; height: 1.5em; }
+select {
+    width: 200px;
+}
+.ui-widget1{
+    width: 95%;
+    margin: 5px 0;
+    padding: 10px 2%	;
+    color: #850006;;
+}
+main{
+    margin: 0 auto	;
+    width: 900px;
+}
+h2{
+    font-size: 20px;
+    font-weight: 600;
+    margin:25px 0;
+    color: #004276;
+}
+h1{
+    width:100%;
+    text-align: center;
+}
+#sortable li {
+    margin: 0 5px 5px 0;
+    color: #850006;
+}
+#sortable li:hover{
+    cursor: pointer;
+    background-color: #99cb84;
+}
+.ui-controlgroup-vertical {
+    width: 150px;
+}
+.ui-controlgroup.ui-controlgroup-vertical > button.ui-button,
+.ui-controlgroup.ui-controlgroup-vertical > .ui-controlgroup-label {
+    text-align: center;
+}
+.ui-controlgroup-horizontal .ui-spinner-input {
+    width: 20px;
+}
+#add-work-place{
+    width: 350px;
+    height: 40px;
+
+}
+#add-work-place, #send-resume {
+    background: #1FE609;
+    background-image: linear-gradient(to bottom, #1FE609, #1C8011);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 5px;
+    color: #FFFFFF;
+    font-size: 22px;
+    font-weight: 300;
+    padding: 5px;
+    box-shadow: 1px 1px 1px  #000000;
+    text-shadow: 1px 0.5px 0.5px #000000;
+    border: solid #1C8011 1px;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin: 5px 0 0 2px;
+}
+
+#add-work-place:hover, #send-resume:hover {
+    background: #1C8011;
+    background-image: linear-gradient(to bottom, #1C8011, #1FE609);
+    text-decoration: none;
+}
+#send-resume{
+    width: 100%;
+}
+fieldset {
+    border: solid 1px #939393;
+    margin: 5px 0 25px 0;
+    border: solid 1px #850006;
+}
+legend{
+    color: #850006;;
+}
+.closer{
+    width: 19px;
+    height: 22px;
+    background-color: #b71f26;
+    float: right;
+    position: relative;
+    top: -180px;
+    margin-right: 5px;
+    border-radius: 100%;
+    color: #ffffff;
+    left: 30px;
+    font-size: 22px;
+    font-weight: 600;
+    padding: 0 0 3px 6px;
+    z-index: 999;
+    box-shadow: 1px 1px 1px 0px #878787;
+}
+.closer:hover{
+    cursor: pointer;
+}
