@@ -61,7 +61,21 @@
         $('.yellow').delay( 1050 ).animate({width: 200, height: 120,  marginLeft: 150,  marginTop: 150}, {duration: 300}, "linear");
     });
 
-    $(".empty").mouseleave(function() {
+    stopAnimation = () => {
+        $(".red").stop(true,true);
+        $(".yellow").stop(true,true);
+        $(".green").stop(true,true);
+        $(".blue").stop(true,true);
+    };
+
+    finishAnimation = () => {
+        $(".red").finish();
+        $(".green").finish();
+        $(".blue").finish();
+        $(".yellow").finish();
+    };
+
+    clearAnimation = () => {
         $('.red').css('width', '0');
         $('.red').css('height', '0');
 
@@ -78,7 +92,17 @@
         $('.yellow').css('height', '0');
         $('.yellow').css('marginLeft', '150px');
         $('.yellow').css('marginTop', '350px');
+    };
+
+    $(".empty").mouseleave(function() {
+
+        finishAnimation();
+        stopAnimation();
+        clearAnimation();
+
     });
+
+
 </script>
 </body>
 </html>
