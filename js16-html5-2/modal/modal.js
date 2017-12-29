@@ -13,27 +13,27 @@ function createNewWindow(text) {
     countOfNewWindows ++;
 
     //drag n drop
-    dragEl = document.querySelectorAll('.modal');
 
-    dragEl.forEach(function(el) {
-        el.ondragstart = function (e) {
-            if(isHeadOfWindow) {
-                setZIndex(el);
-                el.style.opacity = 0.9;
-                drg = el;
-                diffX = e.pageX - getCoords(el).left;
-                diffY = e.pageY - getCoords(el).top;
-            }
-        };
-        el.ondragend = function (e) {
-            if(isHeadOfWindow) {
-                el.style.opacity = 1;
-                drg.style.left = (e.pageX - diffX) + 'px';
-                drg.style.top = (e.pageY - diffY) + 'px';
+    document.addEventListener("dragstart", function( event ) {
+        dragEl = event.target || event.srcElement;
+         if (dragEl.className === 'modal') {
+            setZIndex(dragEl);
+            dragEl.style.opacity = 0.9;
+            drg = dragEl;
+            diffX = event.pageX - getCoords(dragEl).left;
+            diffY = event.pageY - getCoords(dragEl).top;
+        }
+    }, false);
+
+    document.addEventListener("dragend", function( event ) {
+            if (drg !== null) {
+                drg.style.opacity = 1;
+                console.log(drg);
+                drg.style.left = (event.pageX - diffX) + 'px';
+                drg.style.top = (event.pageY - diffY) + 'px';
                 drg = null;
-            }
-        };
-    });
+        }
+    }, false);
 }
 
 deleteWindow = (id) => {
@@ -49,7 +49,6 @@ function addNewWindowToDom(newWindow, text) {
     newWindow.style.top = (countOfNewWindows * 50) + "px";
     newWindow.style.left = (countOfNewWindows * 50) + "px";
     newWindow.setAttributeNS(null, 'draggable', true);
-
 
     //create header
     let newWindowHeader = document.createElement('h2');
