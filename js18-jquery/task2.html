@@ -91,7 +91,7 @@
         createNewDiv();
     });
 
-    $( "body" ).click(function( event ) {
+    $( "body" ).onclick = function( event ) {
         let clickElem = $( event.target );
 
         if ( clickElem.is( ".createElem" ) ) {
@@ -119,7 +119,7 @@
             clickElem.parent().parent().after(clickElem.parent());
             checkButtons();
         }
-    });
+    };
 
     checkButtons = () => {
 

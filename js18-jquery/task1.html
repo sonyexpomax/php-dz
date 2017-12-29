@@ -29,7 +29,7 @@
 <script>
     let ids = 1;
 
-    $( "body" ).click(function( event ) {
+    $( "body" ).onclick = function( event ) {
         let clickElem = $( event.target );
         if ( clickElem.is( ".dividend" ) ) {
             clickElem.width(clickElem.width()/2);
@@ -48,7 +48,7 @@
             }
         }
 
-    });
+    };
 </script>
 </body>
 </html>
