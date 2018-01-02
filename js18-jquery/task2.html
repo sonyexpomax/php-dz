@@ -85,13 +85,13 @@
     };
 
     $(document).ready(function() {
-        createNewDiv();
-        createNewDiv();
-        createNewDiv();
-        createNewDiv();
-    });
+        let startDivCount = 4;
+        for(let i = 0; i <= startDivCount; i++){
+            createNewDiv();
+        }
+     });
 
-    $( "body" ).onclick = function( event ) {
+    $('body').on('click', function(event) {
         let clickElem = $( event.target );
 
         if ( clickElem.is( ".createElem" ) ) {
@@ -119,7 +119,7 @@
             clickElem.parent().parent().after(clickElem.parent());
             checkButtons();
         }
-    };
+    });
 
     checkButtons = () => {
 
