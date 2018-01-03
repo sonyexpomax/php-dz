@@ -20,7 +20,7 @@ let xo = {
     isFinish : false,
 };
 document.body.onchange = generateHTML;
-document.body.onclick = function(event) {
+document.body.addEventListener('click', function(event) {
     console.log('click');
     let elementWithClick = event.target || event.srcElement;
     if(!xo.isFinish) {
@@ -40,7 +40,7 @@ document.body.onclick = function(event) {
     if (elementWithClick.id === 'newGame'){
         xo.startGame(true);
     }
-};
+});
 
 
 xo.checkGameMode = (type) => {
