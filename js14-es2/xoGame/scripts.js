@@ -19,7 +19,7 @@ let xo = {
     score : [0, 0],
     isFinish : false,
 };
-
+document.body.onchange = generateHTML;
 document.body.onclick = function(event) {
     console.log('click');
     let elementWithClick = event.target || event.srcElement;
@@ -190,7 +190,7 @@ xo.userMove = (id) => {
         return;
     }
 
-    xoComputer.computerMove();
+    xoComputer.computerMove(xo.userPossibleCombination, xo.userMoves, xo.freeFields);
 };
 
 /**
