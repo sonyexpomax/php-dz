@@ -102,8 +102,13 @@
 
     fillSelect();
 
-    document.querySelector('.city_list').onchange = generateHTML;
-    document.querySelector('.theme').onchange = generateHTML;
+    document.addEventListener('DOMContentLoaded',function() {
+        let cityList = document.querySelector('.city_list');
+        let theme = document.querySelector('.theme');
+
+        theme.addEventListener('change', generateHTML, false);
+        cityList.addEventListener('change', generateHTML, false);
+    },false);
 
 </script>
 
