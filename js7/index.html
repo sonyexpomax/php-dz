@@ -49,34 +49,35 @@ var male = {
     crow: function () {
         alert("Cock-A-Doodle-Doo!");
     }
-}
+};
 
 var female = {
     produceEgg: function () {
         var egg = {type: null};
         return egg;
     }
-}
+};
 
 function Chicken(name, sex) {
 
-    if(sex = 'male'){
+    if(sex === 'male'){
         this.prototype = male;
     }
 
-    if(sex = 'female'){
+    if(sex === 'female'){
         this.prototype = female;
     }
 
     this.name = name;
+    this.sex = sex;
 
     this.getSex = function () {
         return sex;
     };
 }
 
-var myChicken1 = new Chicken('qqq','male');
-var myChicken2 = new Chicken('qwqwqw','female');
+var maleChicken = new Chicken('qqq','male');
+var femaleChicken = new Chicken('qwqwqw','female');
 
 //----------------задание 3 ------------------
 
