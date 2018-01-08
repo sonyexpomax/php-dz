@@ -14,7 +14,7 @@ xoComputer.stupidComputerMove = (userPossibleCombination, userMoves, freeFields)
     else {
         id = xoComputer.stupidGetId(freeFields);
     }
-    xo.setComputerMove(id);
+    xoComputer.setComputerMove(id, freeFields, computerSymbol);
 };
 
 xoComputer.smartComputerMove = (userPossibleCombination, userMoves, freeFields) => {
@@ -37,7 +37,7 @@ xoComputer.smartComputerMove = (userPossibleCombination, userMoves, freeFields) 
         }
         xo.makeListOfPossibleCombinations(id, xoComputer.computerMoves, userMoves, xoComputer.computerPossibleCombination);
     }
-    xo.setComputerMove(id);
+    xoComputer.setComputerMove(id, freeFields, computerSymbol);
 };
 
 xoComputer.stupidGetId = (freeFields) => {
@@ -113,6 +113,19 @@ xoComputer.countOfEmptyFields = (freeFields) => {
         }
     }
     return [emptyFields, lastEmptyField];
+};
+
+xoComputer.setComputerMove = (id, freeFields, computerSymbol) => {
+    console.log('setComputerMove id = ' + id);
+    delete freeFields[id];
+    setTimeout(function () {
+        document.body.querySelector('#field-' + id).textContent = computerSymbol;
+        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
+        xoComputer.computerCalculation = false;
+    },300);
+
+    xoComputer.computerMoves.push(id);
+    xo.checkWinning(xoComputer.computerMoves, 'computer');
 };
 
 export {xoComputer};

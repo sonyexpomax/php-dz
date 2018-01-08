@@ -19,7 +19,8 @@ let xo = {
     score : [0, 0],
     isFinish : false,
 };
-document.body.onchange = generateHTML;
+document.body.addEventListener('change', generateHTML, false);
+
 document.body.addEventListener('click', function(event) {
     console.log('click');
     let elementWithClick = event.target || event.srcElement;
@@ -245,11 +246,6 @@ xo.deleteUnpossibleCombinations = (typeMoves, typePossibleCombination) => {
 
 /**
  *
- * @param id
- */
-
-/**
- *
  * @param checkArray
  * @param who
  * @returns {boolean}
@@ -327,15 +323,3 @@ xo.countOfEmptyFields = () => {
     return [emptyFields, lastEmptyField];
 };
 
-xo.setComputerMove = (id) => {
-    console.log('setComputerMove id = ' + id);
-    delete xo.freeFields[id];
-    setTimeout(function () {
-        document.body.querySelector('#field-' + id).textContent = xo.computerSymbol;
-        document.body.querySelector('#field-' + id).style.cursor = 'not-allowed';
-        xoComputer.computerCalculation = false;
-    },300);
-
-    xoComputer.computerMoves.push(id);
-    xo.checkWinning(xoComputer.computerMoves, 'computer');
-};
