@@ -89,37 +89,32 @@
         for(let i = 0; i <= startDivCount; i++){
             createNewDiv();
         }
-     });
 
-    $('body').on('click', function(event) {
-        let clickElem = $( event.target );
-
-        if ( clickElem.is( ".createElem" ) ) {
+        $('body').on('click', '.createElem', function(e) {
+            let clickElem = $( e.currentTarget );
             createNewDiv(clickElem.parent());
-        }
-        if ( clickElem.is( ".setBefore" ) ) {
-             clickElem.parent().after(clickElem.parent().prev('div'));
+        });
+        $('body').on('click', '.setBefore', function(e) {
+            let clickElem = $( e.currentTarget );
+            clickElem.parent().after(clickElem.parent().prev('div'));
             checkButtons();
-        }
-        if ( clickElem.is( ".setAfter" ) ) {
-            console.log(clickElem.parent());
-            console.log(clickElem.parent().prev());
+        });
+        $('body').on('click', '.setAfter', function(e) {
+            let clickElem = $( e.currentTarget );
             clickElem.parent().next().after(clickElem.parent());
             checkButtons();
-        }
-        if ( clickElem.is( ".setInside" ) ) {
-            console.log(clickElem.parent());
-            console.log(clickElem.parent().prev());
+        });
+        $('body').on('click', '.setInside', function(e) {
+            let clickElem = $( e.currentTarget );
             clickElem.parent().appendTo(clickElem.parent().prev());
             checkButtons();
-        }
-        if ( clickElem.is( ".setOutside" ) ) {
-            console.log(clickElem.parent());
-            console.log(clickElem.parent().prev());
+        });
+        $('body').on('click', '.setOutside', function(e) {
+            let clickElem = $( e.currentTarget );
             clickElem.parent().parent().after(clickElem.parent());
             checkButtons();
-        }
-    });
+        });
+     });
 
     checkButtons = () => {
 

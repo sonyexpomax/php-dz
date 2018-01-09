@@ -10,9 +10,11 @@
             margin: 10px;
             background-color: #00FF00;
             border-radius: 20px;
+            border: solid 1px #007500;
         }
         .non-dividend{
             background-color: #ff0082;
+            border: solid 1px #5c002f;
         }
         .non-dividend:hover{
             cursor: not-allowed;
@@ -29,26 +31,25 @@
 <script>
     let ids = 1;
 
-    $('body').on('click', function(event) {
-        let clickElem = $( event.target );
-        if ( clickElem.is( ".dividend" ) ) {
-            clickElem.width(clickElem.width()/2);
+    $('body').on('click', '.dividend', function(e) {
+        let clickElem = $( e.currentTarget );
+        clickElem.width(clickElem.width()/2);
 
-            //clone new elem
-            newElem = clickElem.clone( true );
-            newElem.attr('id', ids);
-            ids++;
-            clickElem.after( newElem );
+        //clone new elem
+        newElem = clickElem.clone( true );
+        newElem.attr('id', ids);
+        ids++;
+        clickElem.after( newElem );
 
-            // check of non-dividend
-            let ran = Math.floor(Math.random() * 3) + 1;
-            if(ran === 1){
-                console.log('non-dividend');
-                newElem.removeClass( "dividend" ).addClass( "non-dividend" );
-            }
+        // check of non-dividend
+        let ran = Math.floor(Math.random() * 3) + 1;
+        if(ran === 1) {
+            console.log('non-dividend');
+            newElem.removeClass("dividend").addClass("non-dividend");
         }
-
     });
+
+
 </script>
 </body>
 </html>
