@@ -3,6 +3,16 @@ let xoComputer = {
     computerPossibleCombination: [],
     computerMove: null,
     computerCalculation : false,
+    possibleCombination: [
+        [1, 2, 3],
+        [1, 4, 7],
+        [1, 5, 9],
+        [2, 5, 8],
+        [3, 6, 9],
+        [3, 5, 7],
+        [4, 5, 6],
+        [7, 8, 9],
+    ],
 };
 
 xoComputer.stupidComputerMove = (userPossibleCombination, userMoves, freeFields) => {
@@ -35,7 +45,7 @@ xoComputer.smartComputerMove = (userPossibleCombination, userMoves, freeFields) 
             xoComputer.deleteUnpossibleCombinations(userMoves, xoComputer.computerPossibleCombination);
             id = xoComputer.smartGetId(userPossibleCombination, userMoves, freeFields);
         }
-        xo.makeListOfPossibleCombinations(id, xoComputer.computerMoves, userMoves, xoComputer.computerPossibleCombination);
+        xoComputer.makeListOfPossibleCombinations(id, xoComputer.computerMoves, userMoves, xoComputer.computerPossibleCombination);
     }
     xoComputer.setComputerMove(id, freeFields, computerSymbol);
 };
@@ -125,7 +135,28 @@ xoComputer.setComputerMove = (id, freeFields, computerSymbol) => {
     },300);
 
     xoComputer.computerMoves.push(id);
-    xo.checkWinning(xoComputer.computerMoves, 'computer');
+
+};
+
+xoComputer.makeListOfPossibleCombinations = (id, againstMoves ) => {
+    for (let i = 0; i < xoComputer.possibleCombination.length; i++) {
+        if (xoComputer.possibleCombination[i][0] === id || xoComputer.possibleCombination[i][1] === id || xoComputer.possibleCombination[i][2] === id) {
+            if (xoComputer.possibleCombination[i][0] !== againstMoves[0] && xoComputer.possibleCombination[i][1] !== againstMoves[0] && xoComputer.possibleCombination[i][2] !== againstMoves[0]) {
+                if(xoComputer.computerMoves.length > 1) {
+                    let k = 0;
+                    for (let j = 0; j < xoComputer.computerPossibleCombination.length; j++) {
+                        if (xoComputer.possibleCombination[i] === xoComputer.computerPossibleCombination[j]) {
+                            k++;
+                        }
+                    }
+                    (k === 0) ? xoComputer.computerPossibleCombination.push(xoComputer.possibleCombination[i]) : '';
+                }
+                else {
+                    xoComputer.computerPossibleCombination.push(xoComputer.possibleCombination[i]);
+                }
+            }
+        }
+    }
 };
 
 export {xoComputer};

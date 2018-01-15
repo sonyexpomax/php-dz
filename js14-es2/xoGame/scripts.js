@@ -86,6 +86,7 @@ xo.startGame = (isReplay) => {
 
     if(xoComputer.computerSymbol === 'X'){
         xoComputer.computerMove();
+        xo.checkWinning(xoComputer.computerMoves, 'computer');
     }
 };
 
@@ -192,6 +193,7 @@ xo.userMove = (id) => {
     }
 
     xoComputer.computerMove(xo.userPossibleCombination, xo.userMoves, xo.freeFields);
+    xo.checkWinning(xoComputer.computerMoves, 'computer');
 };
 
 /**
