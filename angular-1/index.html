@@ -1,0 +1,22 @@
+<html  ng-app="sampleApp">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+    <script src="scripts.js"></script>
+    <title>Full names</title>
+</head>
+
+<body>
+<h2>Список пользователей</h2>
+
+<div >
+    <div ng-controller="sampleController">
+        <label ng-repeat="fullname in fullNames">
+            <input type="radio" ng-model="$parent.currentName" ng-value="fullname.name" name="color-picker" />{{fullname.name}}<br />
+        </label>
+        <h3>Добро пожаловать, {{ currentName }}!</h3>
+    </div>
+</div>
+
+</body>
+</html>
