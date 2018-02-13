@@ -1,24 +1,18 @@
 <!DOCTYPE html>
-<html ng-app="Players">
+<html ng-app="PhotoAlbum">
 
 <head>
     <meta charset="utf-8" />
-    <title>Foolball Players</title>
+    <title>Photo Album</title>
     <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body ng-controller="MainCtrl">
 
-    <label for="playerList">Choose player</label>
-    <select id="playerList" ng-model="template" ng-options="player.name for player in playerList">
-        <option  disabled>n</option>
-    </select>
+    <photo-album width='220' height='220' corners='10px' in-row='3'></photo-album>
 
-    <div class="include-template" ng-include="template.url"></div>
-
-    <script data-require="angular.js@1.2.x" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js" data-semver="1.2.16"></script>
-    <script data-require="angular-route@*" data-semver="1.2.14" src="http://code.angularjs.org/1.2.14/angular-route.js"></script>
-    <script src="js/scripts.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+<script src="js/scripts.js"></script>
 </body>
 
 </html>

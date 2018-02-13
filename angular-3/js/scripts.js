@@ -1,66 +1,35 @@
-var playersApp = angular.module("Players", []);
+var PhotoAlbum = angular.module('PhotoAlbum', []);
 
-
-playersApp.controller('MainCtrl', function($scope){
-    $scope.playerList = [
-        {
-            id: '1',
-            name: "Leonel Messi",
-            position: "Forward",
-            jerseyNumber: 10,
-            dateOfBirth: "1986-06-24",
-            nationality: "Argentina",
-            team: "Barcelona",
-            url: 'templates/barcelona.html',
-        },
-        {
-            id: '2',
-            name: "Luis Suarez",
-            position: "Striker",
-            jerseyNumber: 9,
-            dateOfBirth: "1987-01-24",
-            nationality: "Uruguay",
-            team: "Barcelona",
-            url: 'templates/barcelona.html',
-        },
-        {
-            id: '3',
-            name: "Paul Pogba",
-            position: "Midfield",
-            jerseyNumber: 6,
-            dateOfBirth: "1993-03-15",
-            nationality: "France",
-            team: "ManU",
-            url: 'templates/man-u.html',
-        },
-        {
-            id: '4',
-            name: "David Silva",
-            position: "Attacking Midfield",
-            jerseyNumber: 21,
-            dateOfBirth: "1986-01-08",
-            nationality: "Spain",
-            team: "ManCity",
-            url: 'templates/man-city.html',
-        },
-        {
-            id: '5',
-            name: "Antoine Griezmann",
-            position: "Forward",
-            jerseyNumber: 7,
-            dateOfBirth: "1991-03-21",
-            nationality: "Spain",
-            team: "Atletico",
-            url: 'templates/atletico.html',
-        },
-
+PhotoAlbum.controller('MainCtrl', function($scope) {
+    $scope.pictures = [
+        'photo (1).jpg',
+        'photo (2).jpg',
+        'photo (3).jpg',
+        'photo (4).jpg',
+        'photo (5).jpg',
+        'photo (6).jpg',
+        'photo (7).jpg',
     ];
-
-    $scope.templates =
-        [{ name: 'template1.html', url: 'template1.html'},
-            { name: 'template2.html', url: 'template2.html'}];
-    $scope.template = $scope.templates[0];
 });
 
+PhotoAlbum.directive('photoAlbum', function() {
+    return {
+        restrict: 'E',
+        transclude: 'true',
+        scope:'@',
+        template: '<span ng-transclude></span>',
+        link: function(scope, element, attr){
+            scope.countInRow = attr.inRow;
+            scope.width = attr.width+'px';
+            scope.height = attr.height+'px';
+            scope.countOfCorners = attr.corners;
 
-
+            scope.pictures.forEach(function (val, i) {
+                element.append("<img class='img-item' style='width: "+scope.width+"; height: "+scope.height+"; border-radius: "+scope.countOfCorners+"' src='img/"+val+"'></img>")
+                if((i+1) % scope.countInRow === 0){
+                    element.append("<br />")
+                }
+            });
+         }
+    };
+});

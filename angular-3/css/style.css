@@ -3,56 +3,11 @@ body{
     padding:0;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
-.team-view{
-    width: 70%;
-    margin: 0 auto;
-    padding: 0;
-}
 
-.barcelona, .atletico, .man-u, .man-city{
-    margin: 0;
-    padding: 0;
-    border: solid 1px black;
-    height: 400px;
-}
-
-.barcelona h2, .atletico h2, .man-u h2, .man-city h2 {
+.row{
     width: 100%;
-    font-weight: 600;
-    font-size: 36px;
-    text-align: center;
+    display: block;
 }
-
-.barcelona h3, .atletico h3, .man-u h3, .man-city h3 {
-    width: 100%;
-    font-weight: 400;
-    font-size: 28px;
-    text-align: center;
+.img-item{
+    margin: 10px;
 }
-.barcelona p, .atletico p, .man-u p, .man-city p {
-    width: 100%;
-    font-size: 18px;
-    text-align: center;
-}
-
-.barcelona{
-    background: linear-gradient(90deg, rgb(145, 25, 138) 50%, rgba(0,0,0,0) 50%, rgba(0,0,0,0) 0), #001acc;
-    background-size:150px auto;
-    color: #ffffff;
-}
-.atletico{
-    border: solid 1px black;
-    background-image: repeating-linear-gradient(90deg, #cc110e, #cc1515 30px, #ffffff 30px, #ffffff 70px);
-    color: #000e6a;
-}
-.man-city{
-    border: solid 1px black;
-    background-image: repeating-linear-gradient(180deg, #4ea0b4, #4ea0b4 60px, #FFFFFF 10px, #FFFFFF 80px);
-    color: #000000;
-}
-.man-u{
-    border: solid 1px black;
-    background-image: repeating-linear-gradient(180deg, #cc1515, #cc1515 50px, #000000 10px, #000000 80px);
-    color: #ffffff;
-}
-
