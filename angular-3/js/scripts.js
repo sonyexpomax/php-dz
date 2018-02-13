@@ -17,7 +17,7 @@ PhotoAlbum.directive('photoAlbum', function() {
         restrict: 'E',
         transclude: 'true',
         scope:'@',
-        template: '<span ng-transclude></span>',
+        template: '<h2 ng-transclude>Фотоальбом</h2>',
         link: function(scope, element, attr){
             scope.countInRow = attr.inRow;
             scope.width = attr.width+'px';
