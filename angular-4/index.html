@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="WeatherApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .widget-block{
+            width: 300px;
+            margin: 0 auto;
+            border: solid 1px #000000;
+        }
+        .widget-block select{
+            width: 100%;
+        }
+        button{
+            width: 48%;
+            margin: 2px;
+        }
+        h3, h4, h5{
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div ng-controller="MainController" class="widget-block">
+        <p>Выбор даты</p>
+
+    <select  ng-model="currentDay" ng-options="item.date for item in forecast">
+    </select>
+
+    <weather-widget></weather-widget>
+    <button ng-click="prevDay()">Предыдущий день</button>
+    <button ng-click="nextDay()">Следующий день</button>
+
+</div>
+<script
+        src="http://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.7/angular.min.js"></script>
+
+        <script src="scripts.js"></script>
+</body>
+</html>
