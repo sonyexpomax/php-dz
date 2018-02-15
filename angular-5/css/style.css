@@ -1,0 +1,44 @@
+body{
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.feedback-block{
+    width: 600px;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.feedback-header{
+    margin: 0;
+    padding: 5px 10px;
+    background-color: #ffe343;
+}
+.feedback-header h3{
+    display: inline;
+    font-size: 16px;
+
+}
+.feedback-email{
+
+    font-size: 12px;
+    color: #464b45;
+}
+.feedback-text{
+    font-size: 14px;
+    width: 96%;
+    padding: 2%;
+    text-align: justify;
+}
+.feedback-like, .feedback-dislike{
+    margin:  0 5px;
+    padding: 5px;
+    float: right;
+    display: inline;
+}
+.feedback-like{
+    color: #2b542c;
+}
+.feedback-dislike{
+    color: #FF0000;
+}
+.feedback-like:hover, .feedback-dislike:hover{
+    cursor: pointer;
+}
