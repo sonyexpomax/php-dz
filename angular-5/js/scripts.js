@@ -30,7 +30,12 @@ FeedackApp.service('likeService', function($http) {
 
     this.updateLike = function(id, isLike) {
 
-        $http.get("http://frer.zzz.com.ua/setLikes.php?id="+id+"&isLike="+isLike).then(function () {
+        let config = {
+            id:id,
+            isLike: isLike
+        };
+
+        $http.get("http://frer.zzz.com.ua/setLikes.php", config).then(function () {
 
             self.allLikes.forEach(function (value, i) {
 
