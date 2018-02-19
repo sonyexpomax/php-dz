@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class AgeField extends React.Component {
+class FIOField extends React.Component {
     constructor(props) {
         super(props);
         var isValid = this.validate(props.value);
@@ -8,7 +8,11 @@ class AgeField extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
     validate(val){
-        return val>=0;
+        var pattr = /^[a-zа-яё\-\s]+\s[a-zа-яё\-\s]+\s[a-zа-яё\-\s]+$/i;
+        if(val.match(pattr)){
+            return true;
+        }
+        return false;
     }
     onChange(e) {
         var val = e.target.value;
@@ -17,11 +21,13 @@ class AgeField extends React.Component {
     }
     render() {
         var color = this.state.valid===true?"green":"red";
-        return <p>
-            <label>Возраст:</label><br />
-            <input type="number" value={this.state.value}
-                   onChange={this.onChange} style={{borderColor:color}} />
+        return <p className="pad">
+            <label>ФИО:
+                <span>*</span>
+                <br />
+                <input type="text" name="FIO" required id="f1" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
+            </label>
         </p>;
     }
 }
-export default AgeField;
+export default FIOField;

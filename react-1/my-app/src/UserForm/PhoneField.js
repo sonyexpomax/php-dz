@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class NameField extends React.Component {
+class PhoneField extends React.Component {
     constructor(props) {
         super(props);
         var isValid = this.validate(props.value);
@@ -8,9 +8,9 @@ class NameField extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
     validate(val){
-        var pattr =  /^[а-яё\-\s]+$/i;
+        var pattr =  /^[\+]{0,1}[0-9]{7,12}$/i;
         if(val.match(pattr)){
-            return val.length>2
+            return true;
         }
         return false;
     }
@@ -21,10 +21,14 @@ class NameField extends React.Component {
     }
     render() {
         var color = this.state.valid===true?"green":"red";
-        return <p>
-            <label>Имя:</label><br />
-            <input type="text" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
+        return <p className="pad">
+            <label>Телефон:
+                <br />
+                <input type="text" name="phone" id="p3" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
+            </label>
+            <br />
+            <small>Заполнять можно только цифрами и знаком + в начале</small>
         </p>;
     }
 }
-export default NameField;
+export default PhoneField;

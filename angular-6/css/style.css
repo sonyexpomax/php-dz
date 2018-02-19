@@ -1,0 +1,23 @@
+.alf{
+    display: inline-table;
+    font-weight: 600;
+    margin: 7px;
+    font-size: 18px;
+    color: #000e6a;
+}
+
+.alf:hover{
+    text-decoration: underline;
+    color: #FF0000;
+    cursor: pointer;
+}
+[contenteditable="true"]{
+    color: #bd081c;
+    border: solid 1px #bd081c;
+}
+.editable{
+
+}
+.save{
+    display: none;
+}

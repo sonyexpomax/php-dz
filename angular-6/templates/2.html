@@ -1,7 +1,16 @@
-<div class="container">
-<ul>
-    <li ng-repeat="person in contacts | orderBy: 'name' | filter:letter_name:startsWith">
-        <a href="#!:{{letter_name}}/:{{person.id}}/"> {{person.name}}</a>
-    </li>
-</ul>
-</div>
+
+    <div class="col-md-5 float-left">
+        <ul>
+            <li ng-repeat="person in contacts | orderBy: 'name' | filter:letter_name:startsWith">
+                <a href="#!:{{letter_name}}/:{{person.id}}/"> {{person.name}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-7 float-right border-left border-danger">
+        <small>ФИО</small>
+        <h4>{{current_person.name }}</h4>
+        <small>Телефонный номер</small><h5 class="editable">{{current_person.tel}}</h5>
+        <button class="btn btn-primary btn-md edit" ng-click="editPhone($event)">Редактировать</button>
+        <button class="btn btn-success btn-md save" ng-click="savePhone($event)">Сохранить</button>
+        <button class="btn btn-danger btn-md remove" ng-click="removePhone($event)">Удалить</button>
+    </div>

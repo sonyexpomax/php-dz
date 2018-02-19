@@ -1,37 +1,10 @@
-<!DOCTYPE html>
-<html lang="en"  ng-app="ContactsApp">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div ng-controller="MainController">
-
-    <div class="alf" ng-repeat="letter in alphabet">
-        <a href="#!:{{letter}}">{{letter}} </a>
-        <!--</a>-->
-    </div>
-
+<div class="container">
+<div class="col-md-4">
     <ul>
-        <!--<li ng-repeat="item in contacts">-->
-            <!--{{ item.name}}-->
-        <!--</li>-->
-
-        <li ng-repeat="item in contacts | orderBy: 'name' | filter:letter_name:startsWith">
-            <!--<a ui-sref="people.details({ personId: {{item.id}} })">-->
-           {{item.name}}
-            <!--</a>-->
+        <li ng-repeat="person in contacts | orderBy: 'name' | filter:letter_name:startsWith">
+            <a href="#!:{{letter_name}}/:{{person.id}}/"> {{person.name}}</a>
         </li>
     </ul>
-
-    <div ng-view></div>
+</div>
 
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.js"></script>
-<script src="js/scripts.js"></script>
-</body>
-</html>

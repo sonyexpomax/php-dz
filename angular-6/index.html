@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"  ng-app="FeedackApp">
+<html lang="en"  ng-app="ContactsApp">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -9,23 +9,23 @@
 </head>
 <body>
 <div ng-controller="MainController">
-
-    <p>Today's welcome message is:</p>
-
-    <div class="feedback-block"  ng-repeat="item in feedbacks" id="{{item.index}}">
-        <div class="feedback-header">
-            <h3>{{ item.name }}</h3>
-            <span class="feedback-email"> ({{ item.email }})</span>
-            <span class="feedback-like fa fa-thumbs-up" ng-click="setLike($event)" id="like-{{item.id}}">{{ item.likes }}</span>
-            <span class="feedback-dislike fa fa-thumbs-down" ng-click="setDislike($event)" id="disl-{{item.id}}">{{ item.disles }}</span>
-        </div>
-
-        <p class="feedback-text">{{ item.message }}</p>
-
+    <div class="col-md-10">
+    <div class="alf" ng-repeat="letter in alphabet">
+        <a href="#!:{{letter}}">{{letter}} </a>
+        <!--</a>-->
     </div>
 
+    <div ng-view></div>
+    </div>
 </div>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.js"></script>
+<script
+        src="http://code.jquery.com/jquery-3.3.1.js"
+        integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+        crossorigin="anonymous"></script>
+
+
 <script src="js/scripts.js"></script>
 </body>
 </html>
