@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Toggle from './Toggle';
+import Button from './Button';
+import UserForm from './UserForm/UserForm';
 
 class App extends Component {
 
@@ -10,14 +12,9 @@ class App extends Component {
 
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-          <Toggle isChecked={checkBoxState} />
+           {/*<Toggle isChecked={checkBoxState} />*/}
+          {/*<Button />*/}
+          <UserForm />
       </div>
 
     );

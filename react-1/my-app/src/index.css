@@ -3,3 +3,28 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+.main-form{
+  padding: 10px 0;
+  margin: 10px auto;
+  width:50%;
+  border: solid 1px #6d756c;
+  border-radius: 5px;
+}
+.main-form input{
+  font-size: 18px;
+  margin: 0.05% 2%;
+  width:90%;
+  border: none;
+  border-bottom: solid 3px #6d756c;
+}
+.main-form input[type='submit']{
+  border: none;
+  background-color: #122183;
+  border-radius: 5px;
+  color: #ffffff;
+  padding: 5px;
+}
+.main-form input[type='submit']:hover{
+  background-color: #000e6a;
+  cursor: pointer;
+}

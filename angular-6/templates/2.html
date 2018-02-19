@@ -1,0 +1,7 @@
+<div class="container">
+<ul>
+    <li ng-repeat="person in contacts | orderBy: 'name' | filter:letter_name:startsWith">
+        <a href="#!:{{letter_name}}/:{{person.id}}/"> {{person.name}}</a>
+    </li>
+</ul>
+</div>
