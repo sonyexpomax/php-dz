@@ -12,8 +12,7 @@ class App extends Component {
 
     return (
       <div className="App">
-          <h2 class="h">Форма оформления заказа</h2>
-
+          <h2 className="h">Форма оформления заказа</h2>
           {/*<Toggle isChecked={checkBoxState} />*/}
           {/*<Button />*/}
           <UserForm />

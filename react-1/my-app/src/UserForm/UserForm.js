@@ -4,15 +4,16 @@ import EmailField from './EmailField';
 import PhoneField from './PhoneField';
 import CountField from './CountField';
 import DeliveryDateField from './DeliveryDateField';
+import './css/form.css';
 
 class UserForm extends React.Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.ClearInput = this.ClearInput.bind(this);
+        this.clearInput = this.clearInput.bind(this);
     }
 
-    ClearInput(e){
+    clearInput(e){
         e.preventDefault();
 
         this.refs.FIOField.setState({value: ''});
@@ -25,9 +26,7 @@ class UserForm extends React.Component {
     handleSubmit(e) {
         e.preventDefault();
 
-        console.clear();
         var fields = [];
-
         fields.push({name:'FIO', refs:this.refs.FIOField});
         fields.push({name:'Phone', refs:this.refs.PhoneField});
         fields.push({name:'Count', refs:this.refs.CountField});
@@ -41,12 +40,12 @@ class UserForm extends React.Component {
            else {
                console.log('%c '+ field.name +': ' + field.refs.state.value, 'background: red; color: white');
            }
-       })
+       });
     }
 
     render() {
         return (
-            <form id="form_1" method="post" action="*" name="form_submit" onSubmit={this.handleSubmit}>
+            <form id="form_1" name="form_submit" onSubmit={this.handleSubmit}>
                 <FIOField value="" ref="FIOField" />
                 <EmailField value="" ref="EmailField" />
                 <PhoneField value="" ref="PhoneField" />
@@ -54,14 +53,13 @@ class UserForm extends React.Component {
                 <DeliveryDateField value="" ref="DeliveryDateField" />
                 <div className="sub">
                     <div className="footer">
-                        <input type="submit" name="button1" id="submit" value="Отправить" />
-                        <input type="reset" name="button2" id="reset" value="Очистить" onClick={this.ClearInput}/>
+                        <input type="submit" id="submit" value="Отправить" />
+                        <input type="reset" id="reset" value="Очистить" onClick={this.clearInput}/>
                     </div>
                 </div>
             </form>
         );
-  }
-
+    }
 }
 
 export default UserForm;

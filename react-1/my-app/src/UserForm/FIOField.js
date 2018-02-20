@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './css/field.css';
 
 class FIOField extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class FIOField extends React.Component {
             <label>ФИО:
                 <span>*</span>
                 <br />
-                <input type="text" name="FIO" required id="f1" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
+                <input type="text" required id="f1" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
             </label>
         </p>;
     }

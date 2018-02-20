@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './css/field.css';
 
 class EmailField extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class EmailField extends React.Component {
             <label>E-mail:
                 <span>*</span>
                 <br />
-                <input type="text" name="e-mail" required id="e2" value={this.state.value} onChange={this.onChange} style={{borderColor:color}}  />
+                <input type="text" required id="e2" value={this.state.value} onChange={this.onChange} style={{borderColor:color}}  />
             </label>
         </p>;
     }

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './css/field.css';
 
 class CountField extends React.Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class CountField extends React.Component {
             <label>Количество:
                 <span>*</span>
                 <br />
-                <input type="text" name="quantity" required id="k2" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
+                <input type="text" id="k2" required value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
             </label>
         </p>;
     }

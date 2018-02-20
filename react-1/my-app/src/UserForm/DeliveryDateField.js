@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './css/field.css';
 
 class DeliveryDateField extends React.Component {
     constructor(props) {
@@ -25,7 +26,7 @@ class DeliveryDateField extends React.Component {
             <label>Дата дост:
                 <span>*</span>
                 <br />
-                <input type="text" name="date" required id="e2" value={this.state.value} onChange={this.onChange} style={{borderColor:color}}  />
+                <input type="text" required id="e2" value={this.state.value} onChange={this.onChange} style={{borderColor:color}}  />
                 <br />
                 <small>Пример заполнения: 20.10.2017</small>
             </label>

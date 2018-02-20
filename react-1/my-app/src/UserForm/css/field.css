@@ -1,0 +1,19 @@
+span{
+  color:red;
+}
+.pad{
+  padding-left:25px;
+}
+input[type='text']{
+  padding: 0 5px;
+  border: solid 0.5px #6d756c;
+  border-bottom: solid 4px #6d756c;
+}
+#f1, #e2, #p3, #s1, #k2, #d2{
+  width:55%;
+  height:2rem;
+  margin-top:5px;
+}
+small{
+  color: #6d756c;
+}

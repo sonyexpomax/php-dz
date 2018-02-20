@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './css/field.css';
 
 class PhoneField extends React.Component {
     constructor(props) {
@@ -24,7 +25,7 @@ class PhoneField extends React.Component {
         return <p className="pad">
             <label>Телефон:
                 <br />
-                <input type="text" name="phone" id="p3" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
+                <input type="text" id="p3" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
             </label>
             <br />
             <small>Заполнять можно только цифрами и знаком + в начале</small>
