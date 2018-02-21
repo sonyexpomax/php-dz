@@ -37,37 +37,26 @@ myDog = new Dog;
 
 
 //----------------задание 2 ------------------
-var Chicken = function(name, sex) {
+var Chicken = function (name, sex) {
     this.name = name;
-    this_sex = sex;
+    this._sex = sex;
+    if (this._sex === 'male') {
+        this.crow = function () {
+            alert("Cock-A-Doodle-Doo!");
+        }
+    }
+    else {
+        this.produceEgg = function () {
+            var egg = {type: null};
+            return egg;
+        };
+    }
 };
-
 Chicken.prototype.getSex = function () {
-    return this.sex;
+    return this._sex;
 };
-
-//male
-var maleChicken = function (name) {
-    Chicken.apply(this, [name, 'male']);
-};
-
-maleChicken.prototype.crow = function () {
-    alert("Cock-A-Doodle-Doo!");
-};
-
-//female
-var femaleChicken  = function (name) {
-    Chicken.apply(this, [name, 'female']);
-};
-
-femaleChicken.prototype.produceEgg = function () {
-    var egg = {type: null};
-    return egg;
-};
-
-
-var myChicken1 = new maleChicken('qqq');
-var myChicken2 = new femaleChicken('qwqwqw');
+var сhickenMale = new Chicken('sdsaadsads','male');
+var сhickenFemale = new Chicken('adsasdadfsgv','female');
 
 
 //----------------задание 3 ------------------
