@@ -9,14 +9,14 @@
 </head>
 <body>
 <div ng-controller="MainController">
-    <div class="col-md-10">
+    <div class="col-md-10 border-bottom border-danger">
     <div class="alf" ng-repeat="letter in alphabet">
         <a href="#!:{{letter}}">{{letter}} </a>
         <!--</a>-->
     </div>
-
-    <div ng-view></div>
     </div>
+    <div ng-view></div>
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-route.js"></script>

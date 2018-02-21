@@ -3,7 +3,6 @@ let ContactsApp = angular.module('ContactsApp', ["ngRoute"]);
 ContactsApp.controller('MainController', function($scope, $http) {
     $http.get("http://frer.zzz.com.ua/getContacts.php").then(function (response) {
         $scope.contacts = response.data;
-        console.log($scope.contacts);
     });
 
     $scope.alphabet =["А","Б", "В", "Г", "Д", "Е", "Ж", "З", "И", "Й", "К", "Л", "М", "Н", "О", "П", "Р", "С", "Т", "У", "Ф", "Х", "Ц", "Ч", "Ш", "Щ", "Ъ", "Ы", "Ь", "Э", "Ю", "Я" ];
@@ -26,41 +25,6 @@ ContactsApp.controller('MainController', function($scope, $http) {
         document.body.querySelector('.save').style.display = 'inline';
     };
 
-    $scope.removePhone = function(event) {
-
-        $http.get("http://frer.zzz.com.ua/removeContact.php", config).then(function () {
-
-            //change scope.contacts
-
-            $location.path( "/login" );
-
-        },function () {
-            console.log("error");
-        });
-
-    };
-
-    $scope.savePhone = function(event) {
-
-        let config = {
-            id: $scope.current_person.id,
-            tel: document.body.querySelector('.editable').textContent,
-        };
-
-        $http.get("http://frer.zzz.com.ua/saveContact.php", config).then(function () {
-
-            //change scope.contacts
-
-            event.target.style.display = 'none';
-            document.body.querySelector('.editable').setAttribute('contenteditable', 'false');
-            document.body.querySelector('.edit').style.display = 'inline';
-
-        },function () {
-            console.log("error");
-        });
-
-
-    };
 });
 
 ContactsApp.config(function($routeProvider) {
@@ -77,26 +41,71 @@ ContactsApp.config(function($routeProvider) {
             })
 });
 
-
-ContactsApp.controller("ListPersonsController", function ($scope, $routeParams, $location) {
-
+ContactsApp.controller("ListPersonsController", function ($scope, $routeParams) {
     $scope.letter_name = $routeParams.letter_name.slice(1);
-    console.log($scope.letter_name);
-
 });
 
-ContactsApp.controller("PersonInfoController", function ($scope, $routeParams, $location) {
-
+ContactsApp.controller("PersonInfoController", function ($scope, $routeParams, FindService, $http, $location) {
     $scope.letter_name = $routeParams.letter_name.slice(1);
-    $scope.current_person  = findById($scope.contacts, $routeParams.person_id.slice(1));
+    $scope.letter_path = $routeParams.letter_name;
+    console.log($routeParams.letter_name);
+    $scope.current_person  = FindService.findById($scope.contacts, $routeParams.person_id.slice(1));
+    console.log($scope.current_person);
 
+    $scope.removePhone = function(event) {
+        let data = $.param({
+            id: $scope.current_person.id,
+        });
+
+        let config = {
+            headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
+        };
+
+        let url = 'http://frer.zzz.com.ua/removeContact.php';
+
+        $http.post(url, data, config).then(function (response) {
+            let index = $scope.contacts.indexOf($scope.current_person);
+            $scope.contacts.splice(index, 1);
+            $location.path( "/"+$scope.letter_path );
+        },function () {
+            console.log("error");
+        });
+    };
+
+    $scope.savePhone = function(event) {
+
+        let data = $.param({
+            id: $scope.current_person.id,
+            tel: document.body.querySelector('.editable').textContent,
+        });
+
+        let config = {
+            headers : {'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'}
+        };
+
+        let url = 'http://frer.zzz.com.ua/saveContact.php';
+
+        $http.post(url, data, config).then(function () {
+
+            let index = $scope.contacts.indexOf($scope.current_person);
+            $scope.contacts[index].tel = document.body.querySelector('.editable').textContent;
+            event.target.style.display = 'none';
+            document.body.querySelector('.editable').setAttribute('contenteditable', 'false');
+            document.body.querySelector('.edit').style.display = 'inline';
+
+        },function () {
+            console.log("error");
+        });
+
+    };
 });
 
-
-function findById(source, id) {
-    for (var i = 0; i < source.length; i++) {
-        if (source[i].id === id) {
-            return source[i];
+ContactsApp.service('FindService', function() {
+    this.findById = function(source, id) {
+        for (let i = 0; i < source.length; i++) {
+            if (source[i].id === id) {
+                return source[i];
+            }
         }
     }
-}
+});

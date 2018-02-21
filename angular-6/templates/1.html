@@ -1,10 +1,10 @@
-<div class="container">
-<div class="col-md-4">
-    <ul>
+
+<div class="col-md-5">
+    <ol>
         <li ng-repeat="person in contacts | orderBy: 'name' | filter:letter_name:startsWith">
             <a href="#!:{{letter_name}}/:{{person.id}}/"> {{person.name}}</a>
         </li>
-    </ul>
+    </ol>
 </div>
-
+<div class="col-md-7 float-right border-left border-danger">
 </div>
