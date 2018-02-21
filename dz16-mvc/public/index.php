@@ -20,6 +20,7 @@ try {
 
 } catch (Exception $e) {
     if (App\Core\Config::get('debug')) {
+        var_dump($e);
         echo '<pre>', var_export($e, 1), '</pre>';
     } else {
         echo 'Something gone wrong...';

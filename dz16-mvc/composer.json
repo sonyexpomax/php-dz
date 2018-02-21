@@ -1,6 +1,7 @@
 {
     "require": {
         "monolog/monolog": "^1.23",
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "^6.5",
+        "twig/twig": "^2.0"
     }
 }

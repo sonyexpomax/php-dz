@@ -45,13 +45,13 @@ class Base
      */
     public function __construct($data = [], $template = null)
     {
-        if (!$template) {
-            $template = static::getDefaultTemplate();
-        }
-
-        if (!file_exists($template)) {
-            throw new \Exception('Template not found: ' . $template);
-        }
+//        if (!$template) {
+//            $template = static::getDefaultTemplate();
+//        }
+//
+//        if (!file_exists($template)) {
+//            throw new \Exception('Template not found: ' . $template);
+//        }
 
         $this->data = $data;
         $this->template = $template;
@@ -66,5 +66,9 @@ class Base
         ob_start();
         include $this->template;
         return ob_get_clean();
+    }
+
+    public function getData() {
+        return $this->data;
     }
 }

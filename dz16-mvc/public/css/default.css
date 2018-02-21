@@ -2,3 +2,12 @@
     margin-top: 100px;
     margin-bottom: 20px;
 }
+footer{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding: 10px;
+    background-color: #1b2023;
+    color: #ffffff;
+    text-align: center;
+}

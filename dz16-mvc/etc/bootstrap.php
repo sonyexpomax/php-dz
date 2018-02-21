@@ -18,7 +18,7 @@ spl_autoload_register(function ($name) {
         include_once $absPath;
     }
 });
-
+require_once dirname(dirname(__FILE__)).'/vendor/autoload.php';
 include_once ROOT.DS.'etc'.DS.'config.php';
 include_once ROOT.DS.'etc'.DS.'functions.php';
 

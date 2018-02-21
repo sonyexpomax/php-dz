@@ -21,6 +21,7 @@ class ContactsController extends Base {
         parent::__construct($params);
 
         $this->contactsModel = new Contacts(App::getConnection());
+
     }
 
     public function index(){

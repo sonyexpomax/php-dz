@@ -21,11 +21,13 @@ class PagesController extends Base
         parent::__construct($params);
 
         $this->pageModel = new Page(App::getConnection());
+
     }
 
     public function indexAction()
     {
         $this->data = $this->pageModel->list(['active' => 1]);
+
     }
 
     public function viewAction()

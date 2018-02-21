@@ -1,0 +1,13 @@
+{% extends "./default.html.twig" %}
+{% block body %}
+    <div class="col-lg-12">
+        <ul class="list-group">
+            <li class="list-group-item active">Pages List</li>
+            {% for page in data %}
+                <li class="list-group-item">
+                    <a href="{{ buildUriTwig('view', [page['id']])}}">{{ page['title'] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
