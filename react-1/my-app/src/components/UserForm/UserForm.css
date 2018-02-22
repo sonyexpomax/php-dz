@@ -1,0 +1,28 @@
+.footer{
+    height:80px;
+    width:100%;
+    background-color:#363636;
+}
+.sub{position:relative;}
+#submit{
+    font-weight:bold;
+    height:35px;
+    position:absolute;
+    left:20px;
+    top:20px;
+}
+#reset{
+    font-weight:bold;
+    height:35px;
+    position:absolute;
+    left:115px;
+    top:20px;
+}
+#sub{
+    height:50px;
+    width:20%;
+    font-size:1.2rem;
+    font-weight: bold;
+    color:white;
+    background-color:#009ACD;
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './css/field.css';
+import './PhoneField.css';
 
-class DeliveryDateField extends React.Component {
+class PhoneField extends React.Component {
     constructor(props) {
         super(props);
         var isValid = this.validate(props.value);
@@ -9,7 +9,7 @@ class DeliveryDateField extends React.Component {
         this.onChange = this.onChange.bind(this);
     }
     validate(val){
-        var pattr =  /^([0-2]\d|3[01])\.(0\d|1[012])\.(\d{4})$/;
+        var pattr =  /^[\+]{0,1}[0-9]{7,12}$/i;
         if(val.match(pattr)){
             return true;
         }
@@ -23,14 +23,13 @@ class DeliveryDateField extends React.Component {
     render() {
         var color = this.state.valid===true?"green":"red";
         return <p className="pad">
-            <label>Дата дост:
-                <span>*</span>
+            <label>Телефон:
                 <br />
-                <input type="text" required id="e2" value={this.state.value} onChange={this.onChange} style={{borderColor:color}}  />
-                <br />
-                <small>Пример заполнения: 20.10.2017</small>
+                <input type="text" id="p3" value={this.state.value} onChange={this.onChange} style={{borderColor:color}} />
             </label>
+            <br />
+            <small>Заполнять можно только цифрами и знаком + в начале</small>
         </p>;
     }
 }
-export default DeliveryDateField;
+export default PhoneField;

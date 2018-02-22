@@ -4,7 +4,7 @@ import EmailField from './EmailField';
 import PhoneField from './PhoneField';
 import CountField from './CountField';
 import DeliveryDateField from './DeliveryDateField';
-import './css/form.css';
+import './UserForm.css';
 
 class UserForm extends React.Component {
     constructor(props) {
@@ -45,19 +45,23 @@ class UserForm extends React.Component {
 
     render() {
         return (
-            <form id="form_1" name="form_submit" onSubmit={this.handleSubmit}>
-                <FIOField value="" ref="FIOField" />
-                <EmailField value="" ref="EmailField" />
-                <PhoneField value="" ref="PhoneField" />
-                <CountField value="" ref="CountField" />
-                <DeliveryDateField value="" ref="DeliveryDateField" />
-                <div className="sub">
-                    <div className="footer">
-                        <input type="submit" id="submit" value="Отправить" />
-                        <input type="reset" id="reset" value="Очистить" onClick={this.clearInput}/>
+            <div>
+                <h2>User form</h2>
+                <form id="form_1" name="form_submit" onSubmit={this.handleSubmit}>
+                    <FIOField value="" ref="FIOField" />
+                    <EmailField value="" ref="EmailField" />
+                    <PhoneField value="" ref="PhoneField" />
+                    <CountField value="" ref="CountField" />
+                    <DeliveryDateField value="" ref="DeliveryDateField" />
+                    <div className="sub">
+                        <div className="footer">
+                            <input type="submit" id="submit" value="Отправить" />
+                            <input type="reset" id="reset" value="Очистить" onClick={this.clearInput}/>
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+
         );
     }
 }
