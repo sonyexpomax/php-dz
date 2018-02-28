@@ -1,47 +1,73 @@
 import React, { Component } from 'react';
 import './App.css';
-import Toggle from './Toggle';
-import Button from './Button';
-import UserForm from './components/UserForm/UserForm';
 import RoutingWithSubPages from './components/Routing/RoutingWithSubPages';
-
-import {BrowserRouter as Router, Route, Switch, Link } from 'react-router-dom'
-
 class App extends Component {
 
-  render() {
-      // const checkBoxState = true;
+    constructor(){
+        super();
+        this.state = {users:[]};
+        console.log(this.state);
+    }
 
-    return (
-      <div className="App">
-            <RoutingWithSubPages />
-          {/*<Router>*/}
-              {/*<div>*/}
-                  {/*<nav>*/}
-                      {/*<ul>*/}
-                          {/*<li><Link to='/'>Home</Link></li>*/}
-                          {/*<li><Link to='/about'>About</Link></li>*/}
-                      {/*</ul>*/}
-                  {/*</nav>*/}
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then((response) => response.json())
+            .then((responseJson) => {
 
-                  {/*<Switch>*/}
-                      {/*<Route exact path="/" component = {Main}/>*/}
-                      {/*<Route exact path="/about" component = {About}/>*/}
-                      {/*<Route component = {Non}/>*/}
-                  {/*</Switch>*/}
-              {/*</div>*/}
+                this.setState({users: responseJson});
+                console.log(this.state);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+    render() {
+        return (
+            <div className="App">
+                <RoutingWithSubPages />
+            </div>
 
-          {/*</Router>*/}
+        )
+    }}
 
-          {/*<h2 className="h">Форма оформления заказа</h2>*/}
-          {/*<Toggle isChecked={checkBoxState} />*/}
-          {/*<Button />*/}
-          {/*<UserForm />*/}
-       </div>
+//
+// const Users = ({ match }) => (
+//     <div>
+//         <aside>
+//             <h2>Users</h2>
+//             <ul>
+//                 {
+//                     this.state.users.map(function(item){
+//                         return (
+//                             <li key={item.id}>
+//                                 <Link to={`${match.url}/${item.id}`}>{item.name}</Link>
+//                             </li>
+//                         )
+//                     })
+//                 }
+//             </ul>
+//         </aside>
+//         <Route path={`${match.url}/:userId`} component={User} />
+//         <Route exact path={match.url} component={ChooseUser} />
+//     </div>
+// );
+
+// const User = ({ match }) => (
+//     <article>
+//         {
+//             this.state.user.map(function(item, i){
+//                 if (item.id == match.params.userId){
+//                     return (
+//                         <div>
+//                             <h2 key={item.id + "-" + item.name}>{item.name}</h2>
+//                             <p>{item.user.name}</p>
+//                         </div>
+//                     )
+//                 }
+//             })
+//         }
+//     </article>
 
 
-    );
-  }
-}
 
 export default App;

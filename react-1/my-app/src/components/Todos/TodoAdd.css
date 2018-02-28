@@ -1,0 +1,29 @@
+.add-form{
+    width: 90%;
+    padding: 0;
+    margin: 15px auto;
+}
+.add-text{
+    width: 70%;
+    font-size: 14px;
+    height: 16px;
+    border-radius: 5px;
+    border: solid 1px #6d756c;
+    padding: 10px;
+    float: left;
+}
+.add-button{
+    width: 24%;
+    height: 38px;
+    font-size: 16px;
+    padding: 10px ;
+    border: none;
+    border-radius: 5px;
+    background-color: #1a6d04;
+    color: #ffffff;
+}
+
+.add-button:hover{
+    cursor: pointer;
+    background-color: #176004;
+}

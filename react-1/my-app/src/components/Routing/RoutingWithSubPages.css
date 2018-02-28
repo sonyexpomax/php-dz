@@ -4,6 +4,7 @@ nav{
     padding: 5px 0;
     font-size: 20px;
     font-weight: 600;
+    text-align: left;
 }
 
 nav a{
@@ -15,12 +16,16 @@ nav a:hover{
 }
 
 ul{
+    width: 100%;
     margin: 0;
+    padding: 0;
 }
 li{
     display: inline;
     padding:  10px;
+    border-right:solid 1px #ffffff ;
 }
+
 aside{
     width:25%;
     border-right: solid 1px #2f1e79;

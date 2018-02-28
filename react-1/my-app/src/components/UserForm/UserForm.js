@@ -25,7 +25,7 @@ class UserForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-
+console.log(this.refs);
         var fields = [];
         fields.push({name:'FIO', refs:this.refs.FIOField});
         fields.push({name:'Phone', refs:this.refs.PhoneField});

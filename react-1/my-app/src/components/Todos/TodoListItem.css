@@ -1,0 +1,34 @@
+.task-item{
+    background-color: #a6b2a3;
+    border: solid 1px #8d978a;
+    border-radius: 5px;
+    color: #0b0d0e;
+    padding: 10px 20px 10px 10px;
+    margin-bottom: 30px;
+    text-align: left;
+    font-size: 18px;
+}
+.task-item small{
+    float: right;
+    font-size: 12px;
+}
+.remove-task{
+    float: right;
+    left: 150px;
+    top: -20px;
+    position: relative;
+    background-color: #FF0000;
+    color: #ffffff;
+    border: none;
+    padding: 5px 8px;
+    border-radius: 100%;
+    font-weight: 600;
+}
+.remove-task:hover{
+    cursor: pointer;
+}
+.isDone{
+    color: #848d82;
+    background-color: #bdcab9;
+    border: none;
+}
