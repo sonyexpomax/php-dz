@@ -1,7 +1,7 @@
 .add-form{
-    width: 90%;
+    width: 100%;
     padding: 0;
-    margin: 15px auto;
+    margin: 15px 0;
 }
 .add-text{
     width: 70%;
@@ -13,7 +13,7 @@
     float: left;
 }
 .add-button{
-    width: 24%;
+    width: 26%;
     height: 38px;
     font-size: 16px;
     padding: 10px ;

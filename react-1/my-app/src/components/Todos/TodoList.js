@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import TodoListItem from './TodoListItem';
 import './TodoList.css';
 
-
 class TodoList extends Component {
 
     removeItem = (id) => {
@@ -15,14 +14,12 @@ class TodoList extends Component {
 
     render() {
         let ctx = this;
-        console.log(this.props);
          return (
              <div>
-                <h3>Список заданий</h3>
                 <div className={'task-list'}>
                 {
-                    this.props.tasks.map(function (item) {
-                        return <TodoListItem key={item.text+item.date} task = {item} itemId={item.id} onRemove = {ctx.removeItem} onChangeStateList = {ctx.changeItem} /*remove={this.removeTask(item)}*/ />
+                    this.props.tasks.map((item) => {
+                        return <TodoListItem key={item.text+item.date} task = {item} itemId={item.id} onRemove = {ctx.removeItem} onChangeStateList = {ctx.changeItem} />
                     })
                 }
                 </div>
@@ -30,6 +27,5 @@ class TodoList extends Component {
          )
     };
 }
-
 
 export default TodoList;

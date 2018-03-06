@@ -1,6 +1,8 @@
 import React, { Component } from "react";
-import TodoList from './TodoList'
-import TodoAdd from './TodoAdd'
+import { connect } from 'react-redux';
+import TodoList from './TodoList';
+import TodoAdd from './TodoAdd';
+import TodoFilter from './TodoFilter';
 import './Todos.css';
 
 class Todos extends Component {
@@ -11,85 +13,72 @@ class Todos extends Component {
             tasks: [],
             maxId: 0
         };
+        console.log(this.props);
     }
 
-    componentWillMount() {
-        this.getTasks();
+    componentDidMount() {
+        console.log(this.props);
     }
 
-    findMaxId = () => {
-        let m = 0;
-        for(let i = 0; i < this.state.tasks.length; i++ ){
-            if(parseInt(this.state.tasks[i].id) > m ){
-                m = parseInt(this.state.tasks[i].id);
+    addTaskToState = (newId, newText, newDate) => {
+        this.props.onAddTask(
+            {
+                id:newId.toString(),
+                text:newText,
+                date:newDate,
+                isDone: '0'
             }
-        }
-        this.setState({maxId: (m+1)});
-    };
-
-    getTasks = () => {
-        fetch('http://frer.zzz.com.ua/getTasks.php')
-            .then((response) => response.json())
-            .then((responseJson) => {
-                this.setState({tasks: responseJson});
-                this.findMaxId();
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
-
-    addTaskToState = (newText, newDate) => {
-        this.state.tasks.push({
-            id:this.state.maxId.toString(),
-            text:newText,
-            date:newDate,
-            isDone: '0'
-        });
+        );
         this.setState({maxId: (this.state.maxId + 1)});
+        console.log(this.state.maxId);
+        console.log(this.props.testStore);
     };
 
     removeTaskFromState = (id) => {
-        let f = this.state.tasks.filter(function (item) {
-            return (item.id !== id);
-        });
-        this.setState({ tasks: f });
+        this.props.onRemoveTask(id);
     };
 
     changeStateInState = (id) => {
-        for(let i = 0; i < this.state.tasks.length; i++){
-            let item = this.state.tasks[i];
-            if(item.id == id){
-                if(this.state.tasks[i].isDone > 0){
-                    this.state.tasks[i].isDone = '0';
-                }
-                else {
-                    this.state.tasks[i].isDone = '1';
-                }
-                return;
-            }
-        }
+        this.props.onUpdateTask(id);
     };
 
-    updateItems = (newText) => {
+    findMaxId = (arrayOfTasks) => {
 
+        console.log(arrayOfTasks);
+        let m = 0;
+        for(let i = 0; i < arrayOfTasks.length; i++ ){
+            console.log(parseInt(arrayOfTasks[i].id));
+            if(parseInt(arrayOfTasks[i].id) > m ){
+                m = parseInt(arrayOfTasks[i].id);
+            }
+        }
+        return m;
+    };
+
+
+    addTask = (newText) => {
+
+        let newId = this.findMaxId(this.props.testStore) + 1;
+        console.log(newId);
         let newDate = Date.now().toString();
         fetch('http://frer.zzz.com.ua/addTask.php', {
             method: 'POST',
             body: JSON.stringify({
                 newText: newText,
-                newDate: newDate
+                newDate: newDate,
+                newId: newId
             })
         })
             .then(() => {
-                this.addTaskToState(newText, newDate);
+                this.addTaskToState(newId, newText, newDate);
             })
             .catch((error) => {
                 console.error(error);
             });
     };
 
-    deleteItem = (id) => {
+    deleteTask = (id) => {
+
         fetch('http://frer.zzz.com.ua/removeTask.php', {
             method: 'POST',
             body: JSON.stringify({
@@ -104,7 +93,8 @@ class Todos extends Component {
             });
     };
 
-    changeStateItem = (id) => {
+    changeTaskState = (id) => {
+
         fetch('http://frer.zzz.com.ua/changeStateTask.php', {
             method: 'POST',
             body: JSON.stringify({
@@ -119,14 +109,57 @@ class Todos extends Component {
             });
     };
 
+    changeFilter = (filterName) => {
+
+        if(filterName === 'completed') {
+            this.props.filterCompleted();
+        }
+        else if (filterName === 'active') {
+            this.props.filterActive();
+        }
+        else if (filterName === 'all') {
+            this.props.filterAll();
+        }
+    };
+
     render() {
+        console.log(this.props.testStore);
         return (
             <div className="todoListMain">
-                <TodoAdd onFormSubmit={this.updateItems}/>
-                <TodoList tasks={this.state.tasks} onDelete={this.deleteItem} onChangeState={this.changeStateItem} />
+                <TodoAdd onFormSubmit={this.addTask}/>
+                <TodoFilter onChangeFilter={this.changeFilter} />
+                <h3>Список заданий</h3>
+                <TodoList tasks={this.props.testStore} onDelete={this.deleteTask} onChangeState={this.changeTaskState} />
             </div>
         );
     }
 }
-
-export default Todos;
+export default connect(
+    state => ({
+        testStore: state
+    }),
+    dispatch => ({
+        onAddTask: (task) => {
+            console.log(task);
+            dispatch({type: 'ADD_TASK', payload: task})
+        },
+        onRemoveTask: (id) => {
+            console.log(id);
+           dispatch({type: 'REMOVE_TASK', payload: id})
+        },
+        onUpdateTask: (id) => {
+            console.log(id);
+            dispatch({type: 'UPDATE_TASK', payload: id})
+        },
+        filterAll: () => {
+            dispatch({type: 'SHOW_ALL_1'})
+        },
+        filterCompleted: () => {
+            dispatch({type: 'SHOW_COMPLETED'})
+        },
+        filterActive: () => {
+            dispatch({type: 'SHOW_ACTIVE'})
+        }
+    })
+)
+(Todos);

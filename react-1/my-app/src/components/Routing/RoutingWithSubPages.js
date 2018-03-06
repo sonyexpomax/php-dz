@@ -4,6 +4,7 @@ import './RoutingWithSubPages.css';
 import UserForm from '../UserForm/UserForm';
 import Users from '../Users/Users';
 import Todos from "../Todos/Todos";
+import TodosMain from "../Todos/TodosMain";
 
 import FaAngleDown from 'react-icons/lib/fa/angle-down';
 import TiArrowForward from 'react-icons/lib/ti/arrow-forward';
@@ -24,14 +25,6 @@ let productsArray = [
     {id: 13, name: 'Product №13'},
     {id: 14, name: 'Product №14'},
 ];
-
-
-// class RoutingWithSubPages extends React.Component {
-//
-//
-//
-//     render(){
-//         return(
 
 const RoutingWithSubPages = () => (
     <Router>
@@ -60,7 +53,7 @@ const RoutingWithSubPages = () => (
                 <Route path="/products" component={Products} />
                 <Route path="/users" component={Users} />
                 <Route path="/form" component={Form} />
-                <Route path="/todos" component={Todos} />
+                <Route path="/todos" component={TodosMain} />
                 <Route component = {None}/>
             </Switch>
         </main>

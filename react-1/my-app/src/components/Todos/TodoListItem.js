@@ -9,19 +9,32 @@ class TodoListItem extends Component {
     };
 
     changeHandler = (e) => {
-        console.log(this.props);
         this.props.onChangeStateList(this.props.itemId);
+        console.log(this.props.task);
     };
 
     render() {
-        console.log(this.props);
-        let d = new Date(parseInt(this.props.task.date));
+        let date = new Date(parseInt(this.props.task.date)).toLocaleString();
+        let isCheckedClass = this.props.task.isDone < 1 ? 'task-item' : 'task-item isDone';
+        let isChecked = this.props.task.isDone > 0;
         return (
-            <div className={this.props.task.isDone < 1 ? 'task-item' : 'task-item isDone'} key={this.props.task.id}>
-                <input type="checkbox" onChange={this.changeHandler} defaultChecked={(this.props.task.isDone > 0)} />
+            <div className={isCheckedClass} key={this.props.task.id}>
+
+                <input type="checkbox"
+                       onChange = {this.changeHandler}
+                       defaultChecked = {isChecked}
+                />
+
                 {this.props.task.text}
-                <small>{d.toLocaleString()}</small>
-                <button className={'remove-task'} title={'Удалить'}  ref={this.props.task.id} onClick={this.removeHandler}>x</button>
+
+                <small>{date}</small>
+                <button
+                    className={'remove-task'}
+                    title={'Удалить'}
+                    ref={this.props.task.id}
+                    onClick={this.removeHandler}
+                >x</button>
+
             </div>
         )
     };

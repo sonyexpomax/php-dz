@@ -23,9 +23,6 @@ class Users extends Component {
     render() {
         const userId = parseInt(this.props.match.params.userId);
         const users = this.state.users;
-        console.log('userId = ' + userId);
-        console.log(users);
-
             if (this.props.match.params.userId) {
                 return (
                     <div>

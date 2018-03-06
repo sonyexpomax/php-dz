@@ -12,6 +12,9 @@
     float: right;
     font-size: 12px;
 }
+.task-item input[type="checkbox"]{
+    margin-right: 10px;
+}
 .remove-task{
     float: right;
     left: 150px;
